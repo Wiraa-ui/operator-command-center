@@ -56,43 +56,55 @@ function Home() {
       <section className="relative border-b border-op-line">
         <div aria-hidden="true" className="absolute inset-0 op-grid-backdrop opacity-40" />
         <Container className="relative py-20 sm:py-28 lg:py-32">
-          <p className="flex items-center gap-2 font-op-mono text-[13px] text-op-text-2">
-            <span
-              aria-hidden="true"
-              className="inline-block h-2 w-2 rounded-full bg-op-success op-pulse-live"
+          <div className="grid gap-12 lg:grid-cols-[1fr_360px] lg:items-start lg:gap-16">
+            <div>
+              <p className="flex items-center gap-2 font-op-mono text-[13px] text-op-text-2">
+                <span
+                  aria-hidden="true"
+                  className="inline-block h-2 w-2 rounded-full bg-op-success op-pulse-live"
+                />
+                <span>
+                  // operator @ kumon udayana
+                  <span className="px-2 text-op-text-3">—</span>
+                  <span className="text-op-accent">status: open for collaboration</span>
+                </span>
+              </p>
+
+              <h1 className="mt-6 max-w-[18ch] text-[40px] font-semibold leading-[1.05] tracking-[-0.01em] text-op-text sm:text-[56px] sm:leading-[1.05]">
+                I build systems that improve operations.
+              </h1>
+
+              <p className="mt-5 max-w-[42ch] text-[20px] font-semibold leading-[1.35] text-op-text-2 sm:text-[24px]">
+                Infrastructure, automation, and quiet reliability — operated from Bali.
+              </p>
+
+              <p className="mt-6 max-w-[68ch] text-[16px] leading-[1.7] text-op-text-2">
+                I'm {site.name}. I run a self-hosted server, design retrieval-grounded
+                assistants for internal knowledge, and turn fragile manual workflows
+                into systems a non-technical colleague can still operate. The work
+                comes from the problem, not the stack.
+              </p>
+
+              <div className="mt-9 flex flex-wrap items-center gap-4">
+                <LinkButton to="/projects" variant="primary">
+                  View My Projects
+                </LinkButton>
+                <LinkButton to="/contact" variant="ghost">
+                  Get in Touch
+                </LinkButton>
+              </div>
+            </div>
+
+            <ImageSlot
+              label="portrait.jpg"
+              caption="Replace with your portrait — 4:5, plain backdrop preferred."
+              ratio="portrait"
+              className="lg:mt-2"
             />
-            <span>
-              // operator @ kumon udayana
-              <span className="px-2 text-op-text-3">—</span>
-              <span className="text-op-accent">status: open for collaboration</span>
-            </span>
-          </p>
-
-          <h1 className="mt-6 max-w-[18ch] text-[40px] font-semibold leading-[1.05] tracking-[-0.01em] text-op-text sm:text-[56px] sm:leading-[1.05]">
-            I build systems that improve operations.
-          </h1>
-
-          <p className="mt-5 max-w-[42ch] text-[20px] font-semibold leading-[1.35] text-op-text-2 sm:text-[24px]">
-            Infrastructure, automation, and quiet reliability — operated from Bali.
-          </p>
-
-          <p className="mt-6 max-w-[68ch] text-[16px] leading-[1.7] text-op-text-2">
-            I'm {site.name}. I run a self-hosted server, design retrieval-grounded
-            assistants for internal knowledge, and turn fragile manual workflows
-            into systems a non-technical colleague can still operate. The work
-            comes from the problem, not the stack.
-          </p>
-
-          <div className="mt-9 flex flex-wrap items-center gap-4">
-            <LinkButton to="/projects" variant="primary">
-              View My Projects
-            </LinkButton>
-            <LinkButton to="/contact" variant="ghost">
-              Get in Touch
-            </LinkButton>
           </div>
         </Container>
       </section>
+
 
       {/* ====================== OPERATING PRINCIPLES ====================== */}
       <section className="border-b border-op-line" aria-label="Operating principles">
