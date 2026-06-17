@@ -184,21 +184,30 @@ function Home() {
       <section className="border-b border-op-line">
         <Container className="py-16 sm:py-20">
           <SectionHeader eyebrow="// about" title="An operator, not a rockstar" />
-          <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
-            Most of what I know is self-taught against real systems. The rest came
-            from a vocational IT track and a six-month internship that put
-            production payroll and invoicing on my shoulders. I prefer boring,
-            reliable choices — Ubuntu, Docker, Cloudflare Tunnel, a Telegram bot
-            instead of a new app — because they survive contact with the people
-            who actually use them.
-          </p>
-          <div className="mt-6">
-            <Link
-              to="/about"
-              className="op-link-underline font-op-mono text-[13px] text-op-accent"
-            >
-              Read more about me →
-            </Link>
+          <div className="grid gap-8 md:grid-cols-[260px_1fr] md:items-start md:gap-10">
+            <ImageSlot
+              label="portrait-about.jpg"
+              caption="Square portrait for the about teaser."
+              ratio="square"
+            />
+            <div>
+              <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
+                Most of what I know is self-taught against real systems. The rest came
+                from a vocational IT track and a six-month internship that put
+                production payroll and invoicing on my shoulders. I prefer boring,
+                reliable choices — Ubuntu, Docker, Cloudflare Tunnel, a Telegram bot
+                instead of a new app — because they survive contact with the people
+                who actually use them.
+              </p>
+              <div className="mt-6">
+                <Link
+                  to="/about"
+                  className="op-link-underline font-op-mono text-[13px] text-op-accent"
+                >
+                  Read more about me →
+                </Link>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
