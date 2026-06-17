@@ -3,7 +3,7 @@ import { PageShell, Container } from "@/components/operator/PageShell";
 import { StatusBadge } from "@/components/operator/StatusBadge";
 import { TechPillRow } from "@/components/operator/TechPill";
 import { ArchDiagram } from "@/components/operator/ArchDiagram";
-import { projects, projectBySlug } from "@/content/projects";
+import { projects, projectBySlug, type Project } from "@/content/projects";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
