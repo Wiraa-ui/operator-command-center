@@ -77,19 +77,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "theme-color", content: "#0A0E0F" },
+      { title: "I Kadek Wira Wibawa — IT Administrator & Automation Builder" },
+      {
+        name: "description",
+        content:
+          "Operator portfolio of I Kadek Wira Wibawa — infrastructure, automation, and quiet reliability. Operated from Bali.",
+      },
+      { name: "author", content: "I Kadek Wira Wibawa" },
+      { property: "og:title", content: "I Kadek Wira Wibawa — The Operator" },
+      {
+        property: "og:description",
+        content:
+          "Infrastructure, automation, and problem-solving. Self-hosted systems that improve real operations.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
       },
     ],
   }),
