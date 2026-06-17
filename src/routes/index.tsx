@@ -136,6 +136,12 @@ function Home() {
             title="The system I'm building right now"
             description="Real problem, real organisation, real architecture. Start here."
           />
+          <ImageSlot
+            label={`${flagshipProject.slug}-cover.jpg`}
+            caption="Flagship cover — screenshot, diagram, or hero shot (16:9)."
+            ratio="wide"
+            className="mb-10"
+          />
           <FlagshipProject project={flagshipProject} />
         </Container>
       </section>
@@ -154,7 +160,13 @@ function Home() {
                 ["ubuntu-server-stack", "kumon-invoice-automation"].includes(p.slug),
               )
               .map((p) => (
-                <ProjectCard key={p.slug} project={p} />
+                <div key={p.slug} className="flex flex-col gap-4">
+                  <ImageSlot
+                    label={`${p.slug}.jpg`}
+                    ratio="video"
+                  />
+                  <ProjectCard project={p} />
+                </div>
               ))}
           </div>
           <div className="mt-8">
