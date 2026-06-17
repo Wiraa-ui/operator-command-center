@@ -4,6 +4,7 @@ import { LinkButton, AnchorButton } from "@/components/operator/Button";
 import { FlagshipProject } from "@/components/operator/FlagshipProject";
 import { ProjectCard } from "@/components/operator/ProjectCard";
 import { SectionHeader } from "@/components/operator/SectionHeader";
+import { ImageSlot } from "@/components/operator/ImageSlot";
 import { flagshipProject, secondaryProjects } from "@/content/projects";
 import { site } from "@/content/site";
 
