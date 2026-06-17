@@ -4,6 +4,7 @@ import { LinkButton, AnchorButton } from "@/components/operator/Button";
 import { FlagshipProject } from "@/components/operator/FlagshipProject";
 import { ProjectCard } from "@/components/operator/ProjectCard";
 import { SectionHeader } from "@/components/operator/SectionHeader";
+import { ImageSlot } from "@/components/operator/ImageSlot";
 import { flagshipProject, secondaryProjects } from "@/content/projects";
 import { site } from "@/content/site";
 
@@ -55,43 +56,55 @@ function Home() {
       <section className="relative border-b border-op-line">
         <div aria-hidden="true" className="absolute inset-0 op-grid-backdrop opacity-40" />
         <Container className="relative py-20 sm:py-28 lg:py-32">
-          <p className="flex items-center gap-2 font-op-mono text-[13px] text-op-text-2">
-            <span
-              aria-hidden="true"
-              className="inline-block h-2 w-2 rounded-full bg-op-success op-pulse-live"
+          <div className="grid gap-12 lg:grid-cols-[1fr_360px] lg:items-start lg:gap-16">
+            <div>
+              <p className="flex items-center gap-2 font-op-mono text-[13px] text-op-text-2">
+                <span
+                  aria-hidden="true"
+                  className="inline-block h-2 w-2 rounded-full bg-op-success op-pulse-live"
+                />
+                <span>
+                  // operator @ kumon udayana
+                  <span className="px-2 text-op-text-3">—</span>
+                  <span className="text-op-accent">status: open for collaboration</span>
+                </span>
+              </p>
+
+              <h1 className="mt-6 max-w-[18ch] text-[40px] font-semibold leading-[1.05] tracking-[-0.01em] text-op-text sm:text-[56px] sm:leading-[1.05]">
+                I build systems that improve operations.
+              </h1>
+
+              <p className="mt-5 max-w-[42ch] text-[20px] font-semibold leading-[1.35] text-op-text-2 sm:text-[24px]">
+                Infrastructure, automation, and quiet reliability — operated from Bali.
+              </p>
+
+              <p className="mt-6 max-w-[68ch] text-[16px] leading-[1.7] text-op-text-2">
+                I'm {site.name}. I run a self-hosted server, design retrieval-grounded
+                assistants for internal knowledge, and turn fragile manual workflows
+                into systems a non-technical colleague can still operate. The work
+                comes from the problem, not the stack.
+              </p>
+
+              <div className="mt-9 flex flex-wrap items-center gap-4">
+                <LinkButton to="/projects" variant="primary">
+                  View My Projects
+                </LinkButton>
+                <LinkButton to="/contact" variant="ghost">
+                  Get in Touch
+                </LinkButton>
+              </div>
+            </div>
+
+            <ImageSlot
+              label="portrait.jpg"
+              caption="Replace with your portrait — 4:5, plain backdrop preferred."
+              ratio="portrait"
+              className="lg:mt-2"
             />
-            <span>
-              // operator @ kumon udayana
-              <span className="px-2 text-op-text-3">—</span>
-              <span className="text-op-accent">status: open for collaboration</span>
-            </span>
-          </p>
-
-          <h1 className="mt-6 max-w-[18ch] text-[40px] font-semibold leading-[1.05] tracking-[-0.01em] text-op-text sm:text-[56px] sm:leading-[1.05]">
-            I build systems that improve operations.
-          </h1>
-
-          <p className="mt-5 max-w-[42ch] text-[20px] font-semibold leading-[1.35] text-op-text-2 sm:text-[24px]">
-            Infrastructure, automation, and quiet reliability — operated from Bali.
-          </p>
-
-          <p className="mt-6 max-w-[68ch] text-[16px] leading-[1.7] text-op-text-2">
-            I'm {site.name}. I run a self-hosted server, design retrieval-grounded
-            assistants for internal knowledge, and turn fragile manual workflows
-            into systems a non-technical colleague can still operate. The work
-            comes from the problem, not the stack.
-          </p>
-
-          <div className="mt-9 flex flex-wrap items-center gap-4">
-            <LinkButton to="/projects" variant="primary">
-              View My Projects
-            </LinkButton>
-            <LinkButton to="/contact" variant="ghost">
-              Get in Touch
-            </LinkButton>
           </div>
         </Container>
       </section>
+
 
       {/* ====================== OPERATING PRINCIPLES ====================== */}
       <section className="border-b border-op-line" aria-label="Operating principles">
@@ -123,6 +136,12 @@ function Home() {
             title="The system I'm building right now"
             description="Real problem, real organisation, real architecture. Start here."
           />
+          <ImageSlot
+            label={`${flagshipProject.slug}-cover.jpg`}
+            caption="Flagship cover — screenshot, diagram, or hero shot (16:9)."
+            ratio="wide"
+            className="mb-10"
+          />
           <FlagshipProject project={flagshipProject} />
         </Container>
       </section>
@@ -141,7 +160,13 @@ function Home() {
                 ["ubuntu-server-stack", "kumon-invoice-automation"].includes(p.slug),
               )
               .map((p) => (
-                <ProjectCard key={p.slug} project={p} />
+                <div key={p.slug} className="flex flex-col gap-4">
+                  <ImageSlot
+                    label={`${p.slug}.jpg`}
+                    ratio="video"
+                  />
+                  <ProjectCard project={p} />
+                </div>
               ))}
           </div>
           <div className="mt-8">
@@ -159,21 +184,30 @@ function Home() {
       <section className="border-b border-op-line">
         <Container className="py-16 sm:py-20">
           <SectionHeader eyebrow="// about" title="An operator, not a rockstar" />
-          <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
-            Most of what I know is self-taught against real systems. The rest came
-            from a vocational IT track and a six-month internship that put
-            production payroll and invoicing on my shoulders. I prefer boring,
-            reliable choices — Ubuntu, Docker, Cloudflare Tunnel, a Telegram bot
-            instead of a new app — because they survive contact with the people
-            who actually use them.
-          </p>
-          <div className="mt-6">
-            <Link
-              to="/about"
-              className="op-link-underline font-op-mono text-[13px] text-op-accent"
-            >
-              Read more about me →
-            </Link>
+          <div className="grid gap-8 md:grid-cols-[260px_1fr] md:items-start md:gap-10">
+            <ImageSlot
+              label="portrait-about.jpg"
+              caption="Square portrait for the about teaser."
+              ratio="square"
+            />
+            <div>
+              <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
+                Most of what I know is self-taught against real systems. The rest came
+                from a vocational IT track and a six-month internship that put
+                production payroll and invoicing on my shoulders. I prefer boring,
+                reliable choices — Ubuntu, Docker, Cloudflare Tunnel, a Telegram bot
+                instead of a new app — because they survive contact with the people
+                who actually use them.
+              </p>
+              <div className="mt-6">
+                <Link
+                  to="/about"
+                  className="op-link-underline font-op-mono text-[13px] text-op-accent"
+                >
+                  Read more about me →
+                </Link>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
