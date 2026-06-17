@@ -29,9 +29,7 @@ export function Nav() {
         <nav aria-label="Primary">
           <ul className="flex items-center gap-6 text-[14px]">
             {links.map((l) => {
-              const active =
-                pathname === l.to ||
-                (l.to !== "/" && pathname.startsWith(l.to));
+              const active = pathname === l.to || pathname.startsWith(l.to);
               return (
                 <li key={l.to}>
                   <Link
