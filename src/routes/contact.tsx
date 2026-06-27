@@ -9,8 +9,7 @@ export const Route = createFileRoute("/contact")({
       { title: "Contact — I Kadek Wira Wibawa" },
       {
         name: "description",
-        content:
-          "Reach the operator. WhatsApp, email, and CV. Open for collaboration from Bali.",
+        content: "Reach the operator. WhatsApp, email, and CV. Open for collaboration from Bali.",
       },
       { property: "og:title", content: "Contact — The Operator" },
       {
@@ -35,8 +34,8 @@ function Contact() {
             Get in touch.
           </h1>
           <p className="mt-5 max-w-[60ch] text-[16.5px] leading-[1.7] text-op-text-2">
-            Two channels, both operator-grade: WhatsApp for fast back-and-forth,
-            email for anything that needs a record. I read both.
+            Two channels, both operator-grade: WhatsApp for fast back-and-forth, email for anything
+            that needs a record. I read both.
           </p>
         </Container>
       </section>
@@ -67,10 +66,9 @@ function Contact() {
       <section>
         <Container className="py-16">
           <p className="max-w-[60ch] text-[15.5px] leading-[1.7] text-op-text-2">
-            I'm best suited to operational problems: internal tooling,
-            self-hosted infrastructure, workflow automation, or an internal
-            knowledge assistant grounded in your own documents. If that sounds
-            like the room you're in, write.
+            I'm best suited to operational problems: internal tooling, self-hosted infrastructure,
+            workflow automation, or an internal knowledge assistant grounded in your own documents.
+            If that sounds like the room you're in, write.
           </p>
         </Container>
       </section>

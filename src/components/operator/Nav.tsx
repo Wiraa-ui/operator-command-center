@@ -26,24 +26,26 @@ export function Nav() {
             operator.iw
           </span>
         </Link>
-        <nav aria-label="Primary">
-          <ul className="flex items-center gap-6 text-[14px]">
-            {links.map((l) => {
-              const active = pathname === l.to || pathname.startsWith(l.to);
-              return (
-                <li key={l.to}>
-                  <Link
-                    to={l.to}
-                    data-active={active}
-                    className="op-link-underline text-op-text-2 transition-colors hover:text-op-text data-[active=true]:text-op-accent"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        <div className="flex items-center gap-6">
+          <nav aria-label="Primary">
+            <ul className="flex items-center gap-6 text-[14px]">
+              {links.map((l) => {
+                const active = pathname === l.to || pathname.startsWith(l.to);
+                return (
+                  <li key={l.to}>
+                    <Link
+                      to={l.to}
+                      data-active={active}
+                      className="op-link-underline text-op-text-2 transition-colors hover:text-op-text data-[active=true]:text-op-accent"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
       </div>
     </header>
   );

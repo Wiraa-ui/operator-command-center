@@ -26,12 +26,8 @@ export const Route = createFileRoute("/projects/$slug")({
   notFoundComponent: () => (
     <PageShell>
       <Container className="py-24 text-center">
-        <p className="font-op-mono text-[12px] uppercase tracking-[0.2em] text-op-text-3">
-          // 404
-        </p>
-        <h1 className="mt-3 text-[32px] font-semibold text-op-text">
-          That project doesn't exist.
-        </h1>
+        <p className="font-op-mono text-[12px] uppercase tracking-[0.2em] text-op-text-3">// 404</p>
+        <h1 className="mt-3 text-[32px] font-semibold text-op-text">That project doesn't exist.</h1>
         <Link
           to="/projects"
           className="mt-6 inline-block op-link-underline font-op-mono text-[13px] text-op-accent"
@@ -77,8 +73,7 @@ function ProjectDetail() {
               role="note"
               className="mt-6 rounded-md border border-op-line bg-op-surface-2/60 px-4 py-3 font-op-mono text-[12.5px] text-op-text-2"
             >
-              <span className="text-op-accent">// confidentiality:</span>{" "}
-              {project.confidentiality}
+              <span className="text-op-accent">// confidentiality:</span> {project.confidentiality}
             </div>
           ) : null}
         </Container>
@@ -130,21 +125,14 @@ function ProjectDetail() {
             // component reasoning
           </h2>
           <p className="mt-2 max-w-[60ch] text-[14.5px] text-op-text-2">
-            Why each piece was chosen — the decisions a recruiter or engineering
-            manager actually wants to read.
+            Why each piece was chosen — the decisions a recruiter or engineering manager actually
+            wants to read.
           </p>
           <dl className="mt-8 divide-y divide-op-line border-y border-op-line">
             {project.components.map((c) => (
-              <div
-                key={c.name}
-                className="grid gap-3 py-5 sm:grid-cols-[180px_1fr] sm:gap-8"
-              >
-                <dt className="font-op-mono text-[14px] text-op-accent">
-                  {c.name}
-                </dt>
-                <dd className="text-[15.5px] leading-[1.65] text-op-text-2">
-                  {c.reason}
-                </dd>
+              <div key={c.name} className="grid gap-3 py-5 sm:grid-cols-[180px_1fr] sm:gap-8">
+                <dt className="font-op-mono text-[14px] text-op-accent">{c.name}</dt>
+                <dd className="text-[15.5px] leading-[1.65] text-op-text-2">{c.reason}</dd>
               </div>
             ))}
           </dl>
@@ -159,10 +147,7 @@ function ProjectDetail() {
           </h2>
           <ul className="mt-6 grid gap-4 md:grid-cols-2">
             {project.state.map((s) => (
-              <li
-                key={s.label}
-                className="rounded-md border border-op-line bg-op-surface p-5"
-              >
+              <li key={s.label} className="rounded-md border border-op-line bg-op-surface p-5">
                 <p className="font-op-mono text-[12px] uppercase tracking-wider text-op-text-3">
                   {s.label}
                 </p>
@@ -205,10 +190,7 @@ function ProjectDetail() {
           >
             Next project: {next.title} →
           </Link>
-          <Link
-            to="/contact"
-            className="op-link-underline font-op-mono text-[13px] text-op-accent"
-          >
+          <Link to="/contact" className="op-link-underline font-op-mono text-[13px] text-op-accent">
             Contact me →
           </Link>
         </Container>

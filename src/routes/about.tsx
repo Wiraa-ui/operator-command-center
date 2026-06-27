@@ -21,8 +21,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: "About — The Operator" },
       {
         property: "og:description",
-        content:
-          "How I think about technology, what I've shipped, and where I'm heading next.",
+        content: "How I think about technology, what I've shipped, and where I'm heading next.",
       },
     ],
   }),
@@ -60,11 +59,10 @@ function About() {
             An operator. Calm, methodical, self-assured.
           </h1>
           <p className="mt-5 max-w-[68ch] text-[17px] leading-[1.7] text-op-text-2">
-            I'm {site.name}, an IT Administrator at Kumon Udayana. Most of what I
-            do day-to-day is keeping systems running, removing manual work, and
-            building small pieces of infrastructure that quietly make the centre
-            easier to operate. I'd rather ship one boring, reliable system than
-            ten interesting prototypes.
+            I'm {site.name}, an IT Administrator at Kumon Udayana. Most of what I do day-to-day is
+            keeping systems running, removing manual work, and building small pieces of
+            infrastructure that quietly make the centre easier to operate. I'd rather ship one
+            boring, reliable system than ten interesting prototypes.
           </p>
         </Container>
       </section>
@@ -75,18 +73,16 @@ function About() {
           <SectionHeader eyebrow="// principles" title="How I think about technology" />
           <div className="rounded-lg border border-op-line bg-op-surface p-6 sm:p-8">
             <p className="max-w-[68ch] text-[16px] leading-[1.75] text-op-text-2">
-              Technology is a means, not an identity. The right tool is the one
-              the operator can still maintain six months from now without me in
-              the room. I default to long-term-supported, well-documented,
-              boring choices — Ubuntu, Docker, n8n, structured spreadsheets —
-              because they survive contact with real people.
+              Technology is a means, not an identity. The right tool is the one the operator can
+              still maintain six months from now without me in the room. I default to
+              long-term-supported, well-documented, boring choices — Ubuntu, Docker, n8n, structured
+              spreadsheets — because they survive contact with real people.
             </p>
             <p className="mt-5 max-w-[68ch] text-[16px] leading-[1.75] text-op-text-2">
-              I treat infrastructure as a first-class discipline. A self-hosted
-              server with zero open ports teaches more about systems thinking
-              than any framework tutorial. Security through configuration. Trust
-              through transparency. Automation only where the manual step is
-              proven painful.
+              I treat infrastructure as a first-class discipline. A self-hosted server with zero
+              open ports teaches more about systems thinking than any framework tutorial. Security
+              through configuration. Trust through transparency. Automation only where the manual
+              step is proven painful.
             </p>
           </div>
         </Container>
@@ -113,12 +109,8 @@ function About() {
                   {a.glyph}
                 </span>
                 <div>
-                  <h3 className="text-[18px] font-semibold text-op-text">
-                    {a.title}
-                  </h3>
-                  <p className="mt-2 text-[14.5px] leading-[1.6] text-op-text-2">
-                    {a.detail}
-                  </p>
+                  <h3 className="text-[18px] font-semibold text-op-text">{a.title}</h3>
+                  <p className="mt-2 text-[14.5px] leading-[1.6] text-op-text-2">{a.detail}</p>
                 </div>
               </li>
             ))}
@@ -136,13 +128,8 @@ function About() {
           />
           <div className="grid gap-8 md:grid-cols-2">
             {skillGroups.map((g) => (
-              <div
-                key={g.domain}
-                className="rounded-lg border border-op-line bg-op-surface p-6"
-              >
-                <h3 className="text-[18px] font-semibold text-op-text">
-                  {g.domain}
-                </h3>
+              <div key={g.domain} className="rounded-lg border border-op-line bg-op-surface p-6">
+                <h3 className="text-[18px] font-semibold text-op-text">{g.domain}</h3>
                 <p className="mt-1 text-[14px] text-op-text-2">{g.blurb}</p>
                 <ul className="mt-5 flex flex-col gap-2.5">
                   {g.skills.map((s) => (
@@ -150,9 +137,7 @@ function About() {
                       key={s.name}
                       className="flex items-center justify-between gap-3 border-b border-op-line pb-2.5 last:border-0 last:pb-0"
                     >
-                      <span className="font-op-mono text-[13.5px] text-op-text">
-                        {s.name}
-                      </span>
+                      <span className="font-op-mono text-[13.5px] text-op-text">{s.name}</span>
                       <SourceBadge source={s.source} />
                     </li>
                   ))}
@@ -181,19 +166,12 @@ function About() {
           <SectionHeader eyebrow="// roadmap" title="Where I'm heading" />
           <ol className="grid gap-6 md:grid-cols-3">
             {horizons.map((h) => (
-              <li
-                key={h.code}
-                className="rounded-lg border border-op-line bg-op-surface p-6"
-              >
+              <li key={h.code} className="rounded-lg border border-op-line bg-op-surface p-6">
                 <p className="font-op-mono text-[11px] uppercase tracking-[0.2em] text-op-accent">
                   // {h.code}
                 </p>
-                <h3 className="mt-3 text-[18px] font-semibold text-op-text">
-                  {h.title}
-                </h3>
-                <p className="mt-2 text-[14.5px] leading-[1.6] text-op-text-2">
-                  {h.line}
-                </p>
+                <h3 className="mt-3 text-[18px] font-semibold text-op-text">{h.title}</h3>
+                <p className="mt-2 text-[14.5px] leading-[1.6] text-op-text-2">{h.line}</p>
               </li>
             ))}
           </ol>

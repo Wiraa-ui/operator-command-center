@@ -15,10 +15,7 @@ export function FlagshipProject({ project }: { project: Project }) {
       className="relative overflow-hidden rounded-xl border border-op-accent/40 bg-op-surface p-6 shadow-[0_0_60px_-30px_var(--color-op-accent-glow)] sm:p-8 lg:p-10"
       aria-labelledby="flagship-title"
     >
-      <span
-        aria-hidden="true"
-        className="absolute left-0 top-0 h-full w-[3px] bg-op-accent"
-      />
+      <span aria-hidden="true" className="absolute left-0 top-0 h-full w-[3px] bg-op-accent" />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
@@ -45,17 +42,13 @@ export function FlagshipProject({ project }: { project: Project }) {
             <h3 className="font-op-mono text-[11px] uppercase tracking-[0.18em] text-op-text-3">
               The operational gap
             </h3>
-            <p className="mt-2 text-[15.5px] leading-[1.65] text-op-text-2">
-              {project.problem}
-            </p>
+            <p className="mt-2 text-[15.5px] leading-[1.65] text-op-text-2">{project.problem}</p>
           </div>
           <div>
             <h3 className="font-op-mono text-[11px] uppercase tracking-[0.18em] text-op-text-3">
               What it does
             </h3>
-            <p className="mt-2 text-[15.5px] leading-[1.65] text-op-text-2">
-              {project.overview}
-            </p>
+            <p className="mt-2 text-[15.5px] leading-[1.65] text-op-text-2">{project.overview}</p>
           </div>
         </div>
 
@@ -63,9 +56,7 @@ export function FlagshipProject({ project }: { project: Project }) {
           <h3 className="font-op-mono text-[11px] uppercase tracking-[0.18em] text-op-text-3">
             Architecture
           </h3>
-          <ArchDiagram label={`${project.title} architecture`}>
-            {project.architecture}
-          </ArchDiagram>
+          <ArchDiagram label={`${project.title} architecture`}>{project.architecture}</ArchDiagram>
         </div>
       </div>
 

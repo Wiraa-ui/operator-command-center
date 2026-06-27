@@ -33,10 +33,10 @@
 
 ## Decisions
 
-| Date | Decision | Notes |
-|---|---|---|
-| 2026-06-17 | Use a single `PROJECT_MASTER.md` as source of truth | Avoid fragmented planning docs |
-| 2026-06-17 | Keep portfolio visually premium and modern | Dark, refined, minimal, not generic template styling |
+| Date       | Decision                                            | Notes                                                |
+| ---------- | --------------------------------------------------- | ---------------------------------------------------- |
+| 2026-06-17 | Use a single `PROJECT_MASTER.md` as source of truth | Avoid fragmented planning docs                       |
+| 2026-06-17 | Keep portfolio visually premium and modern          | Dark, refined, minimal, not generic template styling |
 
 ## Completed Tasks
 

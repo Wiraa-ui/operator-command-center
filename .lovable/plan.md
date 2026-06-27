@@ -1,4 +1,3 @@
-
 # The Operator — Portfolio Implementation Plan
 
 Dark-first, system-oriented portfolio for I Kadek Wira Wibawa. Built strictly to OPERATOR_DESIGN_SYSTEM_v1.md plus the implementation rule: the homepage leads with **systems and operations**, not code. Internal Knowledge Assistant is the flagship and visually dominates.
@@ -52,6 +51,7 @@ Languages/frameworks never appear in the hero or principles strip. They first su
 ## Design tokens (src/styles.css, Tailwind v4)
 
 All colors, spacing (`--space-1`…`--space-10` = 4→128), and type sizes from §3–5 declared in `@theme`. Fonts loaded via `<link>` in `__root.tsx` head:
+
 - Inter (400/500/600)
 - JetBrains Mono (400/500)
 
@@ -74,9 +74,10 @@ Body bg `--bg-primary` set on `html` to prevent white flash. `prefers-reduced-mo
 - `AchievementRow.tsx` — icon-left / text-right.
 - `ContactCard.tsx`.
 
-## Content (src/content/*.ts)
+## Content (src/content/\*.ts)
 
 Plain TS data, exact copy preserved:
+
 - `projects.ts` — 5 projects. IKA flagged `flagship: true`; ordered IKA → Ubuntu → Invoice → Payroll → Luung Bali everywhere they appear.
 - `journey.ts` — 7 timeline entries, current = IT Administrator @ Kumon Udayana.
 - `achievements.ts` — KONKTI, Cyber Breaker.

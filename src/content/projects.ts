@@ -70,8 +70,7 @@ export const projects: Project[] = [
     ],
     lessons:
       "The hard part is never the model — it's the retrieval quality, document hygiene, and trust. A confident wrong answer is worse than no answer; the system was designed to cite sources from day one.",
-    next:
-      "Add document-level access control, scheduled re-ingestion on file changes, and a lightweight web interface as an alternative to Telegram.",
+    next: "Add document-level access control, scheduled re-ingestion on file changes, and a lightweight web interface as an alternative to Telegram.",
     confidentiality:
       "Document contents and internal procedures are not shown in this case study. Architecture and tooling are public.",
   },
@@ -110,18 +109,15 @@ export const projects: Project[] = [
       },
       {
         name: "Docker",
-        reason:
-          "Every service is a compose file. Rebuild from scratch in minutes, not days.",
+        reason: "Every service is a compose file. Rebuild from scratch in minutes, not days.",
       },
       {
         name: "Cloudflare Tunnel",
-        reason:
-          "Outbound-only connection to the edge. No firewall holes, no exposed IP.",
+        reason: "Outbound-only connection to the edge. No firewall holes, no exposed IP.",
       },
       {
         name: "Tailscale",
-        reason:
-          "Private mesh for admin and SSH access. The server has no public SSH port at all.",
+        reason: "Private mesh for admin and SSH access. The server has no public SSH port at all.",
       },
     ],
     state: [
@@ -131,8 +127,7 @@ export const projects: Project[] = [
     ],
     lessons:
       "Security through configuration beats security through obscurity. A tunnel + a mesh removes an entire class of mistakes I would otherwise have made.",
-    next:
-      "Add automated off-site backups, structured log shipping, and a status page reachable through the tunnel.",
+    next: "Add automated off-site backups, structured log shipping, and a status page reachable through the tunnel.",
   },
   {
     slug: "kumon-invoice-automation",
@@ -178,8 +173,7 @@ export const projects: Project[] = [
     ],
     lessons:
       "The best automation is the one a non-technical operator can still understand and edit. A spreadsheet that anyone in the office can open beats a script no one else can maintain.",
-    next:
-      "Extend the same validation pattern to payroll and attendance, with shared lookup tables.",
+    next: "Extend the same validation pattern to payroll and attendance, with shared lookup tables.",
     confidentiality:
       "Real enrolment and pricing data is not shown. Workflow structure is described in general terms.",
   },
@@ -223,16 +217,14 @@ export const projects: Project[] = [
     ],
     lessons:
       "Sharing master data between invoicing and payroll matters more than any individual formula. The system survives because the shape of the data is right.",
-    next:
-      "Migrate the underlying master data into a small relational store so invoice + payroll can read from one source.",
+    next: "Migrate the underlying master data into a small relational store so invoice + payroll can read from one source.",
     confidentiality:
       "Real staff and salary data is not shown. Structure is described in general terms.",
   },
   {
     slug: "luung-bali",
     title: "Luung Bali",
-    tagline:
-      "A small, real website built end-to-end — proof that I ship, not just plan.",
+    tagline: "A small, real website built end-to-end — proof that I ship, not just plan.",
     status: "live",
     stack: ["HTML", "CSS", "JavaScript"],
     overview:
@@ -252,18 +244,14 @@ export const projects: Project[] = [
         reason: "Cheap, fast, nothing to break in the middle of the night.",
       },
     ],
-    state: [
-      { label: "Status", detail: "Live." },
-    ],
+    state: [{ label: "Status", detail: "Live." }],
     lessons:
       "Shipping is a skill. The first finished thing teaches more than the tenth abandoned thing.",
-    next:
-      "Iterate on content and accessibility; carry the same discipline into larger projects.",
+    next: "Iterate on content and accessibility; carry the same discipline into larger projects.",
   },
 ];
 
-export const projectBySlug = (slug: string) =>
-  projects.find((p) => p.slug === slug);
+export const projectBySlug = (slug: string) => projects.find((p) => p.slug === slug);
 
 export const flagshipProject = projects.find((p) => p.flagship)!;
 export const secondaryProjects = projects.filter((p) => !p.flagship);

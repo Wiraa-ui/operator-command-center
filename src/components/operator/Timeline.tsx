@@ -23,15 +23,11 @@ export function Timeline({ entries }: { entries: JourneyEntry[] }) {
           <span
             aria-hidden="true"
             className={`absolute -left-[5px] top-1 inline-block h-2.5 w-2.5 rounded-full ${
-              e.current
-                ? "bg-op-accent op-pulse-marker"
-                : "bg-op-surface-2 ring-1 ring-op-line"
+              e.current ? "bg-op-accent op-pulse-marker" : "bg-op-surface-2 ring-1 ring-op-line"
             }`}
           />
           <div className="flex flex-wrap items-center gap-3">
-            <span className="font-op-mono text-[12px] text-op-text-3">
-              {e.period}
-            </span>
+            <span className="font-op-mono text-[12px] text-op-text-3">{e.period}</span>
             <span
               className={`inline-flex items-center rounded border px-1.5 py-[1px] font-op-mono text-[10px] uppercase tracking-wider ${catCls[e.category]}`}
             >
@@ -43,9 +39,7 @@ export function Timeline({ entries }: { entries: JourneyEntry[] }) {
               </span>
             ) : null}
           </div>
-          <h3 className="mt-1.5 text-[18px] font-semibold text-op-text">
-            {e.title}
-          </h3>
+          <h3 className="mt-1.5 text-[18px] font-semibold text-op-text">{e.title}</h3>
           <p className="mt-1 max-w-[65ch] text-[14.5px] leading-[1.6] text-op-text-2">
             {e.description}
           </p>

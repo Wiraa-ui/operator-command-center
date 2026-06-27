@@ -1,10 +1,12 @@
 import { Nav } from "./Nav";
 import { Footer } from "./Footer";
 import type { ReactNode } from "react";
+import { SpotlightBackground } from "@/components/ui/motion/SpotlightBackground";
 
 export function PageShell({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-op-bg text-op-text">
+    <div className="flex min-h-screen flex-col bg-op-bg text-op-text relative">
+      <SpotlightBackground />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-op-accent focus:px-3 focus:py-2 focus:text-op-bg"
@@ -28,8 +30,6 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={`mx-auto w-full max-w-[1200px] px-4 sm:px-8 ${className}`}>
-      {children}
-    </div>
+    <div className={`mx-auto w-full max-w-[1200px] px-4 sm:px-8 ${className}`}>{children}</div>
   );
 }

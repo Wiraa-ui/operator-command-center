@@ -37,8 +37,8 @@ function ProjectsIndex() {
             Systems I've built, deployed, or am operating now.
           </h1>
           <p className="mt-5 max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
-            Listed by operational weight, not by recency. The flagship comes
-            first because it's the system I'd most want you to evaluate me on.
+            Listed by operational weight, not by recency. The flagship comes first because it's the
+            system I'd most want you to evaluate me on.
           </p>
         </Container>
       </section>
@@ -52,10 +52,7 @@ function ProjectsIndex() {
 
       <section>
         <Container className="py-16 sm:py-20">
-          <SectionHeader
-            eyebrow="// other systems"
-            title="Smaller, finished, in use"
-          />
+          <SectionHeader eyebrow="// other systems" title="Smaller, finished, in use" />
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-2">
             {secondaryProjects.map((p) => (
               <ProjectCard key={p.slug} project={p} />

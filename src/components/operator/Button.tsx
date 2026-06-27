@@ -1,69 +1,68 @@
-import { Link, type LinkProps } from "@tanstack/react-router";
-import type { ComponentProps, ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
+import { type ReactNode } from "react";
+import { cn } from "@/lib/utils";
+import { Magnetic } from "@/components/ui/motion/Magnetic";
 
-type Variant = "primary" | "ghost";
-
-const base =
-  "inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 text-[14px] font-medium op-button-hover";
-
-const styles: Record<Variant, string> = {
-  primary:
-    "bg-op-accent text-op-bg border-2 border-op-accent hover:shadow-[0_0_24px_-4px_var(--color-op-accent-glow)]",
-  ghost:
-    "bg-transparent text-op-text border border-op-line hover:bg-op-surface-2 hover:border-op-accent",
-};
-
-type ButtonProps = ComponentProps<"button"> & {
-  variant?: Variant;
+type ButtonProps = {
   children: ReactNode;
-};
-
-export function Button({
-  variant = "primary",
-  className = "",
-  children,
-  ...rest
-}: ButtonProps) {
-  return (
-    <button className={`${base} ${styles[variant]} ${className}`} {...rest}>
-      {children}
-    </button>
-  );
-}
-
-type LinkButtonProps = LinkProps & {
-  variant?: Variant;
+  variant?: "primary" | "secondary" | "ghost";
   className?: string;
-  children: ReactNode;
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 };
 
-export function LinkButton({
-  variant = "primary",
-  className = "",
-  children,
-  ...rest
-}: LinkButtonProps) {
+type LinkButtonProps = ButtonProps & {
+  to: string;
+};
+
+type AnchorButtonProps = ButtonProps & {
+  href: string;
+  target?: string;
+  rel?: string;
+};
+
+function getVariantStyles(variant: "primary" | "secondary" | "ghost" = "primary") {
+  switch (variant) {
+    case "primary":
+      // Faded-neon fill with an inner top highlight + soft glow on hover.
+      return "bg-op-accent text-op-bg shadow-[0_8px_30px_-12px_var(--color-op-accent-glow)] before:absolute before:inset-x-0 before:top-0 before:h-1/2 before:rounded-t-full before:bg-white/15 before:opacity-60 hover:shadow-[0_10px_44px_-10px_var(--color-op-accent-glow)] hover:brightness-[1.06]";
+    case "secondary":
+      return "bg-op-surface-2/70 text-op-text border border-op-line backdrop-blur-md hover:border-op-accent/50 hover:bg-op-surface-2";
+    case "ghost":
+      return "text-op-text border border-op-line bg-op-surface/30 backdrop-blur-md hover:border-op-accent/50 hover:bg-op-surface-2/60 hover:text-op-text";
+  }
+}
+
+const baseStyles =
+  "op-button-hover relative isolate inline-flex h-11 items-center justify-center overflow-hidden rounded-full px-6 font-op-mono text-[13px] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-op-accent";
+
+export function Button({ children, variant, className, ...props }: ButtonProps) {
   return (
-    <Link className={`${base} ${styles[variant]} ${className}`} {...(rest as any)}>
-      {children}
-    </Link>
+    <Magnetic>
+      <button className={cn(baseStyles, getVariantStyles(variant), className)} {...props}>
+        <span className="relative z-10 inline-flex items-center gap-1.5">{children}</span>
+      </button>
+    </Magnetic>
   );
 }
 
-type AnchorButtonProps = ComponentProps<"a"> & {
-  variant?: Variant;
-  children: ReactNode;
-};
-
-export function AnchorButton({
-  variant = "primary",
-  className = "",
-  children,
-  ...rest
-}: AnchorButtonProps) {
+export function LinkButton({ children, variant, className, to, ...props }: LinkButtonProps) {
   return (
-    <a className={`${base} ${styles[variant]} ${className}`} {...rest}>
-      {children}
-    </a>
+    <Magnetic>
+      <Link to={to} className={cn(baseStyles, getVariantStyles(variant), className)} {...props}>
+        <span className="relative z-10 inline-flex items-center gap-1.5">{children}</span>
+      </Link>
+    </Magnetic>
+  );
+}
+
+export function AnchorButton({ children, variant, className, href, ...props }: AnchorButtonProps) {
+  return (
+    <Magnetic>
+      <a href={href} className={cn(baseStyles, getVariantStyles(variant), className)} {...props}>
+        <span className="relative z-10 inline-flex items-center gap-1.5">{children}</span>
+      </a>
+    </Magnetic>
   );
 }
