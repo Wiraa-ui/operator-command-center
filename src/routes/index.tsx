@@ -7,7 +7,7 @@ import { SectionHeader } from "@/components/operator/SectionHeader";
 import { ImageSlot } from "@/components/operator/ImageSlot";
 import { flagshipProject, secondaryProjects } from "@/content/projects";
 import { site } from "@/content/site";
-import { TextReveal } from "@/components/ui/motion/TextReveal";
+import { ScrambleText } from "@/components/ui/motion/ScrambleText";
 import { SpotlightCard } from "@/components/ui/motion/SpotlightCard";
 import { FadeIn } from "@/components/ui/motion/FadeIn";
 import { StaggerContainer, StaggerItem } from "@/components/ui/motion/StaggerContainer";
@@ -80,20 +80,20 @@ function Home() {
               </StaggerItem>
 
               <StaggerItem>
-                <h1 className="mt-6 max-w-[18ch] text-[42px] font-bold leading-[1.04] tracking-[-0.03em] text-op-text sm:text-[64px] sm:leading-[1.03]">
-                  <TextReveal text="I build reliable software and web systems." stagger={0.08} />
+                <h1 className="mt-6 max-w-[18ch] text-[42px] font-bold leading-[1.04] tracking-[-0.03em] text-transparent bg-clip-text bg-gradient-to-b from-white to-op-text-3 sm:text-[64px] sm:leading-[1.03]">
+                  <ScrambleText text="Engineering reliable web systems." duration={1.2} />
                 </h1>
               </StaggerItem>
 
               <StaggerItem>
                 <p className="mt-5 max-w-[42ch] text-[20px] font-semibold leading-[1.35] text-op-text-2 sm:text-[24px]">
-                  Full-stack developer focused on creating practical, efficient, and maintainable solutions.
+                  Full-stack developer focused on robust architecture and precision.
                 </p>
               </StaggerItem>
 
               <StaggerItem>
-                <p className="mt-6 max-w-[68ch] text-[16px] leading-[1.7] text-op-text-2">
-                  I'm {site.name}, a software engineering graduate based in Bali. I specialize in building full-stack web applications and managing data systems. I take pride in writing clean code, solving complex problems, and delivering software that actually works for its users.
+                <p className="mt-6 max-w-[50ch] text-[16px] leading-[1.7] text-op-text-2">
+                  I'm {site.name}. I build functional applications, manage data systems, and deliver software that performs flawlessly under real-world conditions.
                 </p>
               </StaggerItem>
 
