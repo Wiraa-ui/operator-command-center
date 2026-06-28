@@ -217,13 +217,13 @@ export function Hero3D() {
   }, [mounted, coarse]);
 
   return (
-    <div className="relative h-full w-full min-h-[400px] lg:min-h-[600px]">
+    <div className="relative w-full min-h-[400px] lg:min-h-[600px]" style={{ height: "100%" }}>
       {/* Ambient cyan bloom behind the network */}
       <div className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-op-accent-soft opacity-40 blur-3xl" />
       {!mounted ? (
-        <div className="h-full w-full animate-pulse rounded-xl bg-op-surface-2" />
+        <div className="absolute inset-0 animate-pulse rounded-xl bg-op-surface-2" />
       ) : (
-        <canvas ref={canvasRef} className="h-full w-full" aria-hidden="true" />
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" aria-hidden="true" />
       )}
     </div>
   );

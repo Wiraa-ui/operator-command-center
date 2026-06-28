@@ -41,16 +41,16 @@ export const Route = createFileRoute("/")({
 
 const principles = [
   {
-    code: "01 / infrastructure",
-    line: "Run real machines. Own the uptime, own the surface area.",
+    code: "01 / reliability",
+    line: "Build systems that work consistently under real-world conditions.",
   },
   {
-    code: "02 / automation",
-    line: "Remove the work that shouldn't be done by a person twice.",
+    code: "02 / efficiency",
+    line: "Write clean, maintainable code that optimizes performance and resources.",
   },
   {
     code: "03 / problem-solving",
-    line: "Start at the operational gap. Tools come after the diagnosis.",
+    line: "Understand the core problem first, then choose the right technology to solve it.",
   },
 ];
 
@@ -81,23 +81,19 @@ function Home() {
 
               <StaggerItem>
                 <h1 className="mt-6 max-w-[18ch] text-[42px] font-bold leading-[1.04] tracking-[-0.03em] text-op-text sm:text-[64px] sm:leading-[1.03]">
-                  <TextReveal text="I build systems that improve operations." stagger={0.08} />
+                  <TextReveal text="I build reliable software and web systems." stagger={0.08} />
                 </h1>
               </StaggerItem>
 
               <StaggerItem>
                 <p className="mt-5 max-w-[42ch] text-[20px] font-semibold leading-[1.35] text-op-text-2 sm:text-[24px]">
-                  Functional web systems, precision data management, and conceptual design —
-                  operated from Bali.
+                  Full-stack developer focused on creating practical, efficient, and maintainable solutions.
                 </p>
               </StaggerItem>
 
               <StaggerItem>
                 <p className="mt-6 max-w-[68ch] text-[16px] leading-[1.7] text-op-text-2">
-                  I'm {site.name}. I build functional information systems and manage client
-                  websites. My background in software engineering trains me to value precision,
-                  reliable teamwork, and turning complex operational needs into elegant web
-                  solutions.
+                  I'm {site.name}, a software engineering graduate based in Bali. I specialize in building full-stack web applications and managing data systems. I take pride in writing clean code, solving complex problems, and delivering software that actually works for its users.
                 </p>
               </StaggerItem>
 
@@ -125,7 +121,7 @@ function Home() {
         <Container className="py-24 sm:py-28">
           <FadeIn delay={0.1}>
             <p className="font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-text-3">
-              // how I work
+              // my approach
             </p>
           </FadeIn>
           <StaggerContainer className="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-10">
@@ -145,8 +141,8 @@ function Home() {
           <FadeIn>
             <SectionHeader
               eyebrow="// selected work"
-              title="The system I'm building right now"
-              description="Real problem, real organisation, real architecture. Start here."
+              title="Recent full-stack project"
+              description="A comprehensive system demonstrating backend architecture and frontend integration."
             />
           </FadeIn>
           <FadeIn delay={0.2}>
@@ -169,8 +165,8 @@ function Home() {
           <FadeIn>
             <SectionHeader
               eyebrow="// stack & tools"
-              title="The tools I use to build and operate"
-              description="Choices made for reliability, maintainability, and precision."
+              title="Technologies I use"
+              description="Languages, frameworks, and tools I have experience working with."
             />
           </FadeIn>
           <div className="mt-10">
@@ -184,9 +180,9 @@ function Home() {
         <Container className="py-24 sm:py-32">
           <FadeIn>
             <SectionHeader
-              eyebrow="// also running"
-              title="Other operational systems"
-              description="Smaller, finished, in active use. Same discipline applied at a different scale."
+              eyebrow="// other projects"
+              title="Additional work"
+              description="Other applications and systems I have developed."
             />
           </FadeIn>
           <StaggerContainer className="grid gap-8 md:grid-cols-2 lg:gap-10">
@@ -215,7 +211,7 @@ function Home() {
       {/* ============================ ABOUT TEASER ============================ */}
       <section className="border-b border-op-line">
         <Container className="py-24 sm:py-32">
-          <SectionHeader eyebrow="// about" title="An operator, not a rockstar" />
+          <SectionHeader eyebrow="// about" title="Dedicated to reliable engineering" />
           <div className="grid gap-8 md:grid-cols-[260px_1fr] md:items-start md:gap-10">
             <ImageSlot
               label="portrait-about.png"
@@ -225,18 +221,14 @@ function Home() {
             />
             <div>
               <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
-                Most of what I know is self-taught against real systems. The rest came from a
-                vocational IT track and a six-month internship that put production payroll and
-                invoicing on my shoulders. I prefer boring, reliable choices — Ubuntu, Docker,
-                Cloudflare Tunnel, a Telegram bot instead of a new app — because they survive
-                contact with the people who actually use them.
+                My approach to software engineering is grounded in practicality. Throughout my academic background and hands-on internships, I have taken ownership of critical systems—from database management to full-stack application development. I prioritize reliable, proven technologies over fleeting trends because my ultimate goal is to build software that users can depend on.
               </p>
               <div className="mt-6">
                 <Link
                   to="/about"
                   className="op-link-underline font-op-mono text-[13px] text-op-accent"
                 >
-                  Read more about me →
+                  Read more about my experience →
                 </Link>
               </div>
             </div>
@@ -248,14 +240,13 @@ function Home() {
       <section>
         <Container className="py-28 sm:py-36">
           <p className="font-op-mono text-[12px] uppercase tracking-[0.2em] text-op-accent">
-            // open for collaboration
+            // open to opportunities
           </p>
           <h2 className="mt-3 max-w-[20ch] text-[32px] font-semibold leading-[1.12] tracking-[-0.03em] text-op-text sm:text-[42px]">
-            Have an operational problem worth solving?
+            Looking for a dedicated software engineer?
           </h2>
           <p className="mt-4 max-w-[60ch] text-[16px] leading-[1.7] text-op-text-2">
-            Internal tooling, self-hosted infrastructure, workflow automation, or an internal
-            knowledge assistant for your own team — reach out.
+            Whether you need a full-stack web application, system integration, or reliable infrastructure management, I'm ready to contribute to your team. Let's connect.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <AnchorButton
