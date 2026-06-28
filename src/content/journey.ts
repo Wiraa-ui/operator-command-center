@@ -10,53 +10,31 @@ export type JourneyEntry = {
 
 export const journey: JourneyEntry[] = [
   {
-    period: "2020 — 2023",
+    period: "2023 — 2026",
     category: "education",
-    title: "SMK TI Bali Global",
+    title: "SMK Negeri 1 Gianyar",
     description:
-      "Vocational high school, IT track. First structured exposure to networks, systems, and the discipline of making things actually work.",
+      "Vocational high school, Rekayasa Perangkat Lunak (Software Engineering) track. Focused on functional information systems and high-level conceptual design.",
   },
   {
-    period: "2022",
+    period: "2024",
     category: "achievement",
-    title: "KONKTI — competition placement",
+    title: "Juara 3 — KONKTI Web Development Nasional",
     description:
-      "Regional IT competition. Validated that self-taught practice held up under timed, judged conditions.",
+      "National web development competition. Validated self-taught practice and ability to build functional websites under judged conditions.",
   },
   {
-    period: "2023",
+    period: "Mei — Nov 2025",
+    category: "experience",
+    title: "Internship — PT. Bali Media Inspiratif",
+    description:
+      "Managed client website content, updated product pricing data from Excel to the web, and added new product packages. Built a real-world client website (luungbalistonecarving.biz.id). Learned teamwork and precision in a dynamic environment.",
+  },
+  {
+    period: "2026",
     category: "achievement",
-    title: "Cyber Breaker — competition placement",
+    title: "Juara 2 — Cyber Breaker Development Regional",
     description:
-      "Security-focused competition. Reinforced the operator mindset: assume failure, design for recovery.",
-  },
-  {
-    period: "2023",
-    category: "experience",
-    title: "Internship — invoice & payroll systems",
-    description:
-      "Six-month internship. Delivered the invoice automation and payroll workbook now in active use.",
-  },
-  {
-    period: "2023 — 2025",
-    category: "education",
-    title: "Universitas (ongoing study)",
-    description:
-      "Continuing formal study while operating real systems in parallel. Theory and practice on the same calendar.",
-  },
-  {
-    period: "2024 — present",
-    category: "skills",
-    title: "Self-hosted infrastructure practice",
-    description:
-      "Built and maintained the Ubuntu stack. Moved from consuming managed services to operating my own.",
-  },
-  {
-    period: "2025 — present",
-    category: "experience",
-    title: "IT Administrator @ Kumon Udayana",
-    description:
-      "Current role. Operating day-to-day IT, building the Internal Knowledge Assistant, and refining the systems that keep the centre running.",
-    current: true,
+      "Regional development competition (BALI-NTT-NTB). Sharpened problem-solving skills and the habit of designing for recovery.",
   },
 ];

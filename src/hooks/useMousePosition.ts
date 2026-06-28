@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMotionValue, useSpring } from "framer-motion";
 
-export function useMousePosition() {
+/**
+ * Tracks the cursor as smoothed motion values. Pass `enabled: false` (e.g. on
+ * touch devices) to skip the listener entirely — no work, no idle spring.
+ */
+export function useMousePosition(enabled = true) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -10,6 +14,7 @@ export function useMousePosition() {
   const smoothMouseY = useSpring(mouseY, { stiffness: 150, damping: 20 });
 
   useEffect(() => {
+    if (!enabled) return;
     const updateMousePosition = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
@@ -19,7 +24,7 @@ export function useMousePosition() {
     return () => {
       window.removeEventListener("mousemove", updateMousePosition);
     };
-  }, [mouseX, mouseY]);
+  }, [enabled, mouseX, mouseY]);
 
   return { mouseX: smoothMouseX, mouseY: smoothMouseY };
 }

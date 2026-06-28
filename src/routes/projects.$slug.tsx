@@ -82,7 +82,28 @@ function ProjectDetail() {
       {/* Overview */}
       <section className="border-b border-op-line">
         <Container className="grid gap-10 py-14 sm:py-16 lg:grid-cols-[1.1fr_1fr]">
-          <div>
+          <div className="min-w-0">
+            {project.preview && (
+              <div className="mb-10 overflow-hidden rounded-lg border border-op-line bg-op-surface/60">
+                <img
+                  src={project.preview}
+                  alt={`Preview of ${project.title}`}
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+            )}
+            {project.link && (
+              <div className="mb-10">
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-md border-2 border-op-accent bg-op-accent px-5 py-2.5 text-[14px] font-medium text-op-bg op-button-hover"
+                >
+                  Visit Project →
+                </a>
+              </div>
+            )}
             <h2 className="font-op-mono text-[11px] uppercase tracking-[0.2em] text-op-text-3">
               // overview
             </h2>
@@ -98,7 +119,7 @@ function ProjectDetail() {
             </p>
           </div>
 
-          <div>
+          <div className="min-w-0">
             <h2 className="font-op-mono text-[11px] uppercase tracking-[0.2em] text-op-text-3">
               // architecture
             </h2>

@@ -7,11 +7,12 @@ import { SectionHeader } from "@/components/operator/SectionHeader";
 import { ImageSlot } from "@/components/operator/ImageSlot";
 import { flagshipProject, secondaryProjects } from "@/content/projects";
 import { site } from "@/content/site";
-import { ScrambleText } from "@/components/ui/motion/ScrambleText";
+import { TextReveal } from "@/components/ui/motion/TextReveal";
 import { SpotlightCard } from "@/components/ui/motion/SpotlightCard";
 import { FadeIn } from "@/components/ui/motion/FadeIn";
 import { StaggerContainer, StaggerItem } from "@/components/ui/motion/StaggerContainer";
 import { Hero3D } from "@/components/ui/motion/Hero3D";
+import { Skills } from "@/components/operator/Skills";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -59,41 +60,44 @@ function Home() {
       {/* ============================ HERO ============================ */}
       <section className="relative overflow-hidden border-b border-op-line">
         <div aria-hidden="true" className="absolute inset-0 op-grid-backdrop opacity-20" />
-        <Container className="relative py-28 sm:py-36 lg:py-44">
-          <StaggerContainer className="grid gap-16 lg:grid-cols-[1fr_500px] xl:grid-cols-[1fr_600px] lg:items-center lg:gap-20">
+        <Container className="relative pt-8 pb-24 sm:pt-12 sm:pb-28 lg:pt-12 lg:pb-32">
+          <StaggerContainer className="grid gap-16 lg:grid-cols-[1fr_500px] xl:grid-cols-[1fr_600px] lg:items-start lg:gap-20 lg:pt-8">
             <div className="z-10 relative">
               <StaggerItem>
-                <p className="flex items-center gap-2 font-op-mono text-[13px] text-op-text-2">
+                <p className="hidden sm:flex items-center gap-2 font-op-mono text-[13px] text-op-text-2">
                   <span
                     aria-hidden="true"
                     className="inline-block h-2 w-2 rounded-full bg-op-success op-pulse-live"
                   />
                   <span>
-                    // operator @ kumon udayana
+                    // {site.currentStatus.toLowerCase()}
                     <span className="px-2 text-op-text-3">—</span>
-                    <span className="text-op-accent">status: open for collaboration</span>
+                    <span className="text-op-accent">
+                      status: {site.availability.toLowerCase()}
+                    </span>
                   </span>
                 </p>
               </StaggerItem>
 
               <StaggerItem>
-                <h1 className="mt-6 max-w-[18ch] text-[40px] font-semibold leading-[1.04] tracking-[-0.03em] text-op-text sm:text-[58px] sm:leading-[1.03]">
-                  <ScrambleText text="I build systems that improve operations." duration={1.2} />
+                <h1 className="mt-6 max-w-[18ch] text-[42px] font-bold leading-[1.04] tracking-[-0.03em] text-transparent bg-clip-text bg-gradient-to-br from-white via-op-text to-op-accent sm:text-[64px] sm:leading-[1.03]">
+                  <TextReveal text="I build systems that improve operations." stagger={0.08} />
                 </h1>
               </StaggerItem>
 
               <StaggerItem>
                 <p className="mt-5 max-w-[42ch] text-[20px] font-semibold leading-[1.35] text-op-text-2 sm:text-[24px]">
-                  Infrastructure, automation, and quiet reliability — operated from Bali.
+                  Functional web systems, precision data management, and conceptual design —
+                  operated from Bali.
                 </p>
               </StaggerItem>
 
               <StaggerItem>
                 <p className="mt-6 max-w-[68ch] text-[16px] leading-[1.7] text-op-text-2">
-                  I'm {site.name}. I run a self-hosted server, design retrieval-grounded assistants
-                  for internal knowledge, and turn fragile manual workflows into systems a
-                  non-technical colleague can still operate. The work comes from the problem, not
-                  the stack.
+                  I'm {site.name}. I build functional information systems and manage client
+                  websites. My background in software engineering trains me to value precision,
+                  reliable teamwork, and turning complex operational needs into elegant web
+                  solutions.
                 </p>
               </StaggerItem>
 
@@ -151,10 +155,27 @@ function Home() {
                 label={`${flagshipProject.slug}-cover.jpg`}
                 caption="Flagship cover — screenshot, diagram, or hero shot (16:9)."
                 ratio="wide"
+                src={`/${flagshipProject.slug}-cover.jpg`}
               />
             </SpotlightCard>
             <FlagshipProject project={flagshipProject} />
           </FadeIn>
+        </Container>
+      </section>
+
+      {/* ============================ CORE TECHNOLOGIES ============================ */}
+      <section className="border-b border-op-line">
+        <Container className="py-24 sm:py-32">
+          <FadeIn>
+            <SectionHeader
+              eyebrow="// stack & tools"
+              title="The tools I use to build and operate"
+              description="Choices made for reliability, maintainability, and precision."
+            />
+          </FadeIn>
+          <div className="mt-10">
+            <Skills />
+          </div>
         </Container>
       </section>
 
@@ -170,11 +191,11 @@ function Home() {
           </FadeIn>
           <StaggerContainer className="grid gap-8 md:grid-cols-2 lg:gap-10">
             {secondaryProjects
-              .filter((p) => ["ubuntu-server-stack", "kumon-invoice-automation"].includes(p.slug))
+              .filter((p) => ["ubuntu-server-stack", "tuition-invoice-automation"].includes(p.slug))
               .map((p) => (
                 <StaggerItem key={p.slug} className="flex flex-col gap-4">
                   <SpotlightCard>
-                    <ImageSlot label={`${p.slug}.jpg`} ratio="video" />
+                    <ImageSlot label={`${p.slug}.jpg`} ratio="video" src={`/${p.slug}.jpg?v=2`} />
                   </SpotlightCard>
                   <ProjectCard project={p} />
                 </StaggerItem>
@@ -196,11 +217,14 @@ function Home() {
         <Container className="py-24 sm:py-32">
           <SectionHeader eyebrow="// about" title="An operator, not a rockstar" />
           <div className="grid gap-8 md:grid-cols-[260px_1fr] md:items-start md:gap-10">
-            <ImageSlot
-              label="portrait-about.jpg"
-              caption="Square portrait for the about teaser."
-              ratio="square"
-            />
+            <SpotlightCard>
+              <ImageSlot
+                label="portrait-about.png"
+                caption="Square portrait for the about teaser."
+                ratio="square"
+                src="/profile-hd.png"
+              />
+            </SpotlightCard>
             <div>
               <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
                 Most of what I know is self-taught against real systems. The rest came from a

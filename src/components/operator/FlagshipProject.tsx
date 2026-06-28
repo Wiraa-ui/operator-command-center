@@ -37,7 +37,7 @@ export function FlagshipProject({ project }: { project: Project }) {
       </p>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.05fr_1fr]">
-        <div className="flex flex-col gap-5">
+        <div className="flex min-w-0 flex-col gap-5">
           <div>
             <h3 className="font-op-mono text-[11px] uppercase tracking-[0.18em] text-op-text-3">
               The operational gap
@@ -52,7 +52,7 @@ export function FlagshipProject({ project }: { project: Project }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex min-w-0 flex-col gap-4">
           <h3 className="font-op-mono text-[11px] uppercase tracking-[0.18em] text-op-text-3">
             Architecture
           </h3>

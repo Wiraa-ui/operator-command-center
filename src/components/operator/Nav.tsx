@@ -2,7 +2,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Monogram } from "./Monogram";
 
 const links = [
-  { to: "/projects", label: "Projects" },
+  { to: "/", label: "Home" },
+  { to: "/projects", label: "Projects", activeOptions: { exact: false } },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ] as const;
@@ -30,7 +31,10 @@ export function Nav() {
           <nav aria-label="Primary">
             <ul className="flex items-center gap-6 text-[14px]">
               {links.map((l) => {
-                const active = pathname === l.to || pathname.startsWith(l.to);
+                const active =
+                  l.to === "/"
+                    ? pathname === "/"
+                    : pathname === l.to || pathname.startsWith(`${l.to}/`);
                 return (
                   <li key={l.to}>
                     <Link

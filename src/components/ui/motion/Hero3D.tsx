@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useCoarsePointer } from "@/hooks/useCoarsePointer";
 
 /**
  * Hero3D — a lightweight, dependency-free 3D node network.
@@ -8,11 +9,14 @@ import { useEffect, useRef, useState } from "react";
  * nodes; depth drives brightness so the cluster reads as a living "system
  * graph". The pointer adds a subtle parallax tilt. No WebGL / three.js — it
  * stays small, fast, and SSR-safe (the canvas only animates after mount).
+ *
+ * Mobile budget: fewer nodes (edges are O(n²)), capped DPR, no pointer parallax,
+ * and the render loop pauses whenever the canvas scrolls out of view. With
+ * prefers-reduced-motion it paints a single static frame and never loops.
  */
 
 const ACCENT: [number, number, number] = [45, 212, 191]; // cyan, matches --op-accent
-const NODE_COUNT = 30;
-const EDGE_DISTANCE = 0.62; // as a fraction of diameter (in unit-sphere space)
+const EDGE_DISTANCE = 0.72; // increased for a denser, more connected "mewah" graph
 
 type Node = { x: number; y: number; z: number; pulse: number };
 
@@ -36,6 +40,7 @@ function fibonacciSphere(n: number): Node[] {
 export function Hero3D() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mounted, setMounted] = useState(false);
+  const coarse = useCoarsePointer();
 
   useEffect(() => setMounted(true), []);
 
@@ -46,17 +51,21 @@ export function Hero3D() {
     if (!ctx) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const nodes = fibonacciSphere(NODE_COUNT);
+    // Phones: lighter graph + lower resolution. Edge cost grows with n², so
+    // trimming node count is the biggest single win on weak GPUs.
+    const nodeCount = coarse ? 24 : 42; // Increased for a more luxurious network
+    const maxDpr = coarse ? 1.5 : 2;
+    const nodes = fibonacciSphere(nodeCount);
 
     let width = 0;
     let height = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
       width = rect.width;
       height = rect.height;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -65,7 +74,7 @@ export function Hero3D() {
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
 
-    // Pointer parallax (smoothed targets).
+    // Pointer parallax (smoothed targets) — desktop only.
     let pointerX = 0;
     let pointerY = 0;
     let rotX = 0;
@@ -75,13 +84,14 @@ export function Hero3D() {
       pointerX = ((e.clientX - rect.left) / rect.width - 0.5) * 2; // -1 → 1
       pointerY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
     };
-    window.addEventListener("pointermove", onPointer);
+    const usePointer = !coarse && !reduceMotion;
+    if (usePointer) window.addEventListener("pointermove", onPointer);
 
     let angleY = 0;
     let raf = 0;
     let last = performance.now();
 
-    const render = (now: number) => {
+    const drawFrame = (now: number) => {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
 
@@ -148,7 +158,7 @@ export function Hero3D() {
       const t = now / 1000;
       for (const i of order) {
         const p = pts[i];
-        const twinkle = 0.6 + 0.4 * Math.sin(t * 1.6 + p.pulse);
+        const twinkle = reduceMotion ? 1 : 0.6 + 0.4 * Math.sin(t * 1.6 + p.pulse);
         const radius = (1.1 + p.depth * 2.2) * p.scale;
         const alpha = 0.25 + p.depth * 0.75;
 
@@ -160,23 +170,48 @@ export function Hero3D() {
         ctx.fill();
       }
       ctx.shadowBlur = 0;
-
-      raf = requestAnimationFrame(render);
     };
 
-    raf = requestAnimationFrame(render);
+    // Pause the loop while the hero is scrolled off-screen — no point burning
+    // frames (and battery) when nobody can see it.
+    let visible = true;
+
+    const render = (now: number) => {
+      raf = 0;
+      drawFrame(now);
+      if (!reduceMotion && visible) raf = requestAnimationFrame(render);
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible && !reduceMotion && !raf) {
+          last = performance.now();
+          raf = requestAnimationFrame(render);
+        }
+      },
+      { threshold: 0 },
+    );
+    io.observe(canvas);
+
+    if (reduceMotion) {
+      drawFrame(performance.now()); // single static frame, no loop
+    } else {
+      raf = requestAnimationFrame(render);
+    }
 
     return () => {
-      cancelAnimationFrame(raf);
+      if (raf) cancelAnimationFrame(raf);
       ro.disconnect();
-      window.removeEventListener("pointermove", onPointer);
+      io.disconnect();
+      if (usePointer) window.removeEventListener("pointermove", onPointer);
     };
-  }, [mounted]);
+  }, [mounted, coarse]);
 
   return (
-    <div className="relative h-full w-full min-h-[400px] lg:min-h-[600px]">
-      {/* Ambient cyan bloom behind the network */}
-      <div className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-op-accent-soft opacity-40 blur-3xl" />
+    <div className="relative h-full w-full min-h-[400px] lg:min-h-[600px] perspective-[1000px]">
+      {/* Ambient cyan bloom behind the network - enhanced for 3D luxury */}
+      <div className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-op-accent opacity-30 blur-[100px]" />
       {!mounted ? (
         <div className="h-full w-full animate-pulse rounded-xl bg-op-surface-2" />
       ) : (

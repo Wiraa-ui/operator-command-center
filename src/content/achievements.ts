@@ -7,14 +7,14 @@ export type Achievement = {
 export const achievements: Achievement[] = [
   {
     glyph: "◆",
-    title: "KONKTI — IT competition placement",
+    title: "Juara 3 – KONKTI Web Development Nasional 2024",
     detail:
-      "Regional IT competition. Validated self-taught technical depth under timed, judged conditions.",
+      "National web development competition. Validated self-taught technical depth and ability to build functional websites under judged conditions.",
   },
   {
     glyph: "▲",
-    title: "Cyber Breaker — security competition placement",
+    title: "Juara 2 Regional BALI-NTT-NTB – Cyber Breaker Development 2026",
     detail:
-      "Security-focused competition. Sharpened the habit of assuming failure and designing for recovery.",
+      "Regional development and security-focused competition. Sharpened problem-solving skills and the habit of designing for recovery.",
   },
 ];

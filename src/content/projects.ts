@@ -15,6 +15,8 @@ export type Project = {
   lessons: string;
   next: string;
   confidentiality?: string;
+  link?: string;
+  preview?: string;
 };
 
 export const projects: Project[] = [
@@ -130,10 +132,10 @@ export const projects: Project[] = [
     next: "Add automated off-site backups, structured log shipping, and a status page reachable through the tunnel.",
   },
   {
-    slug: "kumon-invoice-automation",
-    title: "Kumon Invoice Automation",
+    slug: "tuition-invoice-automation",
+    title: "Tuition Invoice Automation",
     tagline:
-      "A structured spreadsheet workflow that streamlines monthly invoice processing for Kumon Udayana.",
+      "A structured spreadsheet workflow that streamlines monthly invoice processing for a local education center.",
     status: "deployed",
     stack: ["Excel", "CSV", "Spreadsheet Workflow"],
     overview:
@@ -226,7 +228,9 @@ export const projects: Project[] = [
     title: "Luung Bali",
     tagline: "A small, real website built end-to-end — proof that I ship, not just plan.",
     status: "live",
-    stack: ["HTML", "CSS", "JavaScript"],
+    stack: ["WordPress"],
+    link: "https://luungbalistonecarving.biz.id",
+    preview: "/luung-bali-preview.jpg",
     overview:
       "A simple, focused website built and deployed. Not a framework demo — a real site with a real purpose, built within real constraints.",
     problem:
@@ -236,12 +240,8 @@ export const projects: Project[] = [
 `.trim(),
     components: [
       {
-        name: "Hand-written front-end",
-        reason: "No framework overhead. Page weight stays small.",
-      },
-      {
-        name: "Static deployment",
-        reason: "Cheap, fast, nothing to break in the middle of the night.",
+        name: "WordPress",
+        reason: "Chosen as a proven CMS to manage content easily for the client.",
       },
     ],
     state: [{ label: "Status", detail: "Live." }],

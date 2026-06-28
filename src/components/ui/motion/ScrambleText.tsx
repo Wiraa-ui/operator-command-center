@@ -15,7 +15,7 @@ export function ScrambleText({
   className,
   delay = 0,
   duration = 0.8,
-  characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+",
+  characters = "abcdefghijklmnopqrstuvwxyz0123456789!#^&*()_+=-<>?[]{}",
 }: ScrambleTextProps) {
   const [displayText, setDisplayText] = useState(text);
   const controls = useAnimation();
@@ -38,6 +38,9 @@ export function ScrambleText({
                 if (index < iteration) {
                   return text[index];
                 }
+                if (text[index] === " ") {
+                  return " ";
+                }
                 return characters[Math.floor(Math.random() * characters.length)];
               })
               .join(""),
@@ -49,7 +52,7 @@ export function ScrambleText({
           } else {
             // Calculate how many characters to reveal per tick based on duration
             const ticks = (duration * 1000) / 30;
-            iteration += Math.max(text.length / ticks, 0.1); 
+            iteration += Math.max(text.length / ticks, 0.1);
           }
         }, 30);
       }, delay * 1000);

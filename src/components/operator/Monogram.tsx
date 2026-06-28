@@ -1,28 +1,22 @@
+import { motion } from "framer-motion";
+
 type Props = { size?: number; className?: string };
 
 /**
  * Geometric "IW" monogram — built from clean lines, no decoration.
- * Reads as a system icon, not a personal logo.
+ * Upgraded with a 3D entrance and hover flip for a luxurious feel.
  */
 export function Monogram({ size = 28, className }: Props) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 32 32"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="square"
-      aria-hidden="true"
-      className={className}
+    <motion.div
+      initial={{ rotateY: -180, opacity: 0 }}
+      animate={{ rotateY: 0, opacity: 1 }}
+      whileHover={{ rotateY: 180, scale: 1.05 }}
+      transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+      className="inline-block"
+      style={{ transformStyle: "preserve-3d", perspective: 1000 }}
     >
-      {/* I */}
-      <path d="M5 6 L5 26" />
-      <path d="M3 6 L7 6" />
-      <path d="M3 26 L7 26" />
-      {/* W */}
-      <path d="M12 6 L15 26 L19 14 L23 26 L26 6" />
-    </svg>
+      <img src="/favicon.svg" width={size} height={size} alt="Operator Logo" className={className} />
+    </motion.div>
   );
 }

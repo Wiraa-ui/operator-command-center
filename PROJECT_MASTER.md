@@ -33,13 +33,13 @@
 
 ## Decisions
 
-| Date       | Decision                                            | Notes                                                |
-| ---------- | --------------------------------------------------- | ---------------------------------------------------- |
-| 2026-06-17 | Use a single `PROJECT_MASTER.md` as source of truth | Avoid fragmented planning docs                       |
-| 2026-06-17 | Keep portfolio visually premium and modern          | Dark, refined, minimal, not generic template styling |
+| Date       | Decision                                            | Notes                                                                 |
+| ---------- | --------------------------------------------------- | --------------------------------------------------------------------- |
+| 2026-06-17 | Use a single `PROJECT_MASTER.md` as source of truth | Avoid fragmented planning docs                                        |
+| 2026-06-17 | Keep portfolio visually premium and modern          | Dark, refined, minimal, not generic template styling                  |
 | 2026-06-27 | Dark-mode-exclusive design                          | Retired light mode + `ThemeToggle`; aligns with Linear/Vercel/Raycast |
-| 2026-06-27 | Single faded-cyan neon accent (`#2dd4bf`)           | Monochrome slate base; no solid pure colours         |
-| 2026-06-27 | Replace Spline 3D hero with custom canvas           | Drop `@splinetool/*` (~1MB+); dependency-free, SSR-safe, on-brand |
+| 2026-06-27 | Single faded-cyan neon accent (`#2dd4bf`)           | Monochrome slate base; no solid pure colours                          |
+| 2026-06-27 | Replace Spline 3D hero with custom canvas           | Drop `@splinetool/*` (~1MB+); dependency-free, SSR-safe, on-brand     |
 
 ## Design System (v2 — 2026-06-27)
 
@@ -49,6 +49,7 @@ micro-interaction ala paco.me / rauno.me. **Sumber kebenaran nilai token =
 jangan hardcode ulang nilainya di tempat lain.
 
 **Palet (dark-only).** `:root` langsung berisi nilai gelap; light mode pensiun.
+
 - BG `#07090e` (slate near-black, bukan `#000`) + 2 radial-gradient halus `fixed`
   di `body` supaya kanvas tak pernah terasa flat solid.
 - Aksen tunggal **faded cyan** `--op-accent: #2dd4bf` (+ `-soft`/`-glow`). Semua
@@ -59,6 +60,7 @@ jangan hardcode ulang nilainya di tempat lain.
 paragraf `line-height` 1.75. Font: Inter (sans) + JetBrains Mono (`font-op-mono`).
 
 **Motion** (`src/components/ui/motion/`):
+
 - Easing Apple `cubic-bezier(0.32, 0.72, 0, 1)` dipakai konsisten (utilities di
   `styles.css` + `FadeIn`/`StaggerContainer`).
 - Reveal = fade + `translateY` kecil + `blur(12px)→0` yang memudar mulus.
@@ -78,6 +80,9 @@ Tautan: `op-link-underline`. Semua hormati `prefers-reduced-motion`.
 
 - Established project master document.
 - Verified project stack from `package.json`.
+- Restored `cv.pdf` asset with user's direct upload.
+- Added "Core Technologies" (Skills) component to the homepage.
+- Added custom operator SVG favicon.
 
 ## Current Work
 
@@ -91,7 +96,6 @@ Tautan: `op-link-underline`. Semua hormati `prefers-reduced-motion`.
 
 - Review landing page copy and hierarchy.
 - Audit route/content consistency.
-- Restore or replace missing `cv.pdf` asset before relying on the CV link.
 - Verify performance and accessibility before polish changes.
 - Open the site in a browser and review the live render.
 
@@ -99,7 +103,6 @@ Tautan: `op-link-underline`. Semua hormati `prefers-reduced-motion`.
 
 - Overly generic visuals would weaken positioning.
 - Content drift across route and content modules could create inconsistency.
-- Missing `cv.pdf` leaves a broken CTA path.
 - Base shell Node 18 is too old for Vite 8; use `bun --bun run <script>` to run the toolchain on this box (no Node 20 needed).
 
 ## Blockers
@@ -126,6 +129,8 @@ Tautan: `op-link-underline`. Semua hormati `prefers-reduced-motion`.
 - 2026-06-17: Verified production build via temporary Node 20 runtime and regenerated route tree.
 - 2026-06-17: Started local preview server and confirmed HTTP 200 on port 4173.
 - 2026-06-27: Shipped design system v2 (dark-only, faded-cyan accent, Apple-easing motion, magnetic/glow micro-interactions, canvas 3D node-network hero; dropped Spline). Built via `bun --bun run build`, restarted `portfolio.service`, verified live on Cloudflare (`cf-cache-status: DYNAMIC`).
+- 2026-06-28: Integrated Skills component with Framer Motion, updated `cv.pdf` with the user's direct upload, and injected a custom SVG favicon `//`.
+- 2026-06-28: Mobile-perf + a11y pass. New `useCoarsePointer` hook gates cursor-only effects on touch: SpotlightBackground now skips entirely on phones (no global mousemove/idle spring/mix-blend repaint) and sits at `z-40` (below nav `z-50`, fixes the spotlight tinting the header). Hero3D on touch uses fewer nodes (18 vs 30, edges are O(n²)) + capped DPR (1.5) + no pointer parallax, and the rAF loop now pauses via IntersectionObserver when scrolled off-screen; reduced-motion paints one static frame. Reduced-motion for framer JS animations is handled at the root via `<MotionConfig reducedMotion="user">` (NOT per-component `useReducedMotion` branching — that caused an SSR/hydration mismatch where reduced-motion clients left the SSR'd `opacity:0` uncleared → blank page; fixed same session). Hero heading scramble → new `TextReveal` (word-by-word GPU blur-up, no 30ms setState storm; old `ScrambleText.tsx` now unused). Lint clean (0 errors), tsc clean. Built `bun --bun run build`, restarted `portfolio.service`, verified 200 local + public.
 
 ## Handoff Notes
 

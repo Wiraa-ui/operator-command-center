@@ -182,18 +182,19 @@
   animation: op-pulse-accent 2.4s ease-in-out infinite;
 }
 
-/* Card hover lift — Apple easing, faint accent border + soft glow */
 @utility op-card-hover {
+  transform: perspective(1000px) translateY(0) rotateX(0) rotateY(0);
   transition:
-    transform 420ms cubic-bezier(0.32, 0.72, 0, 1),
-    border-color 420ms cubic-bezier(0.32, 0.72, 0, 1),
-    box-shadow 420ms cubic-bezier(0.32, 0.72, 0, 1);
+    transform 500ms cubic-bezier(0.32, 0.72, 0, 1),
+    border-color 500ms cubic-bezier(0.32, 0.72, 0, 1),
+    box-shadow 500ms cubic-bezier(0.32, 0.72, 0, 1);
   &:hover {
-    transform: translateY(-3px);
-    border-color: color-mix(in oklab, var(--color-op-accent) 45%, transparent);
+    transform: perspective(1000px) translateY(-6px) rotateX(4deg) rotateY(-2deg);
+    border-color: color-mix(in oklab, var(--color-op-accent) 60%, transparent);
     box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
-      0 18px 40px -22px var(--color-op-accent-glow);
+      0 1px 0 0 rgba(255, 255, 255, 0.08) inset,
+      0 24px 48px -18px var(--color-op-accent-glow),
+      0 12px 24px -12px rgba(0, 0, 0, 0.5);
   }
 }
 

@@ -20,42 +20,37 @@ export const sourceLabel: Record<SkillSource, string> = {
 
 export const skillGroups: SkillGroup[] = [
   {
-    domain: "Infrastructure",
-    blurb: "Running real machines, not borrowing someone else's.",
+    domain: "Web Development",
+    blurb: "Membangun dan mengelola website untuk klien dan kebutuhan bisnis.",
     skills: [
-      { name: "Ubuntu Server", source: "otodidak" },
-      { name: "Docker", source: "otodidak" },
-      { name: "Cloudflare Tunnel", source: "otodidak" },
-      { name: "Tailscale", source: "otodidak" },
-      { name: "Networking fundamentals", source: "sekolah" },
-    ],
-  },
-  {
-    domain: "Automation & AI",
-    blurb: "Workflows that remove repeat work and ground answers in real documents.",
-    skills: [
-      { name: "n8n", source: "otodidak" },
-      { name: "Gemini API", source: "project" },
-      { name: "Qdrant", source: "project" },
-      { name: "Telegram Bot API", source: "otodidak" },
-    ],
-  },
-  {
-    domain: "Operations",
-    blurb: "Spreadsheet discipline that non-technical colleagues can still maintain.",
-    skills: [
-      { name: "Structured Excel / Sheets", source: "internship" },
-      { name: "CSV pipelines", source: "internship" },
-      { name: "Validation & reconciliation", source: "internship" },
-    ],
-  },
-  {
-    domain: "Build",
-    blurb: "Enough code to ship the things infrastructure can't ship by itself.",
-    skills: [
+      { name: "Manajemen Website", source: "internship" },
+      { name: "Pemrograman Dasar", source: "sekolah" },
       { name: "HTML / CSS / JavaScript", source: "sekolah" },
-      { name: "Static site delivery", source: "project" },
-      { name: "Git", source: "otodidak" },
+    ],
+  },
+  {
+    domain: "Administrasi & Data",
+    blurb: "Pengelolaan data fungsional untuk kebutuhan operasional.",
+    skills: [
+      { name: "Word/Excel Basic", source: "sekolah" },
+      { name: "Update Data Produk", source: "internship" },
+      { name: "Ketelitian Data", source: "internship" },
+    ],
+  },
+  {
+    domain: "Multimedia & Desain",
+    blurb: "Kemampuan dalam pengelolaan aset visual dan editing.",
+    skills: [
+      { name: "Basic Editing", source: "otodidak" },
+      { name: "Desain Konseptual Otomotif", source: "sekolah" },
+    ],
+  },
+  {
+    domain: "Soft Skills",
+    blurb: "Bekerja secara kolaboratif di lingkungan yang dinamis.",
+    skills: [
+      { name: "Kerja Sama Tim", source: "internship" },
+      { name: "Problem Solving", source: "project" },
     ],
   },
 ];

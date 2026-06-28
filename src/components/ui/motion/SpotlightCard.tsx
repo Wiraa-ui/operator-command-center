@@ -30,9 +30,9 @@ export function SpotlightCard({
   const scx = useSpring(cx, springConfig);
   const scy = useSpring(cy, springConfig);
 
-  // Restrained tilt — premium, not gimmicky.
-  const rotateX = useTransform(scy, [-300, 300], [3, -3]);
-  const rotateY = useTransform(scx, [-300, 300], [-3, 3]);
+  // Restrained tilt — premium, not gimmicky, slightly deeper for "mewah" feel.
+  const rotateX = useTransform(scy, [-300, 300], [8, -8]);
+  const rotateY = useTransform(scx, [-300, 300], [-8, 8]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;

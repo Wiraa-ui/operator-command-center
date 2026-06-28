@@ -16,7 +16,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Self-taught IT administrator and systems operator. Vocational IT background, internship-tested, currently running infrastructure for Kumon Udayana.",
+          "Software Engineering student focused on functional information systems and high-level conceptual automotive design.",
       },
       { property: "og:title", content: "About — The Operator" },
       {
@@ -51,19 +51,28 @@ function About() {
     <PageShell>
       {/* Header */}
       <section className="border-b border-op-line">
-        <Container className="py-16 sm:py-20">
-          <p className="font-op-mono text-[12px] uppercase tracking-[0.22em] text-op-text-3">
-            // about
-          </p>
-          <h1 className="mt-3 max-w-[22ch] text-[40px] font-semibold leading-[1.1] text-op-text sm:text-[48px]">
-            An operator. Calm, methodical, self-assured.
-          </h1>
-          <p className="mt-5 max-w-[68ch] text-[17px] leading-[1.7] text-op-text-2">
-            I'm {site.name}, an IT Administrator at Kumon Udayana. Most of what I do day-to-day is
-            keeping systems running, removing manual work, and building small pieces of
-            infrastructure that quietly make the centre easier to operate. I'd rather ship one
-            boring, reliable system than ten interesting prototypes.
-          </p>
+        <Container className="py-16 sm:py-20 flex flex-col-reverse md:flex-row items-start gap-10 md:gap-16">
+          <div className="flex-1">
+            <p className="font-op-mono text-[12px] uppercase tracking-[0.22em] text-op-text-3">
+              // about
+            </p>
+            <h1 className="mt-3 max-w-[22ch] text-[40px] font-semibold leading-[1.1] text-op-text sm:text-[48px]">
+              A builder. Focused, methodical, driven.
+            </h1>
+            <p className="mt-5 max-w-[68ch] text-[17px] leading-[1.7] text-op-text-2">
+              I'm {site.name}, a Software Engineering student focused on functional information
+              systems and high-level conceptual automotive design. I have real-world experience in
+              data administration and website management, which has trained me in precision and
+              teamwork within dynamic environments.
+            </p>
+          </div>
+          <div className="shrink-0">
+            <img
+              src="/profile-hd.png"
+              alt={site.name}
+              className="w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full border-2 border-op-line object-cover shadow-[0_0_60px_-15px_var(--color-op-accent-glow)]"
+            />
+          </div>
         </Container>
       </section>
 
