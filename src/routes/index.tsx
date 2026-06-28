@@ -60,8 +60,8 @@ function Home() {
       {/* ============================ HERO ============================ */}
       <section className="relative overflow-hidden border-b border-op-line">
         <div aria-hidden="true" className="absolute inset-0 op-grid-backdrop opacity-20" />
-        <Container className="relative pt-8 pb-24 sm:pt-12 sm:pb-28 lg:pt-12 lg:pb-32">
-          <StaggerContainer className="grid gap-16 lg:grid-cols-[1fr_500px] xl:grid-cols-[1fr_600px] lg:items-start lg:gap-20 lg:pt-8">
+        <Container className="relative py-28 sm:py-36 lg:py-44">
+          <StaggerContainer className="grid gap-16 lg:grid-cols-[1fr_500px] xl:grid-cols-[1fr_600px] lg:items-center lg:gap-20">
             <div className="z-10 relative">
               <StaggerItem>
                 <p className="hidden sm:flex items-center gap-2 font-op-mono text-[13px] text-op-text-2">
