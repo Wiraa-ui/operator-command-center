@@ -60,9 +60,16 @@ export function Hero3D() {
     let width = 0;
     let height = 0;
     let dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+    let resizeRetry: ReturnType<typeof setTimeout> | null = null;
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
+      // If parent is still hidden (opacity:0 from StaggerItem), rect may be 0×0.
+      // Retry shortly — the stagger animation will eventually make it visible.
+      if (rect.width === 0 || rect.height === 0) {
+        resizeRetry = setTimeout(resize, 100);
+        return;
+      }
       width = rect.width;
       height = rect.height;
       dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
@@ -202,6 +209,7 @@ export function Hero3D() {
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
+      if (resizeRetry) clearTimeout(resizeRetry);
       ro.disconnect();
       io.disconnect();
       if (usePointer) window.removeEventListener("pointermove", onPointer);
