@@ -9,12 +9,12 @@ type Props = { size?: number; className?: string };
 export function Monogram({ size = 28, className }: Props) {
   return (
     <motion.div
-      initial={{ rotateY: -180, opacity: 0 }}
-      animate={{ rotateY: 0, opacity: 1 }}
-      whileHover={{ rotateY: 180, scale: 1.05 }}
+      initial={{ rotateY: -180, opacity: 0, transformPerspective: 1000 }}
+      animate={{ rotateY: 0, opacity: 1, transformPerspective: 1000 }}
+      whileHover={{ rotateY: 180, scale: 1.05, transformPerspective: 1000 }}
       transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
       className="inline-block"
-      style={{ transformStyle: "preserve-3d", perspective: 1000 }}
+      style={{ transformStyle: "preserve-3d" }}
     >
       <img src="/favicon.svg" width={size} height={size} alt="Operator Logo" className={className} />
     </motion.div>

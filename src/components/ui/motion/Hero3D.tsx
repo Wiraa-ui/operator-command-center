@@ -209,7 +209,7 @@ export function Hero3D() {
   }, [mounted, coarse]);
 
   return (
-    <div className="relative h-full w-full min-h-[400px] lg:min-h-[600px] perspective-[1000px]">
+    <div className="relative h-full w-full min-h-[400px] lg:min-h-[600px]">
       {/* Ambient cyan bloom behind the network - enhanced for 3D luxury */}
       <div className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-op-accent opacity-30 blur-[100px]" />
       {!mounted ? (

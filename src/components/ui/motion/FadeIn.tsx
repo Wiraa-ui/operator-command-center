@@ -40,6 +40,7 @@ export function FadeIn({
         y: 0,
         rotateX: 0,
         rotateY: 0,
+        transformPerspective: 1000,
       }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{

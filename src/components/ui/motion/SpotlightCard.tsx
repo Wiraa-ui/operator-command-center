@@ -58,7 +58,7 @@ export function SpotlightCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d", transformPerspective: 1000 }}
       className={cn("group relative rounded-xl", className)}
     >
       {/* Glowing border ring that tracks the cursor */}

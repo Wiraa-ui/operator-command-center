@@ -217,14 +217,12 @@ function Home() {
         <Container className="py-24 sm:py-32">
           <SectionHeader eyebrow="// about" title="An operator, not a rockstar" />
           <div className="grid gap-8 md:grid-cols-[260px_1fr] md:items-start md:gap-10">
-            <SpotlightCard>
-              <ImageSlot
-                label="portrait-about.png"
-                caption="Square portrait for the about teaser."
-                ratio="square"
-                src="/profile-hd.png"
-              />
-            </SpotlightCard>
+            <ImageSlot
+              label="portrait-about.png"
+              caption="Square portrait for the about teaser."
+              ratio="square"
+              src="/profile-hd.png"
+            />
             <div>
               <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
                 Most of what I know is self-taught against real systems. The rest came from a
