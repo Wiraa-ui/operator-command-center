@@ -80,7 +80,7 @@ function Home() {
               </StaggerItem>
 
               <StaggerItem>
-                <h1 className="mt-6 max-w-[18ch] text-[42px] font-bold leading-[1.04] tracking-[-0.03em] text-transparent bg-clip-text bg-gradient-to-br from-white via-op-text to-op-accent sm:text-[64px] sm:leading-[1.03]">
+                <h1 className="mt-6 max-w-[18ch] text-[42px] font-bold leading-[1.04] tracking-[-0.03em] text-op-text sm:text-[64px] sm:leading-[1.03]">
                   <TextReveal text="I build systems that improve operations." stagger={0.08} />
                 </h1>
               </StaggerItem>
