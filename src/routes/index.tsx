@@ -191,7 +191,7 @@ function Home() {
           </FadeIn>
           <StaggerContainer className="grid gap-8 md:grid-cols-2 lg:gap-10">
             {secondaryProjects
-              .filter((p) => ["ubuntu-server-stack", "tuition-invoice-automation"].includes(p.slug))
+              .filter((p) => ["ubuntu-server-stack", "luung-bali"].includes(p.slug))
               .map((p) => (
                 <StaggerItem key={p.slug} className="flex flex-col gap-4">
                   <SpotlightCard>

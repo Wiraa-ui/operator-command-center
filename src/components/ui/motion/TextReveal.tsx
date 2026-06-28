@@ -40,14 +40,12 @@ export function TextReveal({ text, className, delay = 0, stagger = 0.07 }: TextR
             aria-hidden="true"
             className="inline-block"
             variants={{
-              hidden: { opacity: 0, y: "0.4em", filter: "blur(8px)", rotateX: -60, transformPerspective: 800 },
+              hidden: { opacity: 0, y: "0.4em", filter: "blur(8px)" },
               visible: {
                 opacity: 1,
                 y: 0,
                 filter: "blur(0px)",
-                rotateX: 0,
-                transformPerspective: 800,
-                transition: { duration: 0.65, ease: [0.32, 0.72, 0, 1] },
+                transition: { duration: 0.55, ease: [0.32, 0.72, 0, 1] },
               },
             }}
           >

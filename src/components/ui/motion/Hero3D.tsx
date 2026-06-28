@@ -16,7 +16,7 @@ import { useCoarsePointer } from "@/hooks/useCoarsePointer";
  */
 
 const ACCENT: [number, number, number] = [45, 212, 191]; // cyan, matches --op-accent
-const EDGE_DISTANCE = 0.72; // increased for a denser, more connected "mewah" graph
+const EDGE_DISTANCE = 0.62; // as a fraction of diameter (in unit-sphere space)
 
 type Node = { x: number; y: number; z: number; pulse: number };
 
@@ -53,7 +53,7 @@ export function Hero3D() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     // Phones: lighter graph + lower resolution. Edge cost grows with n², so
     // trimming node count is the biggest single win on weak GPUs.
-    const nodeCount = coarse ? 24 : 42; // Increased for a more luxurious network
+    const nodeCount = coarse ? 18 : 30;
     const maxDpr = coarse ? 1.5 : 2;
     const nodes = fibonacciSphere(nodeCount);
 
@@ -210,8 +210,8 @@ export function Hero3D() {
 
   return (
     <div className="relative h-full w-full min-h-[400px] lg:min-h-[600px]">
-      {/* Ambient cyan bloom behind the network - enhanced for 3D luxury */}
-      <div className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-op-accent opacity-30 blur-[100px]" />
+      {/* Ambient cyan bloom behind the network */}
+      <div className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-op-accent-soft opacity-40 blur-3xl" />
       {!mounted ? (
         <div className="h-full w-full animate-pulse rounded-xl bg-op-surface-2" />
       ) : (

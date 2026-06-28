@@ -28,9 +28,6 @@ export function FadeIn({
       initial={{
         opacity: 0,
         filter: "blur(12px)",
-        transformPerspective: 1000,
-        rotateX: direction === "up" ? -10 : direction === "down" ? 10 : 0,
-        rotateY: direction === "left" ? -10 : direction === "right" ? 10 : 0,
         ...directions[direction],
       }}
       whileInView={{
@@ -38,9 +35,6 @@ export function FadeIn({
         filter: "blur(0px)",
         x: 0,
         y: 0,
-        rotateX: 0,
-        rotateY: 0,
-        transformPerspective: 1000,
       }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{
