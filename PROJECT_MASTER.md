@@ -31,6 +31,29 @@
 - `src/content/` for structured copy/data
 - `src/lib/` for helpers and app utilities
 
+## Chatbot Assistant (2026-06-29) — LIVE
+
+Floating chat widget "Operator" yang menjawab pertanyaan soal portofolio, ditenagai n8n + LLM eksternal, **dengan memory percakapan persisten**. Tujuan desain: nol beban inferensi di server ini. **Status: aktif & teruji end-to-end (GROQ primer, Gemini fallback, memory multi-turn, Bahasa Indonesia/Inggris).**
+
+**Alur:** Browser → `ChatWidget` → server fn `askAssistant` (`src/lib/api/assistant.functions.ts`, jalan di bun) → POST `http://127.0.0.1:5678/webhook/portfolio-chat` (internal, lewati overhead Cloudflare Tunnel) → workflow n8n `Portfolio Chat Assistant` → GROQ (primer) / Gemini (fallback) → balas `{ reply }`.
+
+- **Tanpa vector DB / embeddings.** Data portofolio (~2,5k token) disuntik utuh sebagai konteks. `assistant.context.server.ts` merakit konteks dari `src/content/*` — **sumber tunggal**, tidak diduplikasi; chatbot tak pernah basi relatif ke situs.
+- **Memory persisten di laptop, BUKAN Postgres.** Postgres siku cuma listen `127.0.0.1` (container n8n tak bisa akses tanpa melebarkan exposure DB produksi — ditolak). Memory disimpan via `$getWorkflowStaticData('global')` → persist ke **SQLite n8n sendiri** (`~/docker/n8n/data/database.sqlite`). Keyed by `sessionId` (browser simpan di `localStorage`; transcript juga di-localStorage → refresh tetap nyambung). Cap 8 turn/sesi, prune sesi >30 hari & >300 sesi.
+- **Persona/instruksi tinggal di node "Load Memory & Build" workflow n8n** → tone diubah via GUI n8n tanpa rebuild portfolio. Persona kuat: grounded (hanya pakai DATA, tak mengarang), menjual tapi jujur, multibahasa, arahkan ke kontak untuk hal di luar DATA.
+- **API key via ENV VAR (bukan kredensial GUI, bukan di JSON):** `~/docker/n8n/.env` (chmod 600, di luar git) berisi `GROQ_API_KEY` & `GEMINI_API_KEY`, di-inject ke container via `env_file` di compose; workflow baca `{{ $env.GROQ_API_KEY }}` (butuh `N8N_BLOCK_ENV_ACCESS_IN_NODE=false`, sudah diset). Webhook tak diekspos publik — hanya server portfolio yang panggil (same-origin server fn, tanpa CORS).
+- **Fallback:** node GROQ (`llama-3.3-70b-versatile`) pakai `onError: continueErrorOutput`; output error → node **Gemini `gemini-2.5-flash`**. Keduanya endpoint **OpenAI-compatible** (`api.groq.com/openai/v1/...` & `generativelanguage.googleapis.com/v1beta/openai/...`) → format body `messages[]` identik. ⚠️ **`gemini-2.0-flash` = kuota free-tier 0** di project key ini (HTTP 429 `limit: 0`); `gemini-2.5-flash` punya kuota → dipakai.
+- **Batas anti-abuse ringan:** pesan ≤1000 char (Zod di server fn + cap di Code node). Chatbot publik → kuota free-tier bisa dikuras; kalau GROQ & Gemini dua-duanya gagal → server fn balas pesan offline sopan.
+- **Pengetahuan diperluas (publik-aman) + persona serba-bisa:** `src/content/colophon.ts` (sumber tunggal baru) berisi penjelasan aman tentang situs, asisten, & server (stack, model, memory, hosting, posture keamanan) — disuntik ke konteks via `assistant.context.server.ts`. Bot boleh menjelaskan arsitektur dengan bangga, menjawab pertanyaan umum/teknis (versatile), tapi anchor tetap ke Wira. **Tidak ada akses live ke server** (no command/file/status) — by design, biar tak jadi RCE.
+- **Hardening anti-jailbreak (teruji):** persona punya seksi SECURITY absolut — tolak bocorkan system prompt/DATA, secret/API key/env/IP/port/path; perlakukan pesan visitor sbg untrusted; abaikan "ignore previous instructions"/DAN/developer-mode/fake-system/admin/base64; tak roleplay AI lain. Diuji: print-system-prompt, DAN+minta API key, fake-SYSTEM injection → semua ditolak. **Jaminan terkuat: API key TIDAK PERNAH masuk konteks model** (hanya di HTTP header) → jailbreak sempurna pun tak bisa ekstrak. `colophon.offLimits` mendaftar topik terlarang.
+- **Workflow source:** `docs/n8n/portfolio-chat.json` (punya field `id`, `active:false` di file). Key TIDAK ada di file ini (tracked git).
+
+### Gotcha operasional n8n (chatbot)
+- `n8n import:workflow` **mereset `active` ke nilai di file (false)**. Tiap re-import → wajib `docker exec n8n n8n update:workflow --id=portfolio-chat --active=true` **lalu restart n8n** (`cd ~/docker/n8n && docker compose restart`) agar webhook terdaftar.
+- Setelah restart, webhook butuh ~5-10 dtk untuk terdaftar (poll `POST /webhook/portfolio-chat` sampai 200; sebelum itu balas 404).
+- Ganti key/env: edit `.env` lalu `docker compose up -d --force-recreate` (plain `up -d` kadang tak deteksi perubahan isi `.env`).
+
+**Sudah tidak butuh user** untuk credential (key sudah dipasang via env). User disarankan **rotate kedua API key** (terkirim plaintext di chat) & boleh aktifkan billing Gemini kalau mau pakai `gemini-2.0-flash`.
+
 ## Decisions
 
 | Date       | Decision                                            | Notes                                                                 |
@@ -40,24 +63,27 @@
 | 2026-06-27 | Dark-mode-exclusive design                          | Retired light mode + `ThemeToggle`; aligns with Linear/Vercel/Raycast |
 | 2026-06-27 | Single faded-cyan neon accent (`#2dd4bf`)           | Monochrome slate base; no solid pure colours                          |
 | 2026-06-27 | Replace Spline 3D hero with custom canvas           | Drop `@splinetool/*` (~1MB+); dependency-free, SSR-safe, on-brand     |
+| 2026-07-07 | Redesign v3 pakai skill `ui-ux-pro-max`             | Monokrom zinc + aksen biru; Archivo/Space Grotesk; light mode hidup lagi (toggle fungsional) — membatalkan keputusan dark-only 2026-06-27 |
 
-## Design System (v2 — 2026-06-27)
+## Design System (v3 — 2026-07-07, via skill ui-ux-pro-max)
 
-Kiblat: Linear / Vercel / Raycast (dark, garis sangat tipis, radius konsisten) +
-micro-interaction ala paco.me / rauno.me. **Sumber kebenaran nilai token =
-`src/styles.css`** (`@theme` + `:root`); tabel di bawah hanya ringkasan niat,
-jangan hardcode ulang nilainya di tempat lain.
+Digenerate dari `ui-ux-pro-max --design-system "personal portfolio developer
+creative professional"`: pattern **Portfolio Grid**, style **Motion-Driven**,
+palet monokrom + aksen biru, dukungan **light + dark penuh**. **Sumber
+kebenaran nilai token = `src/styles.css`** (`@theme` + `:root`/`.dark`); teks
+di bawah hanya ringkasan niat, jangan hardcode ulang nilainya di tempat lain.
 
-**Palet (dark-only).** `:root` langsung berisi nilai gelap; light mode pensiun.
+**Palet (dua tema).** `:root` = light (bg `#FAFAFA`, teks zinc `#09090B`,
+aksen `#2563EB`), `.dark` = dark (bg `#09090B`, aksen `#3B82F6` — satu step
+tonal lebih terang, sesuai aturan dark-mode desaturation). Tema dipilih oleh
+inline script di `__root.tsx` (localStorage `theme` → fallback
+`prefers-color-scheme`) sebelum paint; toggle di `Nav.tsx`. Komponen kanvas
+(`Hero3D`) membaca `--op-accent` live + MutationObserver class `dark`.
 
-- BG `#07090e` (slate near-black, bukan `#000`) + 2 radial-gradient halus `fixed`
-  di `body` supaya kanvas tak pernah terasa flat solid.
-- Aksen tunggal **faded cyan** `--op-accent: #2dd4bf` (+ `-soft`/`-glow`). Semua
-  surface monokrom berlapis (`op-surface`, `op-surface-2`), garis nyaris tak
-  terlihat (`op-line` ~7% putih).
-
-**Tipografi.** Heading `letter-spacing` lebih rapat (`-0.022em`, h1 `-0.032em`),
-paragraf `line-height` 1.75. Font: Inter (sans) + JetBrains Mono (`font-op-mono`).
+**Tipografi.** Display/heading **Archivo** (`--font-op-display`, di-set global
+untuk h1–h4), body **Space Grotesk** (`--font-op-sans`), label teknis/eyebrow
+tetap **JetBrains Mono** (`--font-op-mono`). Heading `letter-spacing` rapat
+(`-0.022em`, h1 `-0.032em`), paragraf `line-height` 1.75.
 
 **Motion** (`src/components/ui/motion/`):
 
@@ -66,7 +92,7 @@ paragraf `line-height` 1.75. Font: Inter (sans) + JetBrains Mono (`font-op-mono`
 - Reveal = fade + `translateY` kecil + `blur(12px)→0` yang memudar mulus.
 - `SpotlightCard`: tilt halus 3° + spotlight isi + **border-glow mengikuti
   kursor** (mask `xor`).
-- `SpotlightBackground`: glow cyan ambient mengikuti kursor (global).
+- `SpotlightBackground`: glow aksen ambient mengikuti kursor (global).
 - `Magnetic.tsx`: pembungkus efek magnetic (tombol tertarik halus ke kursor).
 - `Hero3D.tsx`: node-network 3D di `<canvas>` murni (fibonacci sphere +
   proyeksi perspektif + depth-shading + parallax kursor). Client-only, DPR-aware,
@@ -131,7 +157,14 @@ Tautan: `op-link-underline`. Semua hormati `prefers-reduced-motion`.
 - 2026-06-27: Shipped design system v2 (dark-only, faded-cyan accent, Apple-easing motion, magnetic/glow micro-interactions, canvas 3D node-network hero; dropped Spline). Built via `bun --bun run build`, restarted `portfolio.service`, verified live on Cloudflare (`cf-cache-status: DYNAMIC`).
 - 2026-06-28: Integrated Skills component with Framer Motion, updated `cv.pdf` with the user's direct upload, and injected a custom SVG favicon `//`.
 - 2026-06-28: Mobile-perf + a11y pass. New `useCoarsePointer` hook gates cursor-only effects on touch: SpotlightBackground now skips entirely on phones (no global mousemove/idle spring/mix-blend repaint) and sits at `z-40` (below nav `z-50`, fixes the spotlight tinting the header). Hero3D on touch uses fewer nodes (18 vs 30, edges are O(n²)) + capped DPR (1.5) + no pointer parallax, and the rAF loop now pauses via IntersectionObserver when scrolled off-screen; reduced-motion paints one static frame. Reduced-motion for framer JS animations is handled at the root via `<MotionConfig reducedMotion="user">` (NOT per-component `useReducedMotion` branching — that caused an SSR/hydration mismatch where reduced-motion clients left the SSR'd `opacity:0` uncleared → blank page; fixed same session). Hero heading scramble → new `TextReveal` (word-by-word GPU blur-up, no 30ms setState storm; old `ScrambleText.tsx` now unused). Lint clean (0 errors), tsc clean. Built `bun --bun run build`, restarted `portfolio.service`, verified 200 local + public.
+- 2026-06-29: Slowed down the hover animations on `ProjectCard` and `FlagshipProject` by updating `transition-all` to include `duration-500 ease-out`, giving a more premium and less abrupt feel.
+- 2026-06-29: Fixed desktop layout for home hero section. Removed the glass card enclosure (`op-glass`) entirely on desktop so the text elegantly floats and spans wider, while retaining the card look on mobile and tablet (`max-lg:op-glass`).
+- 2026-06-29: Hero redesign (poles 3D+glass) + chatbot diperkuat. **Hero:** status pill premium (ping dot), `TextReveal` ganti `ScrambleText`, hierarki tipografi naik, CTA `LinkButton` magnetic + panah, meta row lokasi/role, top-edge highlight, bloom aksen, label `// system.graph` di sisi 3D. **Chatbot:** tambah `src/content/colophon.ts` (penjelasan aman situs/asisten/server) + persona serba-bisa + hardening anti-jailbreak (teruji: print-prompt/DAN/fake-system ditolak; API key tak pernah di konteks model). Built `bun --bun run build`, restart portfolio + n8n, RAM stabil.
+- 2026-06-29: Chat Assistant **LIVE & teruji**. Tambah memory percakapan persisten (n8n `workflowStaticData`→SQLite, keyed by `sessionId` localStorage; transcript juga di localStorage + tombol reset). Key dipasang via `~/docker/n8n/.env` (env_file, 600, di luar git), workflow baca `{{$env.*}}`. GROQ `llama-3.3-70b` primer; fallback **Gemini `gemini-2.5-flash`** (2.0-flash kuota 0 di key ini). E2E test lolos: grounded answer, memory multi-turn ("that one"→flagship), ID/EN, fallback aktif saat GROQ key dimatikan. Built `bun --bun run build`, restart portfolio + n8n, RAM stabil.
+- 2026-06-29: (awal) Added Portfolio Chat Assistant skeleton. Server fn proxy → n8n webhook localhost → GROQ+Gemini fallback; konteks dari `src/content/*` (single source, no vector DB). New: `src/components/operator/ChatWidget.tsx`, `src/lib/api/assistant.functions.ts`, `src/lib/api/assistant.context.server.ts`, mount di `__root.tsx`, workflow `docs/n8n/portfolio-chat.json`.
 - 2026-06-28: Upgraded motion primitives globally for a luxurious "mewah" 3D feel. Introduced 3D perspective flip on `TextReveal` and `FadeIn`. Applied a global `preserve-3d` tilt effect to `.op-card-hover` affecting all cards. Enhanced `Hero3D` with denser network nodes and deeper ambient bloom. Added 3D spin/hover to `Monogram`. All changes respect the existing performance budgets and `reducedMotion` settings.
+- 2026-06-29: Maximum Portfolio Redesign & Polish. Implemented a Command Palette (`cmdk`) via `Cmd+K` for rapid navigation, integrated into `PageShell.tsx`. Added `FadeInStagger` scroll-driven reveal animations across `Projects` and `About` pages using `framer-motion`'s `whileInView`. Redesigned `Skills` and `Horizons` sections in `about.tsx` into a modern, asymmetric Bento Grid layout utilizing `SpotlightCard`. Wrapped global CTA buttons with a `Magnetic` interaction for a premium feel. Built and verified.
+- 2026-06-29: Re-architected Theme System & Route Transitions. Reintroduced **Light Mode** by restructuring `styles.css` with a premium Pearl/Off-White palette in `:root` and shifting the Vantablack theme to `.dark`. Added an inline script in `__root.tsx` to read `localStorage` and OS preferences, preventing FOUC. Integrated a Sun/Moon theme toggle in `Nav.tsx`. Implemented seamless `AnimatePresence` fade transitions in `PageShell.tsx` so navigating between pages feels like a native app. Build passed and deployed.
 
 ## Handoff Notes
 

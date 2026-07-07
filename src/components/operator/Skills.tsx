@@ -30,7 +30,7 @@ export function Skills() {
       {skills.map((skill, i) => (
         <StaggerItem key={i} className="h-full">
           <SpotlightCard className="h-full rounded-2xl border border-op-line bg-op-surface p-8 transition-colors duration-300 hover:bg-op-surface-2">
-            <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-op-line bg-[#07090e] text-op-accent shadow-[0_0_15px_rgba(45,212,191,0.1)]">
+            <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-op-line bg-op-surface-2 text-op-accent shadow-[0_0_15px_var(--op-accent-soft)]">
               <motion.div
                 whileHover={{ scale: 1.1, rotate: i === 1 ? 90 : 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 15 }}

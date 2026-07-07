@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, MapPin } from "lucide-react";
 import { PageShell, Container } from "@/components/operator/PageShell";
 import { LinkButton, AnchorButton } from "@/components/operator/Button";
 import { FlagshipProject } from "@/components/operator/FlagshipProject";
@@ -7,7 +8,7 @@ import { SectionHeader } from "@/components/operator/SectionHeader";
 import { ImageSlot } from "@/components/operator/ImageSlot";
 import { flagshipProject, secondaryProjects } from "@/content/projects";
 import { site } from "@/content/site";
-import { ScrambleText } from "@/components/ui/motion/ScrambleText";
+import { TextReveal } from "@/components/ui/motion/TextReveal";
 import { SpotlightCard } from "@/components/ui/motion/SpotlightCard";
 import { FadeIn } from "@/components/ui/motion/FadeIn";
 import { StaggerContainer, StaggerItem } from "@/components/ui/motion/StaggerContainer";
@@ -60,56 +61,93 @@ function Home() {
       {/* ============================ HERO ============================ */}
       <section className="relative overflow-hidden border-b border-op-line">
         <div aria-hidden="true" className="absolute inset-0 op-grid-backdrop opacity-20" />
-        <Container className="relative py-28 sm:py-36 lg:py-44">
-          <StaggerContainer className="grid gap-16 lg:grid-cols-[1fr_500px] xl:grid-cols-[1fr_600px] lg:items-center lg:gap-20">
-            <div className="z-10 relative">
-              <StaggerItem>
-                <p className="hidden sm:flex items-center gap-2 font-op-mono text-[13px] text-op-text-2">
-                  <span
-                    aria-hidden="true"
-                    className="inline-block h-2 w-2 rounded-full bg-op-success op-pulse-live"
-                  />
-                  <span>
-                    // {site.currentStatus.toLowerCase()}
-                    <span className="px-2 text-op-text-3">—</span>
-                    <span className="text-op-accent">
-                      status: {site.availability.toLowerCase()}
+        {/* Soft accent bloom anchored to the system-graph side */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-32 -top-32 h-[520px] w-[520px] rounded-full bg-op-accent/10 opacity-60 blur-[120px]"
+        />
+        <Container className="relative pt-8 pb-16 sm:pt-12 sm:pb-24 lg:pt-16 lg:pb-28">
+          <StaggerContainer className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] xl:grid-cols-[1fr_540px] lg:items-center lg:gap-16 xl:gap-20">
+            <div className="relative z-10">
+              <div className="max-lg:op-glass relative overflow-hidden lg:overflow-visible rounded-[28px] p-7 sm:rounded-[32px] sm:p-12 lg:p-0">
+                {/* top edge highlight */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-op-accent/40 to-transparent lg:hidden"
+                />
+
+                <StaggerItem>
+                  <span className="inline-flex items-center gap-2.5 rounded-full border border-op-line bg-op-surface/70 px-3.5 py-1.5 font-op-mono text-[12px] tracking-tight backdrop-blur-md">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-op-accent opacity-60" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-op-accent" />
                     </span>
+                    <span className="text-op-accent">Open for collaboration</span>
+                    <span className="text-op-line">|</span>
+                    <span className="text-op-text-3">fresh graduate</span>
                   </span>
-                </p>
-              </StaggerItem>
+                </StaggerItem>
 
-              <StaggerItem>
-                <h1 className="mt-6 max-w-[18ch] text-[42px] font-bold leading-[1.04] tracking-[-0.03em] text-transparent bg-clip-text bg-gradient-to-b from-white to-op-text-3 sm:text-[64px] sm:leading-[1.03]">
-                  <ScrambleText text="Engineering reliable web systems." duration={1.2} />
-                </h1>
-              </StaggerItem>
+                <StaggerItem>
+                  <h1 className="mt-7 max-w-[16ch] lg:max-w-none text-[40px] font-bold leading-[1.02] tracking-[-0.035em] text-op-text sm:text-[62px] lg:text-[54px] xl:text-[62px]">
+                    <TextReveal text="Engineering reliable web systems." />
+                  </h1>
+                </StaggerItem>
 
-              <StaggerItem>
-                <p className="mt-5 max-w-[42ch] text-[20px] font-semibold leading-[1.35] text-op-text-2 sm:text-[24px]">
-                  Full-stack developer focused on robust architecture and precision.
-                </p>
-              </StaggerItem>
+                <StaggerItem>
+                  <p className="mt-6 max-w-[44ch] text-[19px] font-medium leading-[1.45] text-op-text sm:text-[22px] lg:text-[20px] xl:text-[22px]">
+                    Full-stack developer focused on{" "}
+                    <span className="text-op-accent">robust architecture</span> and precision.
+                  </p>
+                </StaggerItem>
 
-              <StaggerItem>
-                <p className="mt-6 max-w-[50ch] text-[16px] leading-[1.7] text-op-text-2">
-                  I'm {site.name}. I build functional applications, manage data systems, and deliver software that performs flawlessly under real-world conditions.
-                </p>
-              </StaggerItem>
+                <StaggerItem>
+                  <p className="mt-5 max-w-[52ch] text-[15.5px] leading-[1.75] text-op-text-2 lg:text-[16px]">
+                    I'm {site.name}. I build functional applications, manage data systems, and
+                    deliver software that performs flawlessly under real-world conditions.
+                  </p>
+                </StaggerItem>
 
-              <StaggerItem>
-                <div className="mt-9 flex flex-wrap items-center gap-4">
-                  <LinkButton to="/projects" variant="primary">
-                    View My Projects
-                  </LinkButton>
-                  <LinkButton to="/contact" variant="ghost">
-                    Get in Touch
-                  </LinkButton>
-                </div>
-              </StaggerItem>
+                <StaggerItem>
+                  <div className="mt-9 flex flex-wrap items-center gap-3.5">
+                    <LinkButton
+                      to="/projects"
+                      variant="primary"
+                      className="group h-12 px-7 text-[14px]"
+                    >
+                      View My Projects
+                      <ArrowRight
+                        size={16}
+                        className="transition-transform duration-300 group-hover:translate-x-0.5"
+                      />
+                    </LinkButton>
+                    <LinkButton to="/contact" variant="ghost" className="h-12 px-7 text-[14px]">
+                      Get in Touch
+                    </LinkButton>
+                  </div>
+                </StaggerItem>
+
+                <StaggerItem>
+                  <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-op-line pt-5 font-op-mono text-[12px] text-op-text-3">
+                    <span className="inline-flex items-center gap-1.5">
+                      <MapPin size={13} className="text-op-text-2" />
+                      {site.location}
+                    </span>
+                    <span className="text-op-line">/</span>
+                    <span className="text-op-text-2">{site.role}</span>
+                  </div>
+                </StaggerItem>
+              </div>
             </div>
 
-            <StaggerItem className="relative h-full w-full min-h-[400px] -mt-10 lg:mt-0">
+            <StaggerItem className="relative -mt-8 h-full min-h-[360px] w-full sm:min-h-[420px] lg:mt-0 xl:min-h-[460px]">
+              {/* corner instrument label — ties the 3D to the "system" theme */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute left-0 top-2 z-10 font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-text-3"
+              >
+                // system.graph
+              </span>
               <Hero3D />
             </StaggerItem>
           </StaggerContainer>
@@ -189,10 +227,7 @@ function Home() {
             {secondaryProjects
               .filter((p) => ["ubuntu-server-stack", "luung-bali"].includes(p.slug))
               .map((p) => (
-                <StaggerItem key={p.slug} className="flex flex-col gap-4">
-                  <SpotlightCard>
-                    <ImageSlot label={`${p.slug}.jpg`} ratio="video" src={`/${p.slug}.jpg?v=2`} />
-                  </SpotlightCard>
+                <StaggerItem key={p.slug} className="flex h-full flex-col">
                   <ProjectCard project={p} />
                 </StaggerItem>
               ))}
@@ -221,7 +256,11 @@ function Home() {
             />
             <div>
               <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
-                My approach to software engineering is grounded in practicality. Throughout my academic background and hands-on internships, I have taken ownership of critical systems—from database management to full-stack application development. I prioritize reliable, proven technologies over fleeting trends because my ultimate goal is to build software that users can depend on.
+                My approach to software engineering is grounded in practicality. Throughout my
+                academic background and hands-on internships, I have taken ownership of critical
+                systems—from database management to full-stack application development. I prioritize
+                reliable, proven technologies over fleeting trends because my ultimate goal is to
+                build software that users can depend on.
               </p>
               <div className="mt-6">
                 <Link
@@ -246,7 +285,8 @@ function Home() {
             Looking for a dedicated software engineer?
           </h2>
           <p className="mt-4 max-w-[60ch] text-[16px] leading-[1.7] text-op-text-2">
-            Whether you need a full-stack web application, system integration, or reliable infrastructure management, I'm ready to contribute to your team. Let's connect.
+            Whether you need a full-stack web application, system integration, or reliable
+            infrastructure management, I'm ready to contribute to your team. Let's connect.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <AnchorButton

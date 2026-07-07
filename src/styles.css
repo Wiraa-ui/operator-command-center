@@ -1,4 +1,4 @@
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @source "../src";
 @import "tw-animate-css";
 
@@ -30,7 +30,8 @@
   --color-op-warning-soft: var(--op-warning-soft);
   --color-op-error: var(--op-error);
 
-  --font-op-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-op-sans: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-op-display: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-op-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
@@ -62,49 +63,104 @@
 }
 
 /* =====================================================================
- * DARK-ONLY palette. Monochrome zinc/slate gradients + a single faded
- * cyan neon accent. No solid pure colours — surfaces are layered, lines
- * are near-invisible, the accent glows rather than shouts.
- * Light mode retired 2026-06-27.
+ * THEME PALETTES (Light & Dark)
  * ===================================================================== */
 :root {
-  --op-bg: #07090e; /* near-black slate, never pure #000 */
-  --op-surface: #0c0f15; /* layer 1 */
-  --op-surface-2: #12161e; /* layer 2 */
-  --op-line: rgba(255, 255, 255, 0.07);
-  --op-line-soft: rgba(255, 255, 255, 0.025);
-  --op-accent: #2dd4bf; /* faded cyan neon */
-  --op-accent-soft: rgba(45, 212, 191, 0.14);
-  --op-accent-glow: rgba(45, 212, 191, 0.22);
-  --op-text: #f4f6f8;
-  --op-text-2: #9aa3b0;
-  --op-text-3: #59616d;
+  /* LIGHT MODE — ui-ux-pro-max "Wira Portfolio" design system.
+   * Monochrome zinc base + single electric-blue accent (#2563EB).
+   * Style: Motion-Driven / Portfolio Grid. */
+  --op-bg: #FAFAFA;
+  --op-surface: #FFFFFF;
+  --op-surface-2: #F4F4F5;
+  --op-line: rgba(9, 9, 11, 0.08);
+  --op-line-soft: rgba(9, 9, 11, 0.04);
+
+  --op-accent: #2563EB; /* Electric blue for primary actions & highlights */
+  --op-accent-soft: rgba(37, 99, 235, 0.08);
+  --op-accent-glow: rgba(37, 99, 235, 0.14);
+  --op-accent-glow-strong: rgba(37, 99, 235, 0.45);
+
+  --op-text: #09090B;
+  --op-text-2: #52525B;
+  --op-text-3: #71717A;
+
+  --op-success: #059669;
+  --op-success-soft: rgba(5, 150, 105, 0.1);
+  --op-warning: #D97706;
+  --op-warning-soft: rgba(217, 119, 6, 0.1);
+  --op-error: #DC2626;
+
+  /* Shadcn variables for Light Mode */
+  --radius: 0.75rem;
+  --background: #FAFAFA;
+  --foreground: #09090B;
+  --card: #FFFFFF;
+  --card-foreground: #09090B;
+  --popover: #FFFFFF;
+  --popover-foreground: #09090B;
+  --primary: #18181B;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F4F4F5;
+  --secondary-foreground: #09090B;
+  --muted: #F4F4F5;
+  --muted-foreground: #52525B;
+  --accent: #F4F4F5;
+  --accent-foreground: #09090B;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: rgba(9, 9, 11, 0.08);
+  --input: rgba(9, 9, 11, 0.08);
+  --ring: #2563EB;
+
+  /* Ambient Glows: In light mode, white flares + a whisper of blue */
+  --op-glow-1: rgba(255, 255, 255, 1);
+  --op-glow-2: rgba(37, 99, 235, 0.04);
+}
+
+.dark {
+  /* DARK MODE — zinc near-black + desaturated blue accent */
+  --op-bg: #09090B;
+  --op-surface: #101014;
+  --op-surface-2: #18181C;
+  --op-line: rgba(255, 255, 255, 0.08);
+  --op-line-soft: rgba(255, 255, 255, 0.03);
+  --op-accent: #3B82F6; /* Blue, one tonal step lighter for dark surfaces */
+  --op-accent-soft: rgba(59, 130, 246, 0.14);
+  --op-accent-glow: rgba(59, 130, 246, 0.22);
+  --op-accent-glow-strong: rgba(59, 130, 246, 0.55);
+  --op-text: #FAFAFA;
+  --op-text-2: #A1A1AA;
+  --op-text-3: #6B6B74;
   --op-success: #34d399;
   --op-success-soft: rgba(52, 211, 153, 0.14);
   --op-warning: #fbbf24;
   --op-warning-soft: rgba(251, 191, 36, 0.14);
   --op-error: #f87171;
 
-  --radius: 0.75rem;
-  --background: #07090e;
-  --foreground: #f4f6f8;
-  --card: #0c0f15;
-  --card-foreground: #f4f6f8;
-  --popover: #0c0f15;
-  --popover-foreground: #f4f6f8;
-  --primary: #2dd4bf;
-  --primary-foreground: #07090e;
-  --secondary: #12161e;
-  --secondary-foreground: #f4f6f8;
-  --muted: #12161e;
-  --muted-foreground: #9aa3b0;
-  --accent: #12161e;
-  --accent-foreground: #f4f6f8;
+  /* Shadcn variables for Dark Mode */
+  --background: #09090B;
+  --foreground: #FAFAFA;
+  --card: #101014;
+  --card-foreground: #FAFAFA;
+  --popover: #101014;
+  --popover-foreground: #FAFAFA;
+  --primary: #3B82F6;
+  --primary-foreground: #09090B;
+  --secondary: #18181C;
+  --secondary-foreground: #FAFAFA;
+  --muted: #18181C;
+  --muted-foreground: #A1A1AA;
+  --accent: #18181C;
+  --accent-foreground: #FAFAFA;
   --destructive: #f87171;
-  --destructive-foreground: #f4f6f8;
-  --border: rgba(255, 255, 255, 0.07);
-  --input: rgba(255, 255, 255, 0.07);
-  --ring: #2dd4bf;
+  --destructive-foreground: #FAFAFA;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #3B82F6;
+
+  /* Ambient Glows */
+  --op-glow-1: rgba(59, 130, 246, 0.05);
+  --op-glow-2: rgba(255, 255, 255, 0.025);
 }
 
 @layer base {
@@ -112,10 +168,10 @@
   body {
     background-color: var(--op-bg);
     /* Layered monochrome glow — keeps the canvas from ever reading as a
-       flat solid fill. Two faint cyan/slate radials fixed to the viewport. */
+       flat solid fill. Uses variables to adapt to light/dark. */
     background-image:
-      radial-gradient(1100px 700px at 80% -10%, rgba(45, 212, 191, 0.05), transparent 60%),
-      radial-gradient(900px 600px at 0% 0%, rgba(255, 255, 255, 0.025), transparent 55%);
+      radial-gradient(1100px 700px at 80% -10%, var(--op-glow-1), transparent 60%),
+      radial-gradient(900px 600px at 0% 0%, var(--op-glow-2), transparent 55%);
     background-attachment: fixed;
     color: var(--op-text);
     font-family: var(--font-op-sans);
@@ -124,10 +180,12 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Tighter optical tracking on display type, looser leading on prose. */
+  /* Display type = Archivo; tighter optical tracking, looser leading on prose. */
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
+    font-family: var(--font-op-display);
     letter-spacing: -0.022em;
   }
   h1 {
@@ -138,7 +196,7 @@
   }
 
   ::selection {
-    background: var(--op-accent-soft);
+    background: color-mix(in srgb, var(--op-accent) 25%, transparent);
     color: var(--op-text);
   }
 
@@ -146,6 +204,39 @@
     outline: 2px solid var(--op-accent);
     outline-offset: 2px;
     border-radius: 4px;
+  }
+
+  /* Custom Scrollbar for Webkit */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--op-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--op-surface-2);
+    border-radius: 4px;
+    border: 2px solid var(--op-bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--op-text-3);
+  }
+  /* Custom Scrollbar for Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--op-surface-2) var(--op-bg);
+  }
+
+  /* Cinematic Noise Overlay */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 }
 
@@ -224,6 +315,17 @@
   &[data-active="true"]::after {
     transform: scaleX(1);
   }
+}
+
+/* Premium glassmorphism panel — token-driven so it adapts to both themes */
+@utility op-glass {
+  background-color: color-mix(in srgb, var(--op-surface) 45%, transparent);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--op-line);
+  box-shadow:
+    0 4px 24px -1px rgba(0, 0, 0, 0.12),
+    0 0 0 1px color-mix(in srgb, var(--op-text) 2%, transparent) inset;
 }
 
 /* Faint grid backdrop — evokes hardware surface, never decorative */

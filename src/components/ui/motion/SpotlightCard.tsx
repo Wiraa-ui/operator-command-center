@@ -11,7 +11,7 @@ interface SpotlightCardProps {
 export function SpotlightCard({
   children,
   className,
-  spotlightColor = "rgba(45, 212, 191, 0.12)", // faded cyan accent
+  spotlightColor = "var(--op-accent-glow)", // theme-aware accent
 }: SpotlightCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -49,8 +49,8 @@ export function SpotlightCard({
     cy.set(0);
   };
 
-  const spotlight = useMotionTemplate`radial-gradient(420px circle at ${sx}px ${sy}px, ${spotlightColor}, transparent 45%)`;
-  const borderGlow = useMotionTemplate`radial-gradient(340px circle at ${sx}px ${sy}px, rgba(45, 212, 191, 0.55), transparent 55%)`;
+  const spotlight = useMotionTemplate`radial-gradient(420px circle at ${sx}px ${sy}px, var(--op-accent-glow), transparent 45%)`;
+  const borderGlow = useMotionTemplate`radial-gradient(340px circle at ${sx}px ${sy}px, var(--op-accent-glow-strong), transparent 55%)`;
 
   return (
     <motion.div

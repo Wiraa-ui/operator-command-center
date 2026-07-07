@@ -10,7 +10,16 @@ import { useEffect, useRef, useState } from "react";
  * stays small, fast, and SSR-safe (the canvas only animates after mount).
  */
 
-const ACCENT: [number, number, number] = [45, 212, 191]; // cyan, matches --op-accent
+/* Accent is read from the live --op-accent token so the canvas follows the
+   active theme (blue in both modes, different tonal steps). */
+function readAccent(): [number, number, number] {
+  const v = getComputedStyle(document.documentElement).getPropertyValue("--op-accent").trim();
+  const m = /^#?([0-9a-f]{6})$/i.exec(v);
+  if (!m) return [37, 99, 235];
+  const n = parseInt(m[1], 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
 const NODE_COUNT = 30;
 const EDGE_DISTANCE = 0.62; // as a fraction of diameter (in unit-sphere space)
 
@@ -47,6 +56,12 @@ export function Hero3D() {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const nodes = fibonacciSphere(NODE_COUNT);
+
+    let accent = readAccent();
+    const themeObserver = new MutationObserver(() => {
+      accent = readAccent();
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
     let width = 0;
     let height = 0;
@@ -135,7 +150,7 @@ export function Hero3D() {
           const pb = pts[j];
           const depth = (pa.depth + pb.depth) / 2;
           const alpha = (1 - d / maxDist) * (0.12 + depth * 0.4);
-          ctx.strokeStyle = `rgba(${ACCENT[0]}, ${ACCENT[1]}, ${ACCENT[2]}, ${alpha})`;
+          ctx.strokeStyle = `rgba(${accent[0]}, ${accent[1]}, ${accent[2]}, ${alpha})`;
           ctx.beginPath();
           ctx.moveTo(pa.sx, pa.sy);
           ctx.lineTo(pb.sx, pb.sy);
@@ -153,8 +168,8 @@ export function Hero3D() {
         const alpha = 0.25 + p.depth * 0.75;
 
         ctx.shadowBlur = 10 * p.depth;
-        ctx.shadowColor = `rgba(${ACCENT[0]}, ${ACCENT[1]}, ${ACCENT[2]}, ${0.7 * p.depth})`;
-        ctx.fillStyle = `rgba(${ACCENT[0]}, ${ACCENT[1]}, ${ACCENT[2]}, ${alpha * twinkle})`;
+        ctx.shadowColor = `rgba(${accent[0]}, ${accent[1]}, ${accent[2]}, ${0.7 * p.depth})`;
+        ctx.fillStyle = `rgba(${accent[0]}, ${accent[1]}, ${accent[2]}, ${alpha * twinkle})`;
         ctx.beginPath();
         ctx.arc(p.sx, p.sy, radius, 0, Math.PI * 2);
         ctx.fill();
@@ -169,13 +184,14 @@ export function Hero3D() {
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      themeObserver.disconnect();
       window.removeEventListener("pointermove", onPointer);
     };
   }, [mounted]);
 
   return (
     <div className="relative h-full w-full min-h-[400px] lg:min-h-[600px]">
-      {/* Ambient cyan bloom behind the network */}
+      {/* Ambient accent bloom behind the network */}
       <div className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-op-accent-soft opacity-40 blur-3xl" />
       {!mounted ? (
         <div className="h-full w-full animate-pulse rounded-xl bg-op-surface-2" />

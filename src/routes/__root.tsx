@@ -7,12 +7,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
-import { ThemeProvider } from "next-themes";
+import { type ReactNode } from "react";
 import { MotionConfig } from "framer-motion";
 
+import { ChatWidget } from "@/components/operator/ChatWidget";
+
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
@@ -39,9 +39,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -79,8 +76,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#07090e" },
-      { title: "I Kadek Wira Wibawa — IT Administrator & Automation Builder" },
+      { name: "theme-color", media: "(prefers-color-scheme: light)", content: "#FAFAFA" },
+      { name: "theme-color", media: "(prefers-color-scheme: dark)", content: "#09090B" },
+      { title: "I Kadek Wira Wibawa — Software Engineer" },
       {
         name: "description",
         content:
@@ -107,7 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
       },
     ],
   }),
@@ -117,10 +115,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+/* Runs before paint: applies the saved theme (or system preference) so there
+   is never a flash of the wrong theme. Falls back to dark on any error. */
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){document.documentElement.classList.add("dark");}})();`;
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body>
@@ -135,16 +138,15 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
-      {/* reducedMotion="user" lets framer honor prefers-reduced-motion internally
-          and consistently (server + client), so reveals still settle to visible
-          without an SSR/hydration style mismatch. */}
-      <MotionConfig reducedMotion="user">
-        <QueryClientProvider client={queryClient}>
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </QueryClientProvider>
-      </MotionConfig>
-    </ThemeProvider>
+    /* reducedMotion="user" lets framer honor prefers-reduced-motion internally
+       and consistently (server + client), so reveals still settle to visible
+       without an SSR/hydration style mismatch. */
+    <MotionConfig reducedMotion="user">
+      <QueryClientProvider client={queryClient}>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+        <ChatWidget />
+      </QueryClientProvider>
+    </MotionConfig>
   );
 }
