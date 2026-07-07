@@ -38,10 +38,10 @@ export function FadeIn({
       }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{
-        duration: 0.8,
+        duration: 1.2,
         delay,
-        ease: [0.32, 0.72, 0, 1], // Apple-style precision easing
-        filter: { duration: 0.6, delay, ease: [0.32, 0.72, 0, 1] },
+        ease: [0.22, 1, 0.36, 1], // Apple-style premium precision easing
+        filter: { duration: 1.0, delay, ease: [0.22, 1, 0.36, 1] },
       }}
       className={cn(className)}
       {...props}

@@ -12,9 +12,10 @@ import type { Project } from "@/content/projects";
 export function FlagshipProject({ project }: { project: Project }) {
   return (
     <article
-      className="relative overflow-hidden rounded-xl border border-op-accent/40 bg-op-surface p-6 shadow-[0_0_60px_-30px_var(--color-op-accent-glow)] sm:p-8 lg:p-10"
+      className="op-glass relative overflow-hidden rounded-[32px] p-8 shadow-[0_0_80px_-20px_var(--color-op-accent-glow)] sm:p-12 lg:p-14 transition-all duration-500 ease-out hover:shadow-[0_0_100px_-10px_var(--color-op-accent-glow)]"
       aria-labelledby="flagship-title"
     >
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent pointer-events-none" />
       <span aria-hidden="true" className="absolute left-0 top-0 h-full w-[3px] bg-op-accent" />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

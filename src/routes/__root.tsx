@@ -10,7 +10,7 @@ import {
 import { type ReactNode } from "react";
 import { MotionConfig } from "framer-motion";
 
-import { ChatWidget } from "@/components/operator/ChatWidget";
+import { ChatWidget } from "@/components/sections/ChatWidget";
 
 import appCss from "../styles.css?url";
 
@@ -76,8 +76,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", media: "(prefers-color-scheme: light)", content: "#FAFAFA" },
-      { name: "theme-color", media: "(prefers-color-scheme: dark)", content: "#09090B" },
+      { name: "theme-color", content: "#0F172A" },
       { title: "I Kadek Wira Wibawa — Software Engineer" },
       {
         name: "description",
@@ -105,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap",
       },
     ],
   }),
@@ -115,15 +114,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-/* Runs before paint: applies the saved theme (or system preference) so there
-   is never a flash of the wrong theme. Falls back to dark on any error. */
-const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){document.documentElement.classList.add("dark");}})();`;
-
 function RootShell({ children }: { children: ReactNode }) {
+  /* Dark-only by design (Immersive/Interactive Experience pattern —
+     "dark background for focus"). The class stays for dark: variants. */
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body>

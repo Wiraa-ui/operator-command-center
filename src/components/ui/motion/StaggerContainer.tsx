@@ -9,7 +9,7 @@ interface StaggerContainerProps extends HTMLMotionProps<"div"> {
 
 export function StaggerContainer({
   children,
-  staggerDelay = 0.1,
+  staggerDelay = 0.15,
   delayChildren = 0,
   ...props
 }: StaggerContainerProps) {
@@ -44,9 +44,9 @@ export function StaggerItem({ children, ...props }: HTMLMotionProps<"div">) {
           y: 0,
           filter: "blur(0px)",
           transition: {
-            duration: 0.8,
-            ease: [0.32, 0.72, 0, 1],
-            filter: { duration: 0.6, ease: [0.32, 0.72, 0, 1] },
+            duration: 1.2,
+            ease: [0.22, 1, 0.36, 1],
+            filter: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
           },
         },
       }}

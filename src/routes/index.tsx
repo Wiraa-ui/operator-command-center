@@ -1,19 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, MapPin } from "lucide-react";
-import { PageShell, Container } from "@/components/operator/PageShell";
-import { LinkButton, AnchorButton } from "@/components/operator/Button";
-import { FlagshipProject } from "@/components/operator/FlagshipProject";
-import { ProjectCard } from "@/components/operator/ProjectCard";
-import { SectionHeader } from "@/components/operator/SectionHeader";
-import { ImageSlot } from "@/components/operator/ImageSlot";
+import { ArrowRight, ArrowUpRight, ChevronDown, MapPin, Server } from "lucide-react";
+import { motion } from "framer-motion";
+import { PageShell, Container } from "@/components/sections/PageShell";
+import { LinkButton, AnchorButton } from "@/components/sections/Button";
+import { ProjectCard } from "@/components/sections/ProjectCard";
+import { SectionHeader } from "@/components/sections/SectionHeader";
+import { ImageSlot } from "@/components/sections/ImageSlot";
 import { flagshipProject, secondaryProjects } from "@/content/projects";
 import { site } from "@/content/site";
+import { skillGroups } from "@/content/skills";
 import { TextReveal } from "@/components/ui/motion/TextReveal";
-import { SpotlightCard } from "@/components/ui/motion/SpotlightCard";
 import { FadeIn } from "@/components/ui/motion/FadeIn";
 import { StaggerContainer, StaggerItem } from "@/components/ui/motion/StaggerContainer";
-import { Hero3D } from "@/components/ui/motion/Hero3D";
-import { Skills } from "@/components/operator/Skills";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -58,257 +56,305 @@ const principles = [
 function Home() {
   return (
     <PageShell>
-      {/* ============================ HERO ============================ */}
-      <section className="relative overflow-hidden border-b border-op-line">
-        <div aria-hidden="true" className="absolute inset-0 op-grid-backdrop opacity-20" />
-        {/* Soft accent bloom anchored to the system-graph side */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-32 -top-32 h-[520px] w-[520px] rounded-full bg-op-accent/10 opacity-60 blur-[120px]"
-        />
-        <Container className="relative pt-8 pb-16 sm:pt-12 sm:pb-24 lg:pt-16 lg:pb-28">
-          <StaggerContainer className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] xl:grid-cols-[1fr_540px] lg:items-center lg:gap-16 xl:gap-20">
-            <div className="relative z-10">
-              <div className="max-lg:op-glass relative overflow-hidden lg:overflow-visible rounded-[28px] p-7 sm:rounded-[32px] sm:p-12 lg:p-0">
-                {/* top edge highlight */}
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-op-accent/40 to-transparent lg:hidden"
-                />
-
-                <StaggerItem>
-                  <span className="inline-flex items-center gap-2.5 rounded-full border border-op-line bg-op-surface/70 px-3.5 py-1.5 font-op-mono text-[12px] tracking-tight backdrop-blur-md">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-op-accent opacity-60" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-op-accent" />
-                    </span>
-                    <span className="text-op-accent">Open for collaboration</span>
-                    <span className="text-op-line">|</span>
-                    <span className="text-op-text-3">fresh graduate</span>
-                  </span>
-                </StaggerItem>
-
-                <StaggerItem>
-                  <h1 className="mt-7 max-w-[16ch] lg:max-w-none text-[40px] font-bold leading-[1.02] tracking-[-0.035em] text-op-text sm:text-[62px] lg:text-[54px] xl:text-[62px]">
-                    <TextReveal text="Engineering reliable web systems." />
-                  </h1>
-                </StaggerItem>
-
-                <StaggerItem>
-                  <p className="mt-6 max-w-[44ch] text-[19px] font-medium leading-[1.45] text-op-text sm:text-[22px] lg:text-[20px] xl:text-[22px]">
-                    Full-stack developer focused on{" "}
-                    <span className="text-op-accent">robust architecture</span> and precision.
-                  </p>
-                </StaggerItem>
-
-                <StaggerItem>
-                  <p className="mt-5 max-w-[52ch] text-[15.5px] leading-[1.75] text-op-text-2 lg:text-[16px]">
-                    I'm {site.name}. I build functional applications, manage data systems, and
-                    deliver software that performs flawlessly under real-world conditions.
-                  </p>
-                </StaggerItem>
-
-                <StaggerItem>
-                  <div className="mt-9 flex flex-wrap items-center gap-3.5">
-                    <LinkButton
-                      to="/projects"
-                      variant="primary"
-                      className="group h-12 px-7 text-[14px]"
-                    >
-                      View My Projects
-                      <ArrowRight
-                        size={16}
-                        className="transition-transform duration-300 group-hover:translate-x-0.5"
-                      />
-                    </LinkButton>
-                    <LinkButton to="/contact" variant="ghost" className="h-12 px-7 text-[14px]">
-                      Get in Touch
-                    </LinkButton>
-                  </div>
-                </StaggerItem>
-
-                <StaggerItem>
-                  <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-op-line pt-5 font-op-mono text-[12px] text-op-text-3">
-                    <span className="inline-flex items-center gap-1.5">
-                      <MapPin size={13} className="text-op-text-2" />
-                      {site.location}
-                    </span>
-                    <span className="text-op-line">/</span>
-                    <span className="text-op-text-2">{site.role}</span>
-                  </div>
-                </StaggerItem>
-              </div>
-            </div>
-
-            <StaggerItem className="relative -mt-8 h-full min-h-[360px] w-full sm:min-h-[420px] lg:mt-0 xl:min-h-[460px]">
-              {/* corner instrument label — ties the 3D to the "system" theme */}
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute left-0 top-2 z-10 font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-text-3"
-              >
-                // system.graph
+      {/* ================= 1. FULL-SCREEN IMMERSIVE HERO ================= */}
+      <section className="relative flex min-h-[calc(100dvh-3.5rem)] flex-col justify-center overflow-hidden">
+        <Container className="relative z-10 pb-24 pt-10 sm:pt-0">
+          <StaggerContainer className="max-w-[720px]">
+            <StaggerItem>
+              <span className="inline-flex items-center gap-2.5 rounded-full border border-op-line bg-op-surface/60 px-3.5 py-1.5 font-op-mono text-[12px] tracking-tight backdrop-blur-md">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-op-accent opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-op-accent" />
+                </span>
+                <span className="text-op-accent">{site.availability}</span>
+                <span className="text-op-line">|</span>
+                <span className="text-op-text-3">{site.currentStatus.toLowerCase()}</span>
               </span>
-              <Hero3D />
+            </StaggerItem>
+
+            <StaggerItem>
+              <h1 className="mt-8 text-[46px] font-bold leading-[1.0] tracking-[-0.035em] text-op-text sm:text-[72px] lg:text-[82px]">
+                <TextReveal text="Engineering reliable web systems." />
+              </h1>
+            </StaggerItem>
+
+            <StaggerItem>
+              <p className="mt-7 max-w-[46ch] text-[18px] font-medium leading-[1.5] text-op-text-2 sm:text-[21px]">
+                I'm {site.name} — full-stack developer focused on{" "}
+                <span className="text-op-accent">robust architecture</span>, real servers, and
+                software that performs under real-world conditions.
+              </p>
+            </StaggerItem>
+
+            <StaggerItem>
+              <div className="mt-10 flex flex-wrap items-center gap-3.5">
+                <LinkButton
+                  to="/projects"
+                  variant="primary"
+                  className="group h-12 px-7 text-[14px]"
+                >
+                  View My Projects
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5"
+                  />
+                </LinkButton>
+                <LinkButton to="/contact" variant="ghost" className="h-12 px-7 text-[14px]">
+                  Get in Touch
+                </LinkButton>
+              </div>
+            </StaggerItem>
+
+            <StaggerItem>
+              <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 font-op-mono text-[12px] text-op-text-3">
+                <span className="inline-flex items-center gap-1.5">
+                  <MapPin size={13} className="text-op-text-2" />
+                  {site.location}
+                </span>
+                <span className="text-op-line">/</span>
+                <span className="text-op-text-2">{site.role}</span>
+              </div>
             </StaggerItem>
           </StaggerContainer>
         </Container>
+
+        {/* Skip / scroll cue — the pattern requires an escape for impatient users */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center">
+          <a
+            href="#tour"
+            className="pointer-events-auto flex flex-col items-center gap-1.5 font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-text-3 transition-colors hover:text-op-accent"
+          >
+            skip intro — see the work
+            <motion.span
+              aria-hidden="true"
+              animate={{ y: [0, 6, 0] }}
+              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+            >
+              <ChevronDown size={16} />
+            </motion.span>
+          </a>
+        </div>
       </section>
 
-      {/* ====================== OPERATING PRINCIPLES ====================== */}
-      <section className="border-b border-op-line" aria-label="Operating principles">
-        <Container className="py-24 sm:py-28">
-          <FadeIn delay={0.1}>
-            <p className="font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-text-3">
-              // my approach
-            </p>
-          </FadeIn>
-          <StaggerContainer className="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-10">
-            {principles.map((p) => (
-              <StaggerItem key={p.code} className="border-l border-op-line pl-5">
-                <p className="font-op-mono text-[12px] text-op-accent">{p.code}</p>
-                <p className="mt-2 text-[16px] leading-[1.55] text-op-text">{p.line}</p>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </Container>
-      </section>
-
-      {/* ============================ FLAGSHIP ============================ */}
-      <section className="border-b border-op-line">
-        <Container className="py-24 sm:py-32">
-          <FadeIn>
-            <SectionHeader
-              eyebrow="// selected work"
-              title="Recent full-stack project"
-              description="A comprehensive system demonstrating backend architecture and frontend integration."
-            />
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <SpotlightCard className="mb-10">
-              <ImageSlot
-                label={`${flagshipProject.slug}-cover.jpg`}
-                caption="Flagship cover — screenshot, diagram, or hero shot (16:9)."
-                ratio="wide"
-                src={`/${flagshipProject.slug}-cover.jpg`}
+      {/* Everything below eases in over the 3D backdrop */}
+      <div className="op-scrim">
+        {/* ================= 2. GUIDED TOUR — BENTO GRID ================= */}
+        <section id="tour" className="scroll-mt-14 border-b border-op-line">
+          <Container className="py-24 sm:py-28">
+            <FadeIn>
+              <SectionHeader
+                eyebrow="// the tour"
+                title="One engineer, full stack, real servers"
+                description="What I build with, where it runs, and why it stays up."
               />
-            </SpotlightCard>
-            <FlagshipProject project={flagshipProject} />
-          </FadeIn>
-        </Container>
-      </section>
+            </FadeIn>
+            <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {/* Flagship — the big visual tile */}
+              <StaggerItem className="sm:col-span-2 lg:row-span-2">
+                <Link
+                  to="/projects/$slug"
+                  params={{ slug: flagshipProject.slug }}
+                  className="op-bento group flex h-full flex-col overflow-hidden p-6"
+                >
+                  <div className="-mx-6 -mt-6 mb-5 overflow-hidden border-b border-op-line">
+                    <ImageSlot
+                      label={`${flagshipProject.slug}-cover.jpg`}
+                      caption=""
+                      ratio="wide"
+                      src={`/${flagshipProject.slug}-cover.jpg`}
+                    />
+                  </div>
+                  <p className="font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-accent">
+                    // flagship
+                  </p>
+                  <h3 className="mt-2 text-[22px] font-semibold leading-[1.2] text-op-text">
+                    {flagshipProject.title}
+                  </h3>
+                  <p className="mt-2 line-clamp-3 text-[14.5px] leading-[1.6] text-op-text-2">
+                    {flagshipProject.tagline}
+                  </p>
+                  <span className="mt-auto inline-flex items-center gap-1 pt-4 font-op-mono text-[12px] text-op-text-2 transition-colors group-hover:text-op-accent">
+                    Case study <ArrowUpRight size={13} />
+                  </span>
+                </Link>
+              </StaggerItem>
 
-      {/* ============================ CORE TECHNOLOGIES ============================ */}
-      <section className="border-b border-op-line">
-        <Container className="py-24 sm:py-32">
-          <FadeIn>
-            <SectionHeader
-              eyebrow="// stack & tools"
-              title="Technologies I use"
-              description="Languages, frameworks, and tools I have experience working with."
-            />
-          </FadeIn>
-          <div className="mt-10">
-            <Skills />
-          </div>
-        </Container>
-      </section>
+              {/* Principles strip */}
+              <StaggerItem className="sm:col-span-2">
+                <div className="op-bento h-full p-6">
+                  <p className="font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-text-3">
+                    // my approach
+                  </p>
+                  <div className="mt-4 space-y-3.5">
+                    {principles.map((p) => (
+                      <div key={p.code} className="border-l border-op-line pl-4">
+                        <p className="font-op-mono text-[11px] text-op-accent">{p.code}</p>
+                        <p className="mt-0.5 text-[14px] leading-[1.5] text-op-text">{p.line}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </StaggerItem>
 
-      {/* ============================ ALSO RUNNING ============================ */}
-      <section className="border-b border-op-line">
-        <Container className="py-24 sm:py-32">
-          <FadeIn>
-            <SectionHeader
-              eyebrow="// other projects"
-              title="Additional work"
-              description="Other applications and systems I have developed."
-            />
-          </FadeIn>
-          <StaggerContainer className="grid gap-8 md:grid-cols-2 lg:gap-10">
-            {secondaryProjects
-              .filter((p) => ["ubuntu-server-stack", "luung-bali"].includes(p.slug))
-              .map((p) => (
-                <StaggerItem key={p.slug} className="flex h-full flex-col">
-                  <ProjectCard project={p} />
+              {/* Skill domains */}
+              {skillGroups.slice(0, 2).map((g) => (
+                <StaggerItem key={g.domain}>
+                  <div className="op-bento h-full p-6">
+                    <h3 className="text-[15px] font-semibold text-op-text">{g.domain}</h3>
+                    <p className="mt-1.5 text-[13px] leading-[1.55] text-op-text-2">{g.blurb}</p>
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {g.skills.slice(0, 4).map((s) => (
+                        <span
+                          key={s.name}
+                          className="rounded-full border border-op-line bg-op-surface-2/60 px-2.5 py-1 font-op-mono text-[11px] text-op-text-2"
+                        >
+                          {s.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </StaggerItem>
               ))}
-          </StaggerContainer>
-          <div className="mt-8">
-            <Link
-              to="/projects"
-              className="op-link-underline font-op-mono text-[13px] text-op-text-2 hover:text-op-accent"
-            >
-              View all projects →
-            </Link>
-          </div>
-        </Container>
-      </section>
 
-      {/* ============================ ABOUT TEASER ============================ */}
-      <section className="border-b border-op-line">
-        <Container className="py-24 sm:py-32">
-          <SectionHeader eyebrow="// about" title="Dedicated to reliable engineering" />
-          <div className="grid gap-8 md:grid-cols-[260px_1fr] md:items-start md:gap-10">
-            <ImageSlot
-              label="portrait-about.png"
-              caption="Square portrait for the about teaser."
-              ratio="square"
-              src="/profile-hd.png"
-            />
-            <div>
-              <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
-                My approach to software engineering is grounded in practicality. Throughout my
-                academic background and hands-on internships, I have taken ownership of critical
-                systems—from database management to full-stack application development. I prioritize
-                reliable, proven technologies over fleeting trends because my ultimate goal is to
-                build software that users can depend on.
-              </p>
-              <div className="mt-6">
-                <Link
-                  to="/about"
-                  className="op-link-underline font-op-mono text-[13px] text-op-accent"
-                >
-                  Read more about my experience →
-                </Link>
-              </div>
+              {/* Self-hosted ops */}
+              <StaggerItem>
+                <div className="op-bento flex h-full flex-col p-6">
+                  <Server size={18} className="text-op-accent" strokeWidth={1.5} />
+                  <h3 className="mt-3 text-[15px] font-semibold text-op-text">
+                    Self-hosted, self-operated
+                  </h3>
+                  <p className="mt-1.5 text-[13px] leading-[1.55] text-op-text-2">
+                    This site and its AI assistant run on my own Ubuntu server — systemd, Postgres,
+                    tunnels, backups, monitoring.
+                  </p>
+                </div>
+              </StaggerItem>
+
+              {/* Location / availability */}
+              <StaggerItem>
+                <div className="op-bento flex h-full flex-col justify-between p-6">
+                  <div>
+                    <MapPin size={18} className="text-op-accent" strokeWidth={1.5} />
+                    <h3 className="mt-3 text-[15px] font-semibold text-op-text">
+                      Operated from Bali
+                    </h3>
+                    <p className="mt-1.5 text-[13px] leading-[1.55] text-op-text-2">
+                      {site.location} — remote-ready, {site.currentStatus.toLowerCase()}.
+                    </p>
+                  </div>
+                  <a
+                    href={site.whatsapp.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 inline-flex items-center gap-1 font-op-mono text-[12px] text-op-text-2 transition-colors hover:text-op-accent"
+                  >
+                    WhatsApp <ArrowUpRight size={13} />
+                  </a>
+                </div>
+              </StaggerItem>
+            </StaggerContainer>
+          </Container>
+        </section>
+
+        {/* ============== 3. KEY WORK REVEALED — PROJECTS ============== */}
+        <section id="work" className="scroll-mt-14 border-b border-op-line">
+          <Container className="py-24 sm:py-32">
+            <FadeIn>
+              <SectionHeader
+                eyebrow="// other projects"
+                title="Additional work"
+                description="Other applications and systems I have developed."
+              />
+            </FadeIn>
+            <StaggerContainer className="grid gap-6 md:grid-cols-2 lg:gap-8">
+              {secondaryProjects
+                .filter((p) => ["ubuntu-server-stack", "luung-bali"].includes(p.slug))
+                .map((p) => (
+                  <StaggerItem key={p.slug} className="flex h-full flex-col">
+                    <ProjectCard project={p} />
+                  </StaggerItem>
+                ))}
+            </StaggerContainer>
+            <div className="mt-8">
+              <Link
+                to="/projects"
+                className="op-link-underline font-op-mono text-[13px] text-op-text-2 hover:text-op-accent"
+              >
+                View all projects →
+              </Link>
             </div>
-          </div>
-        </Container>
-      </section>
+          </Container>
+        </section>
 
-      {/* ============================ CLOSING CTA ============================ */}
-      <section>
-        <Container className="py-28 sm:py-36">
-          <p className="font-op-mono text-[12px] uppercase tracking-[0.2em] text-op-accent">
-            // open to opportunities
-          </p>
-          <h2 className="mt-3 max-w-[20ch] text-[32px] font-semibold leading-[1.12] tracking-[-0.03em] text-op-text sm:text-[42px]">
-            Looking for a dedicated software engineer?
-          </h2>
-          <p className="mt-4 max-w-[60ch] text-[16px] leading-[1.7] text-op-text-2">
-            Whether you need a full-stack web application, system integration, or reliable
-            infrastructure management, I'm ready to contribute to your team. Let's connect.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <AnchorButton
-              href={site.whatsapp.href}
-              target="_blank"
-              rel="noreferrer"
-              variant="primary"
-            >
-              WhatsApp →
-            </AnchorButton>
-            <AnchorButton href={site.email.href} variant="ghost">
-              Email
-            </AnchorButton>
-            <a
-              href={site.cvHref}
-              className="op-link-underline font-op-mono text-[13px] text-op-text-2 hover:text-op-accent"
-            >
-              View / download CV →
-            </a>
-          </div>
-        </Container>
-      </section>
+        {/* ==================== 4. ABOUT TEASER ==================== */}
+        <section className="border-b border-op-line">
+          <Container className="py-24 sm:py-32">
+            <SectionHeader eyebrow="// about" title="Dedicated to reliable engineering" />
+            <FadeIn>
+              <div className="op-bento grid gap-8 p-7 md:grid-cols-[260px_1fr] md:items-start md:gap-10 md:p-9">
+                <ImageSlot
+                  label="portrait-about.png"
+                  caption="Square portrait for the about teaser."
+                  ratio="square"
+                  src="/profile-hd.png"
+                />
+                <div>
+                  <p className="max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
+                    My approach to software engineering is grounded in practicality. Throughout my
+                    academic background and hands-on internships, I have taken ownership of critical
+                    systems—from database management to full-stack application development. I
+                    prioritize reliable, proven technologies over fleeting trends because my
+                    ultimate goal is to build software that users can depend on.
+                  </p>
+                  <div className="mt-6">
+                    <Link
+                      to="/about"
+                      className="op-link-underline font-op-mono text-[13px] text-op-accent"
+                    >
+                      Read more about my experience →
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </Container>
+        </section>
+
+        {/* ================= 5. CTA AFTER THE TOUR ================= */}
+        <section>
+          <Container className="py-28 sm:py-36">
+            <p className="font-op-mono text-[12px] uppercase tracking-[0.2em] text-op-accent">
+              // open to opportunities
+            </p>
+            <h2 className="mt-3 max-w-[20ch] text-[32px] font-semibold leading-[1.12] tracking-[-0.03em] text-op-text sm:text-[42px]">
+              Looking for a dedicated software engineer?
+            </h2>
+            <p className="mt-4 max-w-[60ch] text-[16px] leading-[1.7] text-op-text-2">
+              Whether you need a full-stack web application, system integration, or reliable
+              infrastructure management, I'm ready to contribute to your team. Let's connect.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <AnchorButton
+                href={site.whatsapp.href}
+                target="_blank"
+                rel="noreferrer"
+                variant="primary"
+              >
+                WhatsApp →
+              </AnchorButton>
+              <AnchorButton href={site.email.href} variant="ghost">
+                Email
+              </AnchorButton>
+              <a
+                href={site.cvHref}
+                className="op-link-underline font-op-mono text-[13px] text-op-text-2 hover:text-op-accent"
+              >
+                View / download CV →
+              </a>
+            </div>
+          </Container>
+        </section>
+      </div>
     </PageShell>
   );
 }

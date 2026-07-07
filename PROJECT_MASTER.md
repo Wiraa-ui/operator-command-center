@@ -63,27 +63,34 @@ Floating chat widget "Operator" yang menjawab pertanyaan soal portofolio, ditena
 | 2026-06-27 | Dark-mode-exclusive design                          | Retired light mode + `ThemeToggle`; aligns with Linear/Vercel/Raycast |
 | 2026-06-27 | Single faded-cyan neon accent (`#2dd4bf`)           | Monochrome slate base; no solid pure colours                          |
 | 2026-06-27 | Replace Spline 3D hero with custom canvas           | Drop `@splinetool/*` (~1MB+); dependency-free, SSR-safe, on-brand     |
-| 2026-07-07 | Redesign v3 pakai skill `ui-ux-pro-max`             | Monokrom zinc + aksen biru; Archivo/Space Grotesk; light mode hidup lagi (toggle fungsional) — membatalkan keputusan dark-only 2026-06-27 |
+| 2026-07-07 | Redesign v3 pakai skill `ui-ux-pro-max`             | Monokrom zinc + aksen biru; Archivo/Space Grotesk; light mode hidup lagi — **digantikan v4 di hari yang sama** |
+| 2026-07-07 | **Redesign v4: 3D immersive full WebGL** (permintaan user) | three.js + R3F + drei; pattern Immersive/Interactive Experience + Bento Grids; slate + hijau; Inter; dark-only lagi; folder `operator/`→`sections/`, tambah `three/` |
 
-## Design System (v3 — 2026-07-07, via skill ui-ux-pro-max)
+## Design System (v4 — 2026-07-07, "Wira Portfolio 3D", via skill ui-ux-pro-max)
 
-Digenerate dari `ui-ux-pro-max --design-system "personal portfolio developer
-creative professional"`: pattern **Portfolio Grid**, style **Motion-Driven**,
-palet monokrom + aksen biru, dukungan **light + dark penuh**. **Sumber
-kebenaran nilai token = `src/styles.css`** (`@theme` + `:root`/`.dark`); teks
-di bawah hanya ringkasan niat, jangan hardcode ulang nilainya di tempat lain.
+Digenerate dari `ui-ux-pro-max --design-system "3D immersive premium creative
+developer portfolio dark cinematic" --variance 8 --motion 9` dan **ter-persist
+di `design-system/wira-portfolio-3d/MASTER.md`** (sumber tunggal rekomendasi;
+nilai token final = `src/styles.css`).
 
-**Palet (dua tema).** `:root` = light (bg `#FAFAFA`, teks zinc `#09090B`,
-aksen `#2563EB`), `.dark` = dark (bg `#09090B`, aksen `#3B82F6` — satu step
-tonal lebih terang, sesuai aturan dark-mode desaturation). Tema dipilih oleh
-inline script di `__root.tsx` (localStorage `theme` → fallback
-`prefers-color-scheme`) sebelum paint; toggle di `Nav.tsx`. Komponen kanvas
-(`Hero3D`) membaca `--op-accent` live + MutationObserver class `dark`.
+- **Pattern:** Immersive/Interactive Experience — hero full-screen interaktif,
+  skip cue untuk user tak sabar, CTA setelah tour, fallback mobile wajib.
+- **Style:** Bento Grids (utility `op-bento`) di atas backdrop WebGL sinematik.
+- **Palet:** "code dark + run green" — bg slate `#0F172A`, surface `#1E293B`,
+  aksen tunggal hijau `#22C55E`, teks `#F8FAFC`. **Dark-only** (immersive).
+- **Tipografi:** Inter (display+body) + JetBrains Mono (label teknis).
 
-**Tipografi.** Display/heading **Archivo** (`--font-op-display`, di-set global
-untuk h1–h4), body **Space Grotesk** (`--font-op-sans`), label teknis/eyebrow
-tetap **JetBrains Mono** (`--font-op-mono`). Heading `letter-spacing` rapat
-(`-0.022em`, h1 `-0.032em`), paragraf `line-height` 1.75.
+**WebGL (src/components/three/):** `SceneCanvas.tsx` = wrapper client-only
+lazy (chunk three.js ±235 KB gzip terpisah, tak memblokir first paint) dengan
+deteksi WebGL → fallback gradien statis; meredup saat scroll (readability) dan
+di sub-halaman (`dim`). `Scene.tsx` = satu `Canvas` global (satu renderer per
+halaman), torus knot wireframe hijau + partikel ≤2600 (1200 di pointer kasar)
++ FogExp2 + camera rig scroll/pointer; `prefers-reduced-motion` →
+`frameloop="demand"` (frame statis). Guardrail dari `--stack threejs` skill.
+
+**Struktur:** `src/components/sections/` (dulu `operator/`) untuk section &
+shared UI, `src/components/three/` untuk scene R3F. `Hero3D.tsx` &
+`SpotlightBackground.tsx` lama dihapus (digantikan scene global).
 
 **Motion** (`src/components/ui/motion/`):
 

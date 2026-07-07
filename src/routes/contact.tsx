@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageShell, Container } from "@/components/operator/PageShell";
-import { AnchorButton } from "@/components/operator/Button";
+import { PageShell, Container } from "@/components/sections/PageShell";
+import { AnchorButton } from "@/components/sections/Button";
 import { site } from "@/content/site";
 
 export const Route = createFileRoute("/contact")({

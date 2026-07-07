@@ -1,8 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Monogram } from "./Monogram";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import { Sun, Moon } from "lucide-react";
+import { useState } from "react";
 
 const links = [
   { to: "/", label: "Home" },
@@ -14,27 +13,10 @@ const links = [
 export function Nav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [hoveredPath, setHoveredPath] = useState<string | null>(null);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-
-  // Sync with the class set pre-paint by the inline theme script in __root.
-  useEffect(() => {
-    setTheme(document.documentElement.classList.contains("dark") ? "dark" : "light");
-  }, []);
-
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    document.documentElement.classList.toggle("dark", next === "dark");
-    try {
-      localStorage.setItem("theme", next);
-    } catch {
-      /* private mode — theme just won't persist */
-    }
-    setTheme(next);
-  };
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-op-line bg-op-bg/85 backdrop-blur"
+      className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-op-line bg-op-bg/60 backdrop-blur-xl"
       role="banner"
     >
       <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between px-4 sm:px-8">
@@ -56,7 +38,7 @@ export function Nav() {
                   l.to === "/"
                     ? pathname === "/"
                     : pathname === l.to || pathname.startsWith(`${l.to}/`);
-                
+
                 const isHovered = hoveredPath === l.to;
 
                 return (
@@ -90,13 +72,6 @@ export function Nav() {
             </ul>
           </nav>
           <div className="hidden sm:flex items-center gap-2 border-l border-op-line pl-6">
-            <button
-              onClick={toggleTheme}
-              className="flex h-8 w-8 items-center justify-center rounded-md text-op-text-3 transition-colors hover:bg-op-surface-2 hover:text-op-text-2"
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
-            </button>
             <button
               onClick={() => {
                 const e = new KeyboardEvent("keydown", { key: "k", metaKey: true });

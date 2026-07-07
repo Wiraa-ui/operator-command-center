@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { PageShell, Container } from "@/components/operator/PageShell";
-import { StatusBadge } from "@/components/operator/StatusBadge";
-import { TechPillRow } from "@/components/operator/TechPill";
-import { ArchDiagram } from "@/components/operator/ArchDiagram";
+import { PageShell, Container } from "@/components/sections/PageShell";
+import { StatusBadge } from "@/components/sections/StatusBadge";
+import { TechPillRow } from "@/components/sections/TechPill";
+import { ArchDiagram } from "@/components/sections/ArchDiagram";
 import { projects, projectBySlug, type Project } from "@/content/projects";
 
 export const Route = createFileRoute("/projects/$slug")({

@@ -6,11 +6,8 @@ export function renderErrorPage(): string {
     <title>This page didn't load</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      :root { --bg: #FAFAFA; --text: #09090B; --text-2: #52525B; --surface: #FFFFFF; --line: rgba(9,9,11,0.08); --accent: #2563EB; --on-accent: #FFFFFF; }
-      @media (prefers-color-scheme: dark) {
-        :root { --bg: #09090B; --text: #FAFAFA; --text-2: #A1A1AA; --surface: #101014; --line: rgba(255,255,255,0.08); --accent: #3B82F6; --on-accent: #09090B; }
-      }
-      body { font: 15px/1.5 "Space Grotesk", system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); display: grid; place-items: center; min-height: 100vh; margin: 0; padding: 1.5rem; }
+      :root { --bg: #0F172A; --text: #F8FAFC; --text-2: #94A3B8; --surface: #1E293B; --line: rgba(148,163,184,0.14); --accent: #22C55E; --on-accent: #0F172A; }
+      body { font: 15px/1.5 "Inter", system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); display: grid; place-items: center; min-height: 100vh; margin: 0; padding: 1.5rem; }
       .card { max-width: 28rem; width: 100%; text-align: center; padding: 2rem; }
       h1 { font-size: 1.25rem; margin: 0 0 0.5rem; }
       p { color: var(--text-2); margin: 0 0 1.5rem; }

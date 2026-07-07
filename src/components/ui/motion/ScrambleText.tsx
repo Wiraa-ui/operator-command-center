@@ -14,7 +14,7 @@ export function ScrambleText({
   text,
   className,
   delay = 0,
-  duration = 0.8,
+  duration = 1.8,
   characters = "abcdefghijklmnopqrstuvwxyz0123456789!#^&*()_+=-<>?[]{}",
 }: ScrambleTextProps) {
   const [displayText, setDisplayText] = useState(text);
