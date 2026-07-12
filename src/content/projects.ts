@@ -75,6 +75,7 @@ export const projects: Project[] = [
     next: "Add document-level access control, scheduled re-ingestion on file changes, and a lightweight web interface as an alternative to Telegram.",
     confidentiality:
       "Document contents and internal procedures are not shown in this case study. Architecture and tooling are public.",
+    preview: "/internal-knowledge-assistant-cover.jpg",
   },
   {
     slug: "ubuntu-server-stack",
@@ -83,6 +84,7 @@ export const projects: Project[] = [
       "Self-hosted server running Docker, Cloudflare Tunnel, and Tailscale. Zero open ports.",
     status: "live",
     stack: ["Ubuntu", "Docker", "Cloudflare Tunnel", "Tailscale"],
+    preview: "/ubuntu-server-stack.jpg",
     overview:
       "A single Ubuntu server hosting personal and operational services behind Cloudflare Tunnel and Tailscale. No inbound ports exposed to the public internet. Every service is containerised, every container is reproducible.",
     problem:
@@ -125,13 +127,12 @@ export const projects: Project[] = [
     state: [
       { label: "Uptime", detail: "Continuous since deployment." },
       { label: "Public attack surface", detail: "Zero open inbound ports." },
-      { label: "Hosted services", detail: "n8n, Qdrant, internal tooling, IKA backend." },
+      { label: "Hosted services", detail: "n8n, Qdrant, internal tooling, portfolio." },
     ],
     lessons:
       "Security through configuration beats security through obscurity. A tunnel + a mesh removes an entire class of mistakes I would otherwise have made.",
     next: "Add automated off-site backups, structured log shipping, and a status page reachable through the tunnel.",
   },
-
 
   {
     slug: "luung-bali",

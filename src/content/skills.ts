@@ -12,44 +12,54 @@ export type SkillGroup = {
 };
 
 export const sourceLabel: Record<SkillSource, string> = {
-  otodidak: "otodidak",
-  sekolah: "sekolah",
+  otodidak: "self-taught",
+  sekolah: "school",
   internship: "internship",
   project: "project",
 };
 
 export const skillGroups: SkillGroup[] = [
   {
-    domain: "Web Development",
-    blurb: "Membangun dan mengelola website untuk klien dan kebutuhan bisnis.",
+    domain: "Frontend Development",
+    blurb: "Building fast, accessible interfaces with modern React tooling.",
     skills: [
-      { name: "Manajemen Website", source: "internship" },
-      { name: "Pemrograman Dasar", source: "sekolah" },
+      { name: "React 19 / TypeScript", source: "project" },
+      { name: "Tailwind CSS 4", source: "project" },
+      { name: "TanStack (Router, Start, Query)", source: "project" },
+      { name: "Framer Motion", source: "project" },
+      { name: "Vite 8", source: "project" },
       { name: "HTML / CSS / JavaScript", source: "sekolah" },
     ],
   },
   {
-    domain: "Administrasi & Data",
-    blurb: "Pengelolaan data fungsional untuk kebutuhan operasional.",
+    domain: "Backend & Infrastructure",
+    blurb: "Running real servers and services with full-stack reliability.",
     skills: [
-      { name: "Word/Excel Basic", source: "sekolah" },
-      { name: "Update Data Produk", source: "internship" },
-      { name: "Ketelitian Data", source: "internship" },
+      { name: "Node.js / Bun", source: "project" },
+      { name: "Express / REST API", source: "project" },
+      { name: "PostgreSQL / Kysely", source: "project" },
+      { name: "Ubuntu Server / systemd", source: "project" },
+      { name: "Docker / Docker Compose", source: "otodidak" },
+      { name: "Cloudflare Tunnel / Tailscale", source: "project" },
     ],
   },
   {
-    domain: "Multimedia & Desain",
-    blurb: "Kemampuan dalam pengelolaan aset visual dan editing.",
+    domain: "AI & Automation",
+    blurb: "Integrating AI and orchestrating workflows for operational systems.",
     skills: [
-      { name: "Basic Editing", source: "otodidak" },
-      { name: "Desain Konseptual Otomotif", source: "sekolah" },
+      { name: "Gemini API (chat + embeddings)", source: "project" },
+      { name: "n8n (workflow automation)", source: "otodidak" },
+      { name: "Qdrant (vector search)", source: "otodidak" },
+      { name: "Telegram Bot API", source: "project" },
     ],
   },
   {
-    domain: "Soft Skills",
-    blurb: "Bekerja secara kolaboratif di lingkungan yang dinamis.",
+    domain: "Tools & Workflow",
+    blurb: "Day-to-day tools and practices for shipping reliable software.",
     skills: [
-      { name: "Kerja Sama Tim", source: "internship" },
+      { name: "Git / GitHub", source: "project" },
+      { name: "Linux CLI", source: "otodidak" },
+      { name: "Conventional Commits", source: "project" },
       { name: "Problem Solving", source: "project" },
     ],
   },

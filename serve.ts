@@ -14,7 +14,7 @@ import { existsSync, statSync } from "node:fs";
 
 const CLIENT = join(import.meta.dir, "dist", "client");
 const port = Number(process.env.PORT ?? 4174);
-const hostname = process.env.HOST ?? "0.0.0.0";
+const hostname = process.env.HOST ?? "127.0.0.1";
 
 Bun.serve({
   port,

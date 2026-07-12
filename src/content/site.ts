@@ -1,6 +1,6 @@
 export const site = {
   name: "I Kadek Wira Wibawa",
-  role: "Software Engineering Student & Web Developer",
+  role: "Software Engineer",
   location: "Medahan, Blahbatuh, Gianyar",
   currentStatus: "Fresh Graduate",
   availability: "Open for Collaboration",
