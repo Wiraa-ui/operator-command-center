@@ -1,8 +1,10 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, ChevronDown, MapPin, Server } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { SpotlightCard } from "@/components/ui/motion/SpotlightCard";
+import { ServerRoomExperience } from "@/components/three/serverroom/Experience";
+import { SceneCanvas } from "@/components/three/SceneCanvas";
 import { PageShell, Container } from "@/components/sections/PageShell";
 import { LinkButton, AnchorButton } from "@/components/sections/Button";
 import { ProjectCard } from "@/components/sections/ProjectCard";
@@ -90,9 +92,52 @@ function CinematicHero({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Room capability gate. SSR + first client paint render the classic DOM
+ * (matching markup → no hydration mismatch, and crawlers index full content);
+ * once the client confirms WebGL and no reduced-motion preference, the
+ * homepage swaps to The Server Room. null = still deciding.
+ */
+function useRoomCapable(): boolean | null {
+  const [capable, setCapable] = useState<boolean | null>(null);
+  useEffect(() => {
+    let webgl = false;
+    try {
+      const c = document.createElement("canvas");
+      webgl = Boolean(c.getContext("webgl2") ?? c.getContext("webgl"));
+    } catch {
+      /* stays false */
+    }
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setCapable(webgl && !reduced);
+  }, []);
+  return capable;
+}
+
 function Home() {
+  const capable = useRoomCapable();
+  const [classic, setClassic] = useState(false);
+  const room = capable === true && !classic;
+
   return (
     <PageShell>
+      {room ? (
+        <ServerRoomExperience onExit={() => setClassic(true)} />
+      ) : (
+        <>
+          {/* Classic view keeps the v4.1 journey backdrop (one renderer max:
+              mounted only when the room canvas is not). */}
+          {capable !== null && <SceneCanvas />}
+          <ClassicHome />
+        </>
+      )}
+    </PageShell>
+  );
+}
+
+function ClassicHome() {
+  return (
+    <>
       {/* ================= 1. FULL-SCREEN IMMERSIVE HERO ================= */}
       <CinematicHero>
         <Container className="relative z-10 pb-24 pt-10 sm:pt-0">
@@ -402,6 +447,6 @@ function Home() {
           </Container>
         </section>
       </div>
-    </PageShell>
+    </>
   );
 }

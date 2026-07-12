@@ -6,7 +6,7 @@ export function renderErrorPage(): string {
     <title>This page didn't load</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      :root { --bg: #0F172A; --text: #F8FAFC; --text-2: #94A3B8; --surface: #1E293B; --line: rgba(148,163,184,0.14); --accent: #22C55E; --on-accent: #0F172A; }
+      :root { --bg: #0F172A; --text: #F8FAFC; --text-2: #94A3B8; --surface: #1E293B; --line: rgba(148,163,184,0.14); --accent: #F59E0B; --on-accent: #0F172A; }
       body { font: 15px/1.5 "Inter", system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); display: grid; place-items: center; min-height: 100vh; margin: 0; padding: 1.5rem; }
       .card { max-width: 28rem; width: 100%; text-align: center; padding: 2rem; }
       h1 { font-size: 1.25rem; margin: 0 0 0.5rem; }

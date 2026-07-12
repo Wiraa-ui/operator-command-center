@@ -21,7 +21,7 @@ import * as THREE from "three";
  * mode="ambient" (subpages): hero station only, no journey — quiet backdrop.
  */
 
-const ACCENT = "#22c55e";
+const ACCENT = "#f59e0b"; // amber — user mandate: no green, no purple
 const BG = "#0f172a";
 const SLATE_METAL = "#16213c";
 

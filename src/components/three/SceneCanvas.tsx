@@ -50,7 +50,7 @@ export function SceneCanvas({ dim = false }: { dim?: boolean }) {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(900px 600px at 75% 20%, rgba(34,197,94,0.14), transparent 60%), radial-gradient(700px 500px at 15% 80%, rgba(56,189,248,0.08), transparent 55%)",
+              "radial-gradient(900px 600px at 75% 20%, rgba(245,158,11,0.14), transparent 60%), radial-gradient(700px 500px at 15% 80%, rgba(56,189,248,0.08), transparent 55%)",
           }}
         />
       )}
