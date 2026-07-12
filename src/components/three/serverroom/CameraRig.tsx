@@ -14,7 +14,7 @@ import { RACK_SPACING, SIDE_X, type Station } from "./types";
  * toward the rack; between stations it looks straight down the aisle. A small
  * pointer parallax (x ±0.3, y ±0.15) keeps idle frames alive.
  *
- * reduced=true → camera parked at the corridor entrance, no per-frame motion.
+ * reduced=true → calm mode: camera z maps 1:1 to scroll, no smoothing/sway/parallax.
  */
 
 const EYE_Y = 1.7; // walking eye height (CONTRACT §Geometri)
@@ -74,9 +74,11 @@ export function RoomCameraRig({ stations, reduced }: { stations: Station[]; redu
 
   useFrame(({ camera, pointer }, dt) => {
     if (reduced) {
-      // Static opening frame at the entrance; no animation work.
-      camera.position.set(0, EYE_Y, START_Z);
-      look.set(0, EYE_Y, START_Z - LOOK_AHEAD);
+      // Calm mode: camera z maps 1:1 to scroll (pure user control) — no
+      // lag-lerp settle, no station sway, no pointer parallax.
+      const camZ = progressToZ(stations, pageProgress());
+      camera.position.set(0, EYE_Y, camZ);
+      look.set(0, EYE_Y, camZ - LOOK_AHEAD);
       camera.lookAt(look);
       return;
     }

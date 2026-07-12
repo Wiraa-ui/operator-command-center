@@ -25,7 +25,7 @@ export default function RoomCanvas({
   return (
     <Canvas
       dpr={[1, 2]}
-      frameloop={reduced ? "demand" : "always"}
+      frameloop="always"
       camera={{ fov: 55, position: [0, 1.7, 4], near: 0.1, far: 50 }}
       gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
     >

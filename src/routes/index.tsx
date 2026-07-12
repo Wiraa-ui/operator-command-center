@@ -87,11 +87,14 @@ function CinematicHero({ children }: { children: React.ReactNode }) {
 /**
  * Room capability gate. SSR + first client paint render the classic DOM
  * (matching markup → no hydration mismatch, and crawlers index full content);
- * once the client confirms WebGL and no reduced-motion preference, the
- * homepage swaps to The Server Room. null = still deciding.
+ * once the client confirms WebGL, the homepage swaps to The Server Room.
+ * Reduced-motion no longer hides the room — it mounts in calm mode instead
+ * (scroll-mapped camera, no autonomous animation; see CameraRig). null =
+ * still deciding.
  */
-function useRoomCapable(): boolean | null {
+function useRoomCapable(): { capable: boolean | null; reduced: boolean } {
   const [capable, setCapable] = useState<boolean | null>(null);
+  const [reduced, setReduced] = useState(false);
   useEffect(() => {
     let webgl = false;
     try {
@@ -100,21 +103,21 @@ function useRoomCapable(): boolean | null {
     } catch {
       /* stays false */
     }
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setCapable(webgl && !reduced);
+    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    setCapable(webgl);
   }, []);
-  return capable;
+  return { capable, reduced };
 }
 
 function Home() {
-  const capable = useRoomCapable();
+  const { capable, reduced } = useRoomCapable();
   const [classic, setClassic] = useState(false);
   const room = capable === true && !classic;
 
   return (
     <PageShell>
       {room ? (
-        <ServerRoomExperience onExit={() => setClassic(true)} />
+        <ServerRoomExperience reduced={reduced} onExit={() => setClassic(true)} />
       ) : (
         <>
           {/* Classic view keeps the v4.1 journey backdrop (one renderer max:
