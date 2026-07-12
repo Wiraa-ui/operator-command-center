@@ -61,6 +61,7 @@ export function SpotlightCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
+      initial={false}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d", transformPerspective: 1000 }}
       className={cn("group relative rounded-xl", className)}
     >

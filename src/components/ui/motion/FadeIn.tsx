@@ -25,11 +25,7 @@ export function FadeIn({
 
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        filter: "blur(12px)",
-        ...directions[direction],
-      }}
+      initial={false}
       whileInView={{
         opacity: 1,
         filter: "blur(0px)",

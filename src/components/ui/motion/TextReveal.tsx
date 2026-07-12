@@ -27,7 +27,7 @@ export function TextReveal({ text, className, delay = 0, stagger = 0.07 }: TextR
     <motion.span
       className={cn("inline-block", className)}
       aria-label={text}
-      initial="hidden"
+      initial={false}
       animate="visible"
       variants={{
         hidden: {},

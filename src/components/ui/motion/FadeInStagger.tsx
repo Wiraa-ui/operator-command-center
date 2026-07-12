@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
 interface FadeInStaggerProps {
@@ -8,15 +8,9 @@ interface FadeInStaggerProps {
 }
 
 export function FadeInStagger({ children, className = "", delay = 0 }: FadeInStaggerProps) {
-  const shouldReduceMotion = useReducedMotion();
-
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   return (
     <motion.div
-      initial="hidden"
+      initial={false}
       whileInView="visible"
       viewport={{ once: true, margin: "-10%" }}
       variants={{
@@ -42,12 +36,6 @@ export function FadeInStaggerItem({
   children: ReactNode;
   className?: string;
 }) {
-  const shouldReduceMotion = useReducedMotion();
-
-  if (shouldReduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   return (
     <motion.div
       variants={{

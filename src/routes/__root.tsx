@@ -7,10 +7,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { MotionConfig } from "framer-motion";
 
-import { ChatWidget } from "@/components/sections/ChatWidget";
+const ChatWidget = lazy(() =>
+  import("@/components/sections/ChatWidget").then((m) => ({ default: m.ChatWidget })),
+);
 
 import appCss from "../styles.css?url";
 
@@ -141,8 +143,19 @@ function RootComponent() {
       <QueryClientProvider client={queryClient}>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
-        <ChatWidget />
+        <ClientOnly>
+          <ChatWidget />
+        </ClientOnly>
       </QueryClientProvider>
     </MotionConfig>
   );
 }
+
+/** Renders children only after client hydration (SSR outputs nothing). */
+function ClientOnly({ children }: { children: ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return <Suspense fallback={null}>{children}</Suspense>;
+}
+

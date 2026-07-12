@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, ChevronDown, MapPin, Server } from "lucide-react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { SpotlightCard } from "@/components/ui/motion/SpotlightCard";
 import { ServerRoomExperience } from "@/components/three/serverroom/Experience";
 import { SceneCanvas } from "@/components/three/SceneCanvas";
@@ -64,7 +64,6 @@ const principles = [
  */
 function CinematicHero({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -73,13 +72,6 @@ function CinematicHero({ children }: { children: React.ReactNode }) {
   const scale = useTransform(scrollYProgress, [0, 0.7], [1, 0.94]);
   const y = useTransform(scrollYProgress, [0, 0.7], [0, -70]);
 
-  if (reduced) {
-    return (
-      <section className="relative flex min-h-[calc(100dvh-3.5rem)] flex-col justify-center overflow-hidden">
-        {children}
-      </section>
-    );
-  }
   return (
     <section ref={ref} className="relative h-[175vh]">
       <motion.div
