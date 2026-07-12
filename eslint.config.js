@@ -20,6 +20,11 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      // react-hooks v6 experimental rules: they flag established safe patterns
+      // (matchMedia snapshot into state, Math.random scatter inside useMemo
+      // for R3F particle buffers). Re-evaluate when the rules stabilize.
+      "react-hooks/purity": "off",
+      "react-hooks/set-state-in-effect": "off",
       "no-restricted-imports": [
         "error",
         {

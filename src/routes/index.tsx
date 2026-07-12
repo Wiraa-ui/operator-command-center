@@ -1,6 +1,8 @@
+import { useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, ChevronDown, MapPin, Server } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { SpotlightCard } from "@/components/ui/motion/SpotlightCard";
 import { PageShell, Container } from "@/components/sections/PageShell";
 import { LinkButton, AnchorButton } from "@/components/sections/Button";
 import { ProjectCard } from "@/components/sections/ProjectCard";
@@ -53,11 +55,46 @@ const principles = [
   },
 ];
 
+/**
+ * Cinematic pinned hero: the copy stays stuck while the extra scroll length
+ * gives the 3D camera a beat of pure scenery — text fades/pulls away as the
+ * journey to the next station begins. Reduced motion → plain static hero.
+ */
+function CinematicHero({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const opacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.7], [1, 0.94]);
+  const y = useTransform(scrollYProgress, [0, 0.7], [0, -70]);
+
+  if (reduced) {
+    return (
+      <section className="relative flex min-h-[calc(100dvh-3.5rem)] flex-col justify-center overflow-hidden">
+        {children}
+      </section>
+    );
+  }
+  return (
+    <section ref={ref} className="relative h-[175vh]">
+      <motion.div
+        style={{ opacity, scale, y }}
+        className="sticky top-14 flex min-h-[calc(100dvh-3.5rem)] flex-col justify-center overflow-hidden"
+      >
+        {children}
+      </motion.div>
+    </section>
+  );
+}
+
 function Home() {
   return (
     <PageShell>
       {/* ================= 1. FULL-SCREEN IMMERSIVE HERO ================= */}
-      <section className="relative flex min-h-[calc(100dvh-3.5rem)] flex-col justify-center overflow-hidden">
+      <CinematicHero>
         <Container className="relative z-10 pb-24 pt-10 sm:pt-0">
           <StaggerContainer className="max-w-[720px]">
             <StaggerItem>
@@ -134,7 +171,7 @@ function Home() {
             </motion.span>
           </a>
         </div>
-      </section>
+      </CinematicHero>
 
       {/* Everything below eases in over the 3D backdrop */}
       <div className="op-scrim">
@@ -151,106 +188,116 @@ function Home() {
             <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {/* Flagship — the big visual tile */}
               <StaggerItem className="sm:col-span-2 lg:row-span-2">
-                <Link
-                  to="/projects/$slug"
-                  params={{ slug: flagshipProject.slug }}
-                  className="op-bento group flex h-full flex-col overflow-hidden p-6"
-                >
-                  <div className="-mx-6 -mt-6 mb-5 overflow-hidden border-b border-op-line">
-                    <ImageSlot
-                      label={`${flagshipProject.slug}-cover.jpg`}
-                      caption=""
-                      ratio="wide"
-                      src={`/${flagshipProject.slug}-cover.jpg`}
-                    />
-                  </div>
-                  <p className="font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-accent">
-                    // flagship
-                  </p>
-                  <h3 className="mt-2 text-[22px] font-semibold leading-[1.2] text-op-text">
-                    {flagshipProject.title}
-                  </h3>
-                  <p className="mt-2 line-clamp-3 text-[14.5px] leading-[1.6] text-op-text-2">
-                    {flagshipProject.tagline}
-                  </p>
-                  <span className="mt-auto inline-flex items-center gap-1 pt-4 font-op-mono text-[12px] text-op-text-2 transition-colors group-hover:text-op-accent">
-                    Case study <ArrowUpRight size={13} />
-                  </span>
-                </Link>
+                <SpotlightCard className="h-full rounded-[24px]" maxTilt={5}>
+                  <Link
+                    to="/projects/$slug"
+                    params={{ slug: flagshipProject.slug }}
+                    className="op-bento group flex h-full flex-col overflow-hidden p-6"
+                  >
+                    <div className="-mx-6 -mt-6 mb-5 overflow-hidden border-b border-op-line">
+                      <ImageSlot
+                        label={`${flagshipProject.slug}-cover.jpg`}
+                        caption=""
+                        ratio="wide"
+                        src={`/${flagshipProject.slug}-cover.jpg`}
+                      />
+                    </div>
+                    <p className="font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-accent">
+                      // flagship
+                    </p>
+                    <h3 className="mt-2 text-[22px] font-semibold leading-[1.2] text-op-text">
+                      {flagshipProject.title}
+                    </h3>
+                    <p className="mt-2 line-clamp-3 text-[14.5px] leading-[1.6] text-op-text-2">
+                      {flagshipProject.tagline}
+                    </p>
+                    <span className="mt-auto inline-flex items-center gap-1 pt-4 font-op-mono text-[12px] text-op-text-2 transition-colors group-hover:text-op-accent">
+                      Case study <ArrowUpRight size={13} />
+                    </span>
+                  </Link>
+                </SpotlightCard>
               </StaggerItem>
 
               {/* Principles strip */}
               <StaggerItem className="sm:col-span-2">
-                <div className="op-bento h-full p-6">
-                  <p className="font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-text-3">
-                    // my approach
-                  </p>
-                  <div className="mt-4 space-y-3.5">
-                    {principles.map((p) => (
-                      <div key={p.code} className="border-l border-op-line pl-4">
-                        <p className="font-op-mono text-[11px] text-op-accent">{p.code}</p>
-                        <p className="mt-0.5 text-[14px] leading-[1.5] text-op-text">{p.line}</p>
-                      </div>
-                    ))}
+                <SpotlightCard className="h-full rounded-[24px]" maxTilt={5}>
+                  <div className="op-bento h-full p-6">
+                    <p className="font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-text-3">
+                      // my approach
+                    </p>
+                    <div className="mt-4 space-y-3.5">
+                      {principles.map((p) => (
+                        <div key={p.code} className="border-l border-op-line pl-4">
+                          <p className="font-op-mono text-[11px] text-op-accent">{p.code}</p>
+                          <p className="mt-0.5 text-[14px] leading-[1.5] text-op-text">{p.line}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </SpotlightCard>
               </StaggerItem>
 
               {/* Skill domains */}
               {skillGroups.slice(0, 2).map((g) => (
                 <StaggerItem key={g.domain}>
-                  <div className="op-bento h-full p-6">
-                    <h3 className="text-[15px] font-semibold text-op-text">{g.domain}</h3>
-                    <p className="mt-1.5 text-[13px] leading-[1.55] text-op-text-2">{g.blurb}</p>
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {g.skills.slice(0, 4).map((s) => (
-                        <span
-                          key={s.name}
-                          className="rounded-full border border-op-line bg-op-surface-2/60 px-2.5 py-1 font-op-mono text-[11px] text-op-text-2"
-                        >
-                          {s.name}
-                        </span>
-                      ))}
+                  <SpotlightCard className="h-full rounded-[24px]" maxTilt={6}>
+                    <div className="op-bento h-full p-6">
+                      <h3 className="text-[15px] font-semibold text-op-text">{g.domain}</h3>
+                      <p className="mt-1.5 text-[13px] leading-[1.55] text-op-text-2">{g.blurb}</p>
+                      <div className="mt-4 flex flex-wrap gap-1.5">
+                        {g.skills.slice(0, 4).map((s) => (
+                          <span
+                            key={s.name}
+                            className="rounded-full border border-op-line bg-op-surface-2/60 px-2.5 py-1 font-op-mono text-[11px] text-op-text-2"
+                          >
+                            {s.name}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  </SpotlightCard>
                 </StaggerItem>
               ))}
 
               {/* Self-hosted ops */}
               <StaggerItem>
-                <div className="op-bento flex h-full flex-col p-6">
-                  <Server size={18} className="text-op-accent" strokeWidth={1.5} />
-                  <h3 className="mt-3 text-[15px] font-semibold text-op-text">
-                    Self-hosted, self-operated
-                  </h3>
-                  <p className="mt-1.5 text-[13px] leading-[1.55] text-op-text-2">
-                    This site and its AI assistant run on my own Ubuntu server — systemd, Postgres,
-                    tunnels, backups, monitoring.
-                  </p>
-                </div>
+                <SpotlightCard className="h-full rounded-[24px]" maxTilt={6}>
+                  <div className="op-bento flex h-full flex-col p-6">
+                    <Server size={18} className="text-op-accent" strokeWidth={1.5} />
+                    <h3 className="mt-3 text-[15px] font-semibold text-op-text">
+                      Self-hosted, self-operated
+                    </h3>
+                    <p className="mt-1.5 text-[13px] leading-[1.55] text-op-text-2">
+                      This site and its AI assistant run on my own Ubuntu server — systemd,
+                      Postgres, tunnels, backups, monitoring.
+                    </p>
+                  </div>
+                </SpotlightCard>
               </StaggerItem>
 
               {/* Location / availability */}
               <StaggerItem>
-                <div className="op-bento flex h-full flex-col justify-between p-6">
-                  <div>
-                    <MapPin size={18} className="text-op-accent" strokeWidth={1.5} />
-                    <h3 className="mt-3 text-[15px] font-semibold text-op-text">
-                      Operated from Bali
-                    </h3>
-                    <p className="mt-1.5 text-[13px] leading-[1.55] text-op-text-2">
-                      {site.location} — remote-ready, {site.currentStatus.toLowerCase()}.
-                    </p>
+                <SpotlightCard className="h-full rounded-[24px]" maxTilt={6}>
+                  <div className="op-bento flex h-full flex-col justify-between p-6">
+                    <div>
+                      <MapPin size={18} className="text-op-accent" strokeWidth={1.5} />
+                      <h3 className="mt-3 text-[15px] font-semibold text-op-text">
+                        Operated from Bali
+                      </h3>
+                      <p className="mt-1.5 text-[13px] leading-[1.55] text-op-text-2">
+                        {site.location} — remote-ready, {site.currentStatus.toLowerCase()}.
+                      </p>
+                    </div>
+                    <a
+                      href={site.whatsapp.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-4 inline-flex items-center gap-1 font-op-mono text-[12px] text-op-text-2 transition-colors hover:text-op-accent"
+                    >
+                      WhatsApp <ArrowUpRight size={13} />
+                    </a>
                   </div>
-                  <a
-                    href={site.whatsapp.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-4 inline-flex items-center gap-1 font-op-mono text-[12px] text-op-text-2 transition-colors hover:text-op-accent"
-                  >
-                    WhatsApp <ArrowUpRight size={13} />
-                  </a>
-                </div>
+                </SpotlightCard>
               </StaggerItem>
             </StaggerContainer>
           </Container>

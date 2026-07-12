@@ -38,10 +38,12 @@ export function StaggerItem({ children, ...props }: HTMLMotionProps<"div">) {
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 16, filter: "blur(12px)" },
+        hidden: { opacity: 0, y: 16, rotateX: 8, transformPerspective: 900, filter: "blur(12px)" },
         visible: {
           opacity: 1,
           y: 0,
+          rotateX: 0,
+          transformPerspective: 900,
           filter: "blur(0px)",
           transition: {
             duration: 1.2,

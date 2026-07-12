@@ -44,8 +44,8 @@ function ProjectsIndex() {
             </FadeInStaggerItem>
             <FadeInStaggerItem>
               <p className="mt-5 max-w-[68ch] text-[16.5px] leading-[1.7] text-op-text-2">
-                Listed by operational weight, not by recency. The flagship comes first because it's the
-                system I'd most want you to evaluate me on.
+                Listed by operational weight, not by recency. The flagship comes first because it's
+                the system I'd most want you to evaluate me on.
               </p>
             </FadeInStaggerItem>
           </FadeInStagger>

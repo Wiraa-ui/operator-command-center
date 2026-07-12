@@ -35,7 +35,13 @@ export function FadeInStagger({ children, className = "", delay = 0 }: FadeInSta
   );
 }
 
-export function FadeInStaggerItem({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function FadeInStaggerItem({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   const shouldReduceMotion = useReducedMotion();
 
   if (shouldReduceMotion) {

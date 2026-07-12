@@ -6,12 +6,15 @@ interface SpotlightCardProps {
   children: ReactNode;
   className?: string;
   spotlightColor?: string;
+  /** Max tilt in degrees toward the cursor (default 3 — restrained). */
+  maxTilt?: number;
 }
 
 export function SpotlightCard({
   children,
   className,
   spotlightColor = "var(--op-accent-glow)", // theme-aware accent
+  maxTilt = 3,
 }: SpotlightCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -30,9 +33,9 @@ export function SpotlightCard({
   const scx = useSpring(cx, springConfig);
   const scy = useSpring(cy, springConfig);
 
-  // Restrained tilt — premium, not gimmicky.
-  const rotateX = useTransform(scy, [-300, 300], [3, -3]);
-  const rotateY = useTransform(scx, [-300, 300], [-3, 3]);
+  // Tilt toward the cursor; depth reads through transformPerspective below.
+  const rotateX = useTransform(scy, [-300, 300], [maxTilt, -maxTilt]);
+  const rotateY = useTransform(scx, [-300, 300], [-maxTilt, maxTilt]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
@@ -58,13 +61,13 @@ export function SpotlightCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d", transformPerspective: 1000 }}
       className={cn("group relative rounded-xl", className)}
     >
       {/* Glowing border ring that tracks the cursor */}
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-20 rounded-xl transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0 z-20 rounded-[inherit] transition-opacity duration-500"
         style={{
           opacity: isHovered ? 1 : 0,
           background: borderGlow,
@@ -77,7 +80,7 @@ export function SpotlightCard({
       {/* Soft interior spotlight */}
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-10 rounded-xl transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] transition-opacity duration-500"
         style={{ opacity: isHovered ? 1 : 0, background: spotlight }}
       />
       {children}

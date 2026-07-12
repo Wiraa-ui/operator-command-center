@@ -30,12 +30,12 @@ export function CommandPalette() {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[20vh] sm:pt-[25vh]">
-      <div 
-        className="fixed inset-0 bg-op-bg/80 backdrop-blur-sm" 
+      <div
+        className="fixed inset-0 bg-op-bg/80 backdrop-blur-sm"
         onClick={() => setOpen(false)}
         aria-hidden="true"
       />
-      <Command 
+      <Command
         className="op-glass relative z-10 w-full max-w-[640px] overflow-hidden rounded-xl border border-op-line shadow-2xl mx-4 animate-in fade-in zoom-in-95 duration-200"
         onKeyDown={(e) => {
           if (e.key === "Escape") setOpen(false);
@@ -43,9 +43,9 @@ export function CommandPalette() {
       >
         <div className="flex items-center border-b border-op-line px-4" cmdk-input-wrapper="">
           <Search className="mr-2 h-5 w-5 shrink-0 text-op-text-3" />
-          <Command.Input 
-            autoFocus 
-            placeholder="Type a command or search..." 
+          <Command.Input
+            autoFocus
+            placeholder="Type a command or search..."
             className="flex h-12 w-full rounded-md bg-transparent py-3 text-[15px] outline-none placeholder:text-op-text-3 text-op-text"
           />
         </div>
@@ -54,8 +54,11 @@ export function CommandPalette() {
             No results found.
           </Command.Empty>
 
-          <Command.Group heading="Navigation" className="text-op-text-3 text-[12px] font-op-mono p-1">
-            <Command.Item 
+          <Command.Group
+            heading="Navigation"
+            className="text-op-text-3 text-[12px] font-op-mono p-1"
+          >
+            <Command.Item
               onSelect={() => runCommand(() => navigate({ to: "/" }))}
               className="relative flex cursor-pointer select-none items-center rounded-md px-3 py-2.5 text-[14px] text-op-text-2 outline-none aria-selected:bg-op-surface-2 aria-selected:text-op-accent group transition-colors"
             >
@@ -63,7 +66,7 @@ export function CommandPalette() {
               <span>Home</span>
               <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-opacity group-aria-selected:opacity-100" />
             </Command.Item>
-            <Command.Item 
+            <Command.Item
               onSelect={() => runCommand(() => navigate({ to: "/projects" }))}
               className="relative flex cursor-pointer select-none items-center rounded-md px-3 py-2.5 text-[14px] text-op-text-2 outline-none aria-selected:bg-op-surface-2 aria-selected:text-op-accent group transition-colors"
             >
@@ -71,7 +74,7 @@ export function CommandPalette() {
               <span>Projects</span>
               <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-opacity group-aria-selected:opacity-100" />
             </Command.Item>
-            <Command.Item 
+            <Command.Item
               onSelect={() => runCommand(() => navigate({ to: "/about" }))}
               className="relative flex cursor-pointer select-none items-center rounded-md px-3 py-2.5 text-[14px] text-op-text-2 outline-none aria-selected:bg-op-surface-2 aria-selected:text-op-accent group transition-colors"
             >
@@ -79,7 +82,7 @@ export function CommandPalette() {
               <span>About</span>
               <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-opacity group-aria-selected:opacity-100" />
             </Command.Item>
-            <Command.Item 
+            <Command.Item
               onSelect={() => runCommand(() => navigate({ to: "/contact" }))}
               className="relative flex cursor-pointer select-none items-center rounded-md px-3 py-2.5 text-[14px] text-op-text-2 outline-none aria-selected:bg-op-surface-2 aria-selected:text-op-accent group transition-colors"
             >
@@ -88,11 +91,11 @@ export function CommandPalette() {
               <ArrowRight className="ml-auto h-4 w-4 opacity-0 transition-opacity group-aria-selected:opacity-100" />
             </Command.Item>
           </Command.Group>
-          
+
           <Command.Separator className="-mx-2 my-1 h-px bg-op-line" />
 
           <Command.Group heading="External" className="text-op-text-3 text-[12px] font-op-mono p-1">
-            <Command.Item 
+            <Command.Item
               onSelect={() => runCommand(() => window.open(site.cvHref, "_blank"))}
               className="relative flex cursor-pointer select-none items-center rounded-md px-3 py-2.5 text-[14px] text-op-text-2 outline-none aria-selected:bg-op-surface-2 aria-selected:text-op-accent group transition-colors"
             >

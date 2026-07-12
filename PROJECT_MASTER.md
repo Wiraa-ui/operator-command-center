@@ -48,6 +48,7 @@ Floating chat widget "Operator" yang menjawab pertanyaan soal portofolio, ditena
 - **Workflow source:** `docs/n8n/portfolio-chat.json` (punya field `id`, `active:false` di file). Key TIDAK ada di file ini (tracked git).
 
 ### Gotcha operasional n8n (chatbot)
+
 - `n8n import:workflow` **mereset `active` ke nilai di file (false)**. Tiap re-import → wajib `docker exec n8n n8n update:workflow --id=portfolio-chat --active=true` **lalu restart n8n** (`cd ~/docker/n8n && docker compose restart`) agar webhook terdaftar.
 - Setelah restart, webhook butuh ~5-10 dtk untuk terdaftar (poll `POST /webhook/portfolio-chat` sampai 200; sebelum itu balas 404).
 - Ganti key/env: edit `.env` lalu `docker compose up -d --force-recreate` (plain `up -d` kadang tak deteksi perubahan isi `.env`).
@@ -56,14 +57,14 @@ Floating chat widget "Operator" yang menjawab pertanyaan soal portofolio, ditena
 
 ## Decisions
 
-| Date       | Decision                                            | Notes                                                                 |
-| ---------- | --------------------------------------------------- | --------------------------------------------------------------------- |
-| 2026-06-17 | Use a single `PROJECT_MASTER.md` as source of truth | Avoid fragmented planning docs                                        |
-| 2026-06-17 | Keep portfolio visually premium and modern          | Dark, refined, minimal, not generic template styling                  |
-| 2026-06-27 | Dark-mode-exclusive design                          | Retired light mode + `ThemeToggle`; aligns with Linear/Vercel/Raycast |
-| 2026-06-27 | Single faded-cyan neon accent (`#2dd4bf`)           | Monochrome slate base; no solid pure colours                          |
-| 2026-06-27 | Replace Spline 3D hero with custom canvas           | Drop `@splinetool/*` (~1MB+); dependency-free, SSR-safe, on-brand     |
-| 2026-07-07 | Redesign v3 pakai skill `ui-ux-pro-max`             | Monokrom zinc + aksen biru; Archivo/Space Grotesk; light mode hidup lagi — **digantikan v4 di hari yang sama** |
+| Date       | Decision                                                   | Notes                                                                                                                                                                |
+| ---------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-17 | Use a single `PROJECT_MASTER.md` as source of truth        | Avoid fragmented planning docs                                                                                                                                       |
+| 2026-06-17 | Keep portfolio visually premium and modern                 | Dark, refined, minimal, not generic template styling                                                                                                                 |
+| 2026-06-27 | Dark-mode-exclusive design                                 | Retired light mode + `ThemeToggle`; aligns with Linear/Vercel/Raycast                                                                                                |
+| 2026-06-27 | Single faded-cyan neon accent (`#2dd4bf`)                  | Monochrome slate base; no solid pure colours                                                                                                                         |
+| 2026-06-27 | Replace Spline 3D hero with custom canvas                  | Drop `@splinetool/*` (~1MB+); dependency-free, SSR-safe, on-brand                                                                                                    |
+| 2026-07-07 | Redesign v3 pakai skill `ui-ux-pro-max`                    | Monokrom zinc + aksen biru; Archivo/Space Grotesk; light mode hidup lagi — **digantikan v4 di hari yang sama**                                                       |
 | 2026-07-07 | **Redesign v4: 3D immersive full WebGL** (permintaan user) | three.js + R3F + drei; pattern Immersive/Interactive Experience + Bento Grids; slate + hijau; Inter; dark-only lagi; folder `operator/`→`sections/`, tambah `three/` |
 
 ## Design System (v4 — 2026-07-07, "Wira Portfolio 3D", via skill ui-ux-pro-max)
@@ -85,8 +86,9 @@ lazy (chunk three.js ±235 KB gzip terpisah, tak memblokir first paint) dengan
 deteksi WebGL → fallback gradien statis; meredup saat scroll (readability) dan
 di sub-halaman (`dim`). `Scene.tsx` = satu `Canvas` global (satu renderer per
 halaman), torus knot wireframe hijau + partikel ≤2600 (1200 di pointer kasar)
-+ FogExp2 + camera rig scroll/pointer; `prefers-reduced-motion` →
-`frameloop="demand"` (frame statis). Guardrail dari `--stack threejs` skill.
+
+- FogExp2 + camera rig scroll/pointer; `prefers-reduced-motion` →
+  `frameloop="demand"` (frame statis). Guardrail dari `--stack threejs` skill.
 
 **Struktur:** `src/components/sections/` (dulu `operator/`) untuk section &
 shared UI, `src/components/three/` untuk scene R3F. `Hero3D.tsx` &

@@ -1,1 +1,271 @@
-{"nodes": [{"id": "home_rensho_projects_portfolio_project_master_md", "label": "PROJECT_MASTER.md", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L1"}, {"id": "portfolio_project_master_project_master_md", "label": "PROJECT_MASTER.md", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L1"}, {"id": "portfolio_project_master_project_overview", "label": "Project Overview", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L3"}, {"id": "portfolio_project_master_current_status", "label": "Current Status", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L11"}, {"id": "portfolio_project_master_architecture", "label": "Architecture", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L26"}, {"id": "portfolio_project_master_chatbot_assistant_2026_06_29", "label": "Chatbot Assistant (2026-06-29)", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L34"}, {"id": "portfolio_project_master_decisions", "label": "Decisions", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L49"}, {"id": "portfolio_project_master_design_system_v2_2026_06_27", "label": "Design System (v2 \u2014 2026-06-27)", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L59"}, {"id": "portfolio_project_master_completed_tasks", "label": "Completed Tasks", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L94"}, {"id": "portfolio_project_master_current_work", "label": "Current Work", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L102"}, {"id": "portfolio_project_master_pending_tasks", "label": "Pending Tasks", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L110"}, {"id": "portfolio_project_master_risks", "label": "Risks", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L117"}, {"id": "portfolio_project_master_blockers", "label": "Blockers", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L123"}, {"id": "portfolio_project_master_environment", "label": "Environment", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L127"}, {"id": "portfolio_project_master_file_structure", "label": "File Structure", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L132"}, {"id": "portfolio_project_master_changelog", "label": "Changelog", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L140"}, {"id": "portfolio_project_master_handoff_notes", "label": "Handoff Notes", "file_type": "document", "source_file": "PROJECT_MASTER.md", "source_location": "L152"}], "edges": [{"source": "home_rensho_projects_portfolio_project_master_md", "target": "portfolio_project_master_project_master_md", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L1", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_project_overview", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L3", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_current_status", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L11", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_architecture", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L26", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_chatbot_assistant_2026_06_29", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L34", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_decisions", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L49", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_design_system_v2_2026_06_27", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L59", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_completed_tasks", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L94", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_current_work", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L102", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_pending_tasks", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L110", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_risks", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L117", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_blockers", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L123", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_environment", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L127", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_file_structure", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L132", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_changelog", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L140", "weight": 1.0}, {"source": "portfolio_project_master_project_master_md", "target": "portfolio_project_master_handoff_notes", "relation": "contains", "confidence": "EXTRACTED", "source_file": "PROJECT_MASTER.md", "source_location": "L152", "weight": 1.0}], "input_tokens": 0, "output_tokens": 0}
+{
+  "nodes": [
+    {
+      "id": "home_rensho_projects_portfolio_project_master_md",
+      "label": "PROJECT_MASTER.md",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "portfolio_project_master_project_master_md",
+      "label": "PROJECT_MASTER.md",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "portfolio_project_master_project_overview",
+      "label": "Project Overview",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L3"
+    },
+    {
+      "id": "portfolio_project_master_current_status",
+      "label": "Current Status",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L11"
+    },
+    {
+      "id": "portfolio_project_master_architecture",
+      "label": "Architecture",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L26"
+    },
+    {
+      "id": "portfolio_project_master_chatbot_assistant_2026_06_29",
+      "label": "Chatbot Assistant (2026-06-29)",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L34"
+    },
+    {
+      "id": "portfolio_project_master_decisions",
+      "label": "Decisions",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L49"
+    },
+    {
+      "id": "portfolio_project_master_design_system_v2_2026_06_27",
+      "label": "Design System (v2 \u2014 2026-06-27)",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L59"
+    },
+    {
+      "id": "portfolio_project_master_completed_tasks",
+      "label": "Completed Tasks",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L94"
+    },
+    {
+      "id": "portfolio_project_master_current_work",
+      "label": "Current Work",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L102"
+    },
+    {
+      "id": "portfolio_project_master_pending_tasks",
+      "label": "Pending Tasks",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L110"
+    },
+    {
+      "id": "portfolio_project_master_risks",
+      "label": "Risks",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L117"
+    },
+    {
+      "id": "portfolio_project_master_blockers",
+      "label": "Blockers",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L123"
+    },
+    {
+      "id": "portfolio_project_master_environment",
+      "label": "Environment",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L127"
+    },
+    {
+      "id": "portfolio_project_master_file_structure",
+      "label": "File Structure",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L132"
+    },
+    {
+      "id": "portfolio_project_master_changelog",
+      "label": "Changelog",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L140"
+    },
+    {
+      "id": "portfolio_project_master_handoff_notes",
+      "label": "Handoff Notes",
+      "file_type": "document",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L152"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_rensho_projects_portfolio_project_master_md",
+      "target": "portfolio_project_master_project_master_md",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_project_overview",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_current_status",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_architecture",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_chatbot_assistant_2026_06_29",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_decisions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_design_system_v2_2026_06_27",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_completed_tasks",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_current_work",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_pending_tasks",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_risks",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_blockers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_environment",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L127",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_file_structure",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_changelog",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "portfolio_project_master_project_master_md",
+      "target": "portfolio_project_master_handoff_notes",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PROJECT_MASTER.md",
+      "source_location": "L152",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

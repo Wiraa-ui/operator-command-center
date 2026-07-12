@@ -36,9 +36,7 @@
         "url": "https://api.groq.com/openai/v1/chat/completions",
         "sendHeaders": true,
         "headerParameters": {
-          "parameters": [
-            { "name": "Authorization", "value": "=Bearer {{ $env.GROQ_API_KEY }}" }
-          ]
+          "parameters": [{ "name": "Authorization", "value": "=Bearer {{ $env.GROQ_API_KEY }}" }]
         },
         "sendBody": true,
         "specifyBody": "json",
@@ -60,9 +58,7 @@
         "url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
         "sendHeaders": true,
         "headerParameters": {
-          "parameters": [
-            { "name": "Authorization", "value": "=Bearer {{ $env.GEMINI_API_KEY }}" }
-          ]
+          "parameters": [{ "name": "Authorization", "value": "=Bearer {{ $env.GEMINI_API_KEY }}" }]
         },
         "sendBody": true,
         "specifyBody": "json",

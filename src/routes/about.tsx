@@ -86,7 +86,10 @@ function About() {
 
       {/* How I think */}
       <section className="border-b border-op-line relative overflow-hidden">
-        <div aria-hidden="true" className="absolute inset-0 bg-op-accent/5 opacity-50 blur-3xl pointer-events-none" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-op-accent/5 opacity-50 blur-3xl pointer-events-none"
+        />
         <Container className="py-14 sm:py-16 relative">
           <FadeInStagger>
             <FadeInStaggerItem>
@@ -96,8 +99,8 @@ function About() {
               <p className="max-w-[68ch] text-[16.5px] leading-[1.8] text-op-text-2">
                 Technology is a means, not an identity. The right tool is the one the operator can
                 still maintain six months from now without me in the room. I default to
-                long-term-supported, well-documented, boring choices — Ubuntu, Docker, n8n, structured
-                spreadsheets — because they survive contact with real people.
+                long-term-supported, well-documented, boring choices — Ubuntu, Docker, n8n,
+                structured spreadsheets — because they survive contact with real people.
               </p>
               <p className="mt-6 max-w-[68ch] text-[16.5px] leading-[1.8] text-op-text-2">
                 I treat infrastructure as a first-class discipline. A self-hosted server with zero
@@ -148,7 +151,10 @@ function About() {
 
       {/* Skills */}
       <section className="border-b border-op-line relative overflow-hidden">
-        <div aria-hidden="true" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-op-accent/5 opacity-50 blur-[100px] pointer-events-none rounded-full" />
+        <div
+          aria-hidden="true"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-op-accent/5 opacity-50 blur-[100px] pointer-events-none rounded-full"
+        />
         <Container className="py-14 sm:py-16 relative">
           <FadeInStagger>
             <FadeInStaggerItem>
@@ -163,15 +169,19 @@ function About() {
                 // First item spans 2 columns, others span 1 to create an asymmetric bento box feel
                 const isLarge = i === 0;
                 return (
-                  <SpotlightCard 
-                    key={g.domain} 
-                    className={`op-glass rounded-[24px] p-6 sm:p-8 flex flex-col h-full ${isLarge ? 'md:col-span-2' : ''}`}
+                  <SpotlightCard
+                    key={g.domain}
+                    className={`op-glass rounded-[24px] p-6 sm:p-8 flex flex-col h-full ${isLarge ? "md:col-span-2" : ""}`}
                   >
                     <div className="mb-6">
                       <h3 className="text-[20px] font-semibold text-op-text">{g.domain}</h3>
-                      <p className="mt-2 text-[14.5px] text-op-text-2 leading-[1.6] max-w-[40ch]">{g.blurb}</p>
+                      <p className="mt-2 text-[14.5px] text-op-text-2 leading-[1.6] max-w-[40ch]">
+                        {g.blurb}
+                      </p>
                     </div>
-                    <ul className={`mt-auto grid gap-3 ${isLarge ? 'md:grid-cols-2 gap-x-8' : 'flex flex-col'}`}>
+                    <ul
+                      className={`mt-auto grid gap-3 ${isLarge ? "md:grid-cols-2 gap-x-8" : "flex flex-col"}`}
+                    >
                       {g.skills.map((s) => (
                         <li
                           key={s.name}
@@ -218,15 +228,17 @@ function About() {
             <FadeInStaggerItem>
               <div className="grid gap-4 lg:grid-cols-3">
                 {horizons.map((h, i) => (
-                  <SpotlightCard 
-                    key={h.code} 
+                  <SpotlightCard
+                    key={h.code}
                     className="op-glass rounded-[20px] p-8 flex flex-col h-full transition-transform hover:-translate-y-1"
                   >
                     <div className="flex items-center justify-between mb-4">
                       <p className="font-op-mono text-[12px] uppercase tracking-[0.2em] text-op-accent">
                         // {h.code}
                       </p>
-                      <span className="text-[32px] font-bold text-op-text-3/30 leading-none">0{i + 1}</span>
+                      <span className="text-[32px] font-bold text-op-text-3/30 leading-none">
+                        0{i + 1}
+                      </span>
                     </div>
                     <h3 className="text-[19px] font-semibold text-op-text mb-3">{h.title}</h3>
                     <p className="text-[15px] leading-[1.7] text-op-text-2 mt-auto">{h.line}</p>

@@ -26,10 +26,11 @@ export function SceneCanvas({ dim = false }: { dim?: boolean }) {
     setMode(supportsWebGL() ? "webgl" : "fallback");
   }, []);
 
-  // Dim the scene as content scrolls over it so text stays readable.
-  // Content-heavy subpages (dim) keep it as a quiet ambient layer instead.
+  // On the homepage the scene IS the journey — it only softens slightly while
+  // content passes over it (the scrim + fog handle readability). Content-heavy
+  // subpages (dim) keep it as a quiet ambient layer instead.
   const { scrollY } = useScroll();
-  const scrollOpacity = useTransform(scrollY, [0, 900], [1, 0.38]);
+  const scrollOpacity = useTransform(scrollY, [0, 700], [1, 0.62]);
   const opacity = dim ? 0.3 : scrollOpacity;
 
   if (mode === "pending") return null;
@@ -42,7 +43,7 @@ export function SceneCanvas({ dim = false }: { dim?: boolean }) {
     >
       {mode === "webgl" ? (
         <Suspense fallback={null}>
-          <Scene />
+          <Scene mode={dim ? "ambient" : "journey"} />
         </Suspense>
       ) : (
         <div
