@@ -5,18 +5,18 @@
     "semantic_hash": ""
   },
   "eslint.config.js": {
-    "mtime": 1781686278.8998415,
-    "ast_hash": "345bdd57e188e0e4525edcd00e5003f5",
+    "mtime": 1783835603.6898813,
+    "ast_hash": "5f647825d081ea8cdf96f2f5ba535ead",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783433308.6054337,
-    "ast_hash": "f351ce64461a3568f636bd06afe87eaf",
+    "mtime": 1783835473.6485567,
+    "ast_hash": "39a48635341f9c9f6119b05db630404c",
     "semantic_hash": ""
   },
   "serve.ts": {
-    "mtime": 1782734303.3247972,
-    "ast_hash": "689f0e401321f1657325847329ed59e8",
+    "mtime": 1783835521.2453017,
+    "ast_hash": "fd5d71f67239924bedf937468273fe69",
     "semantic_hash": ""
   },
   "src/components/ui/motion/FadeIn.tsx": {
@@ -35,13 +35,13 @@
     "semantic_hash": ""
   },
   "src/components/ui/motion/SpotlightCard.tsx": {
-    "mtime": 1783432567.2191136,
-    "ast_hash": "94e316c2b8aeba9d1a737a4de0130fa1",
+    "mtime": 1783835374.7651203,
+    "ast_hash": "a7456bae1c27c1b0260ff298b69d9b3c",
     "semantic_hash": ""
   },
   "src/components/ui/motion/StaggerContainer.tsx": {
-    "mtime": 1782657228.4686031,
-    "ast_hash": "2e01bce52e226d29e7ddfb17b7687bb5",
+    "mtime": 1783835350.1792681,
+    "ast_hash": "ffa66908066647ee750a1ca7ca3e0a19",
     "semantic_hash": ""
   },
   "src/content/achievements.ts": {
@@ -105,8 +105,8 @@
     "semantic_hash": ""
   },
   "src/routeTree.gen.ts": {
-    "mtime": 1781692695.3015,
-    "ast_hash": "53a4bdad1ddd9676ac2ce6b50a32d306",
+    "mtime": 1783835106.2329535,
+    "ast_hash": "8c403df9b0d59e44a0cb157cc1bc2376",
     "semantic_hash": ""
   },
   "src/router.tsx": {
@@ -120,8 +120,8 @@
     "semantic_hash": ""
   },
   "src/routes/about.tsx": {
-    "mtime": 1783433425.922342,
-    "ast_hash": "18dd62b8d46d2cccfc1345c40ea3a5e8",
+    "mtime": 1783835524.8322828,
+    "ast_hash": "819d0e9a0bb7edf014cc7e866cfff89c",
     "semantic_hash": ""
   },
   "src/routes/contact.tsx": {
@@ -130,8 +130,8 @@
     "semantic_hash": ""
   },
   "src/routes/index.tsx": {
-    "mtime": 1783433851.1565452,
-    "ast_hash": "aec32b4baa99cbd3f3d74bc96a5989f3",
+    "mtime": 1783835525.178281,
+    "ast_hash": "e33469764ac75ae5459c53fb0a9a4692",
     "semantic_hash": ""
   },
   "src/routes/projects.$slug.tsx": {
@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "src/routes/projects.index.tsx": {
-    "mtime": 1783433425.9233422,
-    "ast_hash": "d9c125cd3db7f32aac9443063b464c66",
+    "mtime": 1783835525.3352802,
+    "ast_hash": "75884cf910161874eb4317d532d11a45",
     "semantic_hash": ""
   },
   "src/routes/projects.tsx": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1783433920.2593546,
-    "ast_hash": "1c7d0437c93222c43b99fa52b91516f5",
+    "mtime": 1783835958.808304,
+    "ast_hash": "3a1492acc74e40ecff46bfc1da0db41b",
     "semantic_hash": ""
   },
   "README.md": {
@@ -225,8 +225,8 @@
     "semantic_hash": ""
   },
   "docs/n8n/portfolio-chat.json": {
-    "mtime": 1782738126.2443936,
-    "ast_hash": "7a2f65aef11e0b90b40f603910360950",
+    "mtime": 1783835514.6103368,
+    "ast_hash": "8115bd0c5784683ffbb95c67a3406aea",
     "semantic_hash": ""
   },
   "src/components/ui/motion/TextReveal.tsx": {
@@ -260,13 +260,13 @@
     "semantic_hash": ""
   },
   "src/components/ui/CommandPalette.tsx": {
-    "mtime": 1782739737.329184,
-    "ast_hash": "4ff78c17001027f5d7824bdf1e954407",
+    "mtime": 1783835523.3702905,
+    "ast_hash": "090bf199646a5a37352a06ac50009c9f",
     "semantic_hash": ""
   },
   "src/components/ui/motion/FadeInStagger.tsx": {
-    "mtime": 1782739781.8747575,
-    "ast_hash": "c969f6e10fed897e1847ca96d2800b69",
+    "mtime": 1783835523.5952892,
+    "ast_hash": "47cf0eb698db8a3c7fed1cb2429e91cf",
     "semantic_hash": ""
   },
   "src/components/sections/ArchDiagram.tsx": {
@@ -285,8 +285,8 @@
     "semantic_hash": ""
   },
   "src/components/sections/FlagshipProject.tsx": {
-    "mtime": 1782738745.2528493,
-    "ast_hash": "141b85740354f955379c31684da1ff62",
+    "mtime": 1783835522.0792973,
+    "ast_hash": "e2286a192f936e10b5a502c48155da46",
     "semantic_hash": ""
   },
   "src/components/sections/Footer.tsx": {
@@ -315,8 +315,8 @@
     "semantic_hash": ""
   },
   "src/components/sections/ProjectCard.tsx": {
-    "mtime": 1783432633.1345375,
-    "ast_hash": "fe5b53c3fb04f451e2192dc0107d6333",
+    "mtime": 1783835522.4502954,
+    "ast_hash": "253c74f2d111daac3c447b5c37bad40a",
     "semantic_hash": ""
   },
   "src/components/sections/SectionHeader.tsx": {
@@ -350,18 +350,18 @@
     "semantic_hash": ""
   },
   "src/components/three/Scene.tsx": {
-    "mtime": 1783433851.1565452,
-    "ast_hash": "aca601e122b099e986c4b9ce05145729",
+    "mtime": 1783835522.9542928,
+    "ast_hash": "689042763261a1c5cc64f2ca657711d5",
     "semantic_hash": ""
   },
   "src/components/three/SceneCanvas.tsx": {
-    "mtime": 1783433728.1210663,
-    "ast_hash": "598c34a44ab037178e611c5dd6e5dff3",
+    "mtime": 1783835318.4114645,
+    "ast_hash": "95b2a3a7f5af93a3e06c1e3280f90bbf",
     "semantic_hash": ""
   },
   "design-system/wira-portfolio-3d/MASTER.md": {
-    "mtime": 1783433242.0213058,
-    "ast_hash": "c71a454e061926ada8a55f85aca7de9b",
+    "mtime": 1783835514.5153372,
+    "ast_hash": "6f744b064353d4586742a82f661013d2",
     "semantic_hash": ""
   }
 }

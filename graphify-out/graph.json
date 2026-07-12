@@ -210,7 +210,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "package",
-      "community": 8,
+      "community": 5,
       "norm_label": "package.json"
     },
     {
@@ -220,7 +220,7 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "package_name",
-      "community": 8,
+      "community": 5,
       "norm_label": "name"
     },
     {
@@ -230,7 +230,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "package_private",
-      "community": 8,
+      "community": 5,
       "norm_label": "private"
     },
     {
@@ -240,7 +240,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "package_sideeffects",
-      "community": 8,
+      "community": 5,
       "norm_label": "sideeffects"
     },
     {
@@ -250,7 +250,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "package_type",
-      "community": 8,
+      "community": 5,
       "norm_label": "type"
     },
     {
@@ -260,7 +260,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "package_engines",
-      "community": 8,
+      "community": 5,
       "norm_label": "engines"
     },
     {
@@ -270,7 +270,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "package_engines_node",
-      "community": 8,
+      "community": 5,
       "norm_label": "node"
     },
     {
@@ -280,7 +280,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "package_scripts",
-      "community": 8,
+      "community": 5,
       "norm_label": "scripts"
     },
     {
@@ -290,7 +290,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "package_scripts_dev",
-      "community": 8,
+      "community": 5,
       "norm_label": "dev"
     },
     {
@@ -300,7 +300,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "package_scripts_build",
-      "community": 8,
+      "community": 5,
       "norm_label": "build"
     },
     {
@@ -310,7 +310,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "package_scripts_build_dev",
-      "community": 8,
+      "community": 5,
       "norm_label": "build:dev"
     },
     {
@@ -320,7 +320,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "package_scripts_preview",
-      "community": 8,
+      "community": 5,
       "norm_label": "preview"
     },
     {
@@ -330,7 +330,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "package_scripts_lint",
-      "community": 8,
+      "community": 5,
       "norm_label": "lint"
     },
     {
@@ -340,7 +340,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "package_scripts_format",
-      "community": 8,
+      "community": 5,
       "norm_label": "format"
     },
     {
@@ -1340,7 +1340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "sections_footer",
-      "community": 2,
+      "community": 14,
       "norm_label": "footer.tsx"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "sections_footer_footer",
-      "community": 2,
+      "community": 14,
       "norm_label": "footer()"
     },
     {
@@ -1470,7 +1470,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "sections_pageshell",
-      "community": 2,
+      "community": 14,
       "norm_label": "pageshell.tsx"
     },
     {
@@ -1480,7 +1480,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "sections_pageshell_pageshell",
-      "community": 2,
+      "community": 14,
       "norm_label": "pageshell()"
     },
     {
@@ -1490,7 +1490,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "sections_pageshell_container",
-      "community": 2,
+      "community": 14,
       "norm_label": "container()"
     },
     {
@@ -1507,7 +1507,7 @@
       "label": "ProjectCard()",
       "file_type": "code",
       "source_file": "src/components/sections/ProjectCard.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "_origin": "ast",
       "id": "sections_projectcard_projectcard",
       "community": 4,
@@ -1520,7 +1520,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "sections_sectionheader",
-      "community": 2,
+      "community": 4,
       "norm_label": "sectionheader.tsx"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "sections_sectionheader_sectionheader",
-      "community": 2,
+      "community": 4,
       "norm_label": "sectionheader()"
     },
     {
@@ -1697,57 +1697,157 @@
       "label": "usePrefersReducedMotion()",
       "file_type": "code",
       "source_file": "src/components/three/Scene.tsx",
-      "source_location": "L23",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "three_scene_useprefersreducedmotion",
       "community": 13,
       "norm_label": "useprefersreducedmotion()"
     },
     {
-      "label": "scrollProgress()",
-      "file_type": "code",
-      "source_file": "src/components/three/Scene.tsx",
-      "source_location": "L33",
-      "_origin": "ast",
-      "id": "three_scene_scrollprogress",
-      "community": 13,
-      "norm_label": "scrollprogress()"
-    },
-    {
-      "label": "CoreKnot()",
+      "label": "pageProgress()",
       "file_type": "code",
       "source_file": "src/components/three/Scene.tsx",
       "source_location": "L38",
       "_origin": "ast",
-      "id": "three_scene_coreknot",
+      "id": "three_scene_pageprogress",
       "community": 13,
-      "norm_label": "coreknot()"
+      "norm_label": "pageprogress()"
     },
     {
-      "label": "Particles()",
+      "label": "Station",
       "file_type": "code",
       "source_file": "src/components/three/Scene.tsx",
-      "source_location": "L83",
+      "source_location": "L48",
       "_origin": "ast",
-      "id": "three_scene_particles",
+      "id": "three_scene_station",
       "community": 13,
-      "norm_label": "particles()"
+      "norm_label": "station"
+    },
+    {
+      "label": "STATIONS",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L51",
+      "_origin": "ast",
+      "id": "three_scene_stations",
+      "community": 13,
+      "norm_label": "stations"
+    },
+    {
+      "label": "smooth()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "three_scene_smooth",
+      "community": 13,
+      "norm_label": "smooth()"
+    },
+    {
+      "label": "samplePath()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "three_scene_samplepath",
+      "community": 13,
+      "norm_label": "samplepath()"
     },
     {
       "label": "CameraRig()",
       "file_type": "code",
       "source_file": "src/components/three/Scene.tsx",
-      "source_location": "L135",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "three_scene_camerarig",
       "community": 13,
       "norm_label": "camerarig()"
     },
     {
+      "label": "FollowLight()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L101",
+      "_origin": "ast",
+      "id": "three_scene_followlight",
+      "community": 13,
+      "norm_label": "followlight()"
+    },
+    {
+      "label": "CoreKnot()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L117",
+      "_origin": "ast",
+      "id": "three_scene_coreknot",
+      "community": 13,
+      "norm_label": "coreknot()"
+    },
+    {
+      "label": "Cluster()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L160",
+      "_origin": "ast",
+      "id": "three_scene_cluster",
+      "community": 13,
+      "norm_label": "cluster()"
+    },
+    {
+      "label": "Sentinel()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L218",
+      "_origin": "ast",
+      "id": "three_scene_sentinel",
+      "community": 13,
+      "norm_label": "sentinel()"
+    },
+    {
+      "label": "Rings()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L280",
+      "_origin": "ast",
+      "id": "three_scene_rings",
+      "community": 13,
+      "norm_label": "rings()"
+    },
+    {
+      "label": "Beacon()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L337",
+      "_origin": "ast",
+      "id": "three_scene_beacon",
+      "community": 13,
+      "norm_label": "beacon()"
+    },
+    {
+      "label": "Particles()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L374",
+      "_origin": "ast",
+      "id": "three_scene_particles",
+      "community": 13,
+      "norm_label": "particles()"
+    },
+    {
+      "label": "PathBeam()",
+      "file_type": "code",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L427",
+      "_origin": "ast",
+      "id": "three_scene_pathbeam",
+      "community": 13,
+      "norm_label": "pathbeam()"
+    },
+    {
       "label": "Scene()",
       "file_type": "code",
       "source_file": "src/components/three/Scene.tsx",
-      "source_location": "L146",
+      "source_location": "L451",
       "_origin": "ast",
       "id": "three_scene_scene",
       "community": 13,
@@ -1760,7 +1860,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "three_scenecanvas",
-      "community": 2,
+      "community": 14,
       "norm_label": "scenecanvas.tsx"
     },
     {
@@ -1770,7 +1870,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "three_scenecanvas_scene",
-      "community": 2,
+      "community": 14,
       "norm_label": "scene"
     },
     {
@@ -1780,7 +1880,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "three_scenecanvas_supportswebgl",
-      "community": 2,
+      "community": 14,
       "norm_label": "supportswebgl()"
     },
     {
@@ -1790,7 +1890,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "three_scenecanvas_scenecanvas",
-      "community": 2,
+      "community": 14,
       "norm_label": "scenecanvas()"
     },
     {
@@ -1800,7 +1900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "ui_commandpalette",
-      "community": 2,
+      "community": 14,
       "norm_label": "commandpalette.tsx"
     },
     {
@@ -1810,7 +1910,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "ui_commandpalette_commandpalette",
-      "community": 2,
+      "community": 14,
       "norm_label": "commandpalette()"
     },
     {
@@ -1850,7 +1950,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "motion_fadeinstagger",
-      "community": 2,
+      "community": 4,
       "norm_label": "fadeinstagger.tsx"
     },
     {
@@ -1860,7 +1960,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "motion_fadeinstagger_fadeinstaggerprops",
-      "community": 2,
+      "community": 4,
       "norm_label": "fadeinstaggerprops"
     },
     {
@@ -1870,7 +1970,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "motion_fadeinstagger_fadeinstagger",
-      "community": 2,
+      "community": 4,
       "norm_label": "fadeinstagger()"
     },
     {
@@ -1880,7 +1980,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "motion_fadeinstagger_fadeinstaggeritem",
-      "community": 2,
+      "community": 4,
       "norm_label": "fadeinstaggeritem()"
     },
     {
@@ -1967,7 +2067,7 @@
       "label": "SpotlightCard()",
       "file_type": "code",
       "source_file": "src/components/ui/motion/SpotlightCard.tsx",
-      "source_location": "L11",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "motion_spotlightcard_spotlightcard",
       "community": 6,
@@ -2200,7 +2300,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "content_site",
-      "community": 2,
+      "community": 14,
       "norm_label": "site.ts"
     },
     {
@@ -2210,7 +2310,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "content_site_site",
-      "community": 2,
+      "community": 14,
       "norm_label": "site"
     },
     {
@@ -2607,7 +2707,7 @@
       "label": "RootRouteChildren",
       "file_type": "code",
       "source_file": "src/routeTree.gen.ts",
-      "source_location": "L95",
+      "source_location": "L90",
       "_origin": "ast",
       "id": "src_routetree_gen_rootroutechildren",
       "community": 3,
@@ -2617,7 +2717,7 @@
       "label": "FileRoutesByPath",
       "file_type": "code",
       "source_file": "src/routeTree.gen.ts",
-      "source_location": "L103",
+      "source_location": "L98",
       "_origin": "ast",
       "id": "src_routetree_gen_fileroutesbypath",
       "community": 3,
@@ -2627,7 +2727,7 @@
       "label": "ProjectsRouteChildren",
       "file_type": "code",
       "source_file": "src/routeTree.gen.ts",
-      "source_location": "L149",
+      "source_location": "L144",
       "_origin": "ast",
       "id": "src_routetree_gen_projectsroutechildren",
       "community": 3,
@@ -2637,7 +2737,7 @@
       "label": "ProjectsRouteWithChildren",
       "file_type": "code",
       "source_file": "src/routeTree.gen.ts",
-      "source_location": "L159",
+      "source_location": "L154",
       "_origin": "ast",
       "id": "src_routetree_gen_projectsroutewithchildren",
       "community": 3,
@@ -2647,7 +2747,7 @@
       "label": "routeTree",
       "file_type": "code",
       "source_file": "src/routeTree.gen.ts",
-      "source_location": "L169",
+      "source_location": "L164",
       "_origin": "ast",
       "id": "src_routetree_gen_routetree",
       "community": 3,
@@ -2657,7 +2757,7 @@
       "label": "Register",
       "file_type": "code",
       "source_file": "src/routeTree.gen.ts",
-      "source_location": "L176",
+      "source_location": "L171",
       "_origin": "ast",
       "id": "src_routetree_gen_register",
       "community": 3,
@@ -2790,7 +2890,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "routes_contact",
-      "community": 2,
+      "community": 14,
       "norm_label": "contact.tsx"
     },
     {
@@ -2810,7 +2910,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "routes_contact_contact",
-      "community": 2,
+      "community": 14,
       "norm_label": "contact()"
     },
     {
@@ -2820,7 +2920,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "routes_contact_contactcard",
-      "community": 2,
+      "community": 14,
       "norm_label": "contactcard()"
     },
     {
@@ -2837,7 +2937,7 @@
       "label": "Route",
       "file_type": "code",
       "source_file": "src/routes/index.tsx",
-      "source_location": "L16",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "routes_index_route",
       "community": 3,
@@ -2847,17 +2947,27 @@
       "label": "principles",
       "file_type": "code",
       "source_file": "src/routes/index.tsx",
-      "source_location": "L41",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "routes_index_principles",
       "community": 6,
       "norm_label": "principles"
     },
     {
+      "label": "CinematicHero()",
+      "file_type": "code",
+      "source_file": "src/routes/index.tsx",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "routes_index_cinematichero",
+      "community": 6,
+      "norm_label": "cinematichero()"
+    },
+    {
       "label": "Home()",
       "file_type": "code",
       "source_file": "src/routes/index.tsx",
-      "source_location": "L56",
+      "source_location": "L93",
       "_origin": "ast",
       "id": "routes_index_home",
       "community": 6,
@@ -2900,7 +3010,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "routes_projects_index",
-      "community": 2,
+      "community": 4,
       "norm_label": "projects.index.tsx"
     },
     {
@@ -2920,7 +3030,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "routes_projects_index_projectsindex",
-      "community": 2,
+      "community": 4,
       "norm_label": "projectsindex()"
     },
     {
@@ -3327,7 +3437,7 @@
       "label": "Decisions",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L57",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "project_master_decisions",
       "community": 15,
@@ -3337,7 +3447,7 @@
       "label": "Design System (v4 \u2014 2026-07-07, \"Wira Portfolio 3D\", via skill ui-ux-pro-max)",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L69",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "project_master_design_system_v4_2026_07_07_wira_portfolio_3d_via_skill_ui_ux_pro_max",
       "community": 15,
@@ -3347,7 +3457,7 @@
       "label": "Completed Tasks",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L112",
+      "source_location": "L115",
       "_origin": "ast",
       "id": "project_master_completed_tasks",
       "community": 15,
@@ -3357,7 +3467,7 @@
       "label": "Current Work",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L120",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "project_master_current_work",
       "community": 15,
@@ -3367,7 +3477,7 @@
       "label": "Pending Tasks",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L128",
+      "source_location": "L131",
       "_origin": "ast",
       "id": "project_master_pending_tasks",
       "community": 15,
@@ -3377,7 +3487,7 @@
       "label": "Risks",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L135",
+      "source_location": "L138",
       "_origin": "ast",
       "id": "project_master_risks",
       "community": 15,
@@ -3387,7 +3497,7 @@
       "label": "Blockers",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L141",
+      "source_location": "L144",
       "_origin": "ast",
       "id": "project_master_blockers",
       "community": 15,
@@ -3397,7 +3507,7 @@
       "label": "Environment",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L145",
+      "source_location": "L148",
       "_origin": "ast",
       "id": "project_master_environment",
       "community": 15,
@@ -3407,7 +3517,7 @@
       "label": "File Structure",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L150",
+      "source_location": "L153",
       "_origin": "ast",
       "id": "project_master_file_structure",
       "community": 15,
@@ -3417,7 +3527,7 @@
       "label": "Changelog",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L158",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "project_master_changelog",
       "community": 15,
@@ -3427,7 +3537,7 @@
       "label": "Handoff Notes",
       "file_type": "document",
       "source_file": "PROJECT_MASTER.md",
-      "source_location": "L176",
+      "source_location": "L180",
       "_origin": "ast",
       "id": "project_master_handoff_notes",
       "community": 15,
@@ -3547,7 +3657,7 @@
       "label": "Spacing Variables",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L47",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_spacing_variables",
       "community": 12,
@@ -3557,7 +3667,7 @@
       "label": "Shadow Depths",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L59",
+      "source_location": "L60",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_shadow_depths",
       "community": 12,
@@ -3567,7 +3677,7 @@
       "label": "Component Specs",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L70",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_component_specs",
       "community": 12,
@@ -3577,7 +3687,7 @@
       "label": "Buttons",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L72",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_buttons",
       "community": 12,
@@ -3587,7 +3697,7 @@
       "label": "Cards",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L104",
+      "source_location": "L105",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_cards",
       "community": 12,
@@ -3597,7 +3707,7 @@
       "label": "Inputs",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L122",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_inputs",
       "community": 12,
@@ -3607,7 +3717,7 @@
       "label": "Modals",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L140",
+      "source_location": "L141",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_modals",
       "community": 12,
@@ -3617,7 +3727,7 @@
       "label": "Style Guidelines",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L160",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_style_guidelines",
       "community": 12,
@@ -3627,7 +3737,7 @@
       "label": "Page Pattern",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L170",
+      "source_location": "L171",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_page_pattern",
       "community": 12,
@@ -3637,7 +3747,7 @@
       "label": "Motion",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L180",
+      "source_location": "L181",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_motion",
       "community": 12,
@@ -3647,7 +3757,7 @@
       "label": "Anti-Patterns (Do NOT Use)",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L196",
+      "source_location": "L203",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_anti_patterns_do_not_use",
       "community": 12,
@@ -3657,7 +3767,7 @@
       "label": "Additional Forbidden Patterns",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L201",
+      "source_location": "L208",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_additional_forbidden_patterns",
       "community": 12,
@@ -3667,7 +3777,7 @@
       "label": "Pre-Delivery Checklist",
       "file_type": "document",
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
-      "source_location": "L212",
+      "source_location": "L219",
       "_origin": "ast",
       "id": "wira_portfolio_3d_master_pre_delivery_checklist",
       "community": 12,
@@ -4451,9 +4561,9 @@
       "source_file": "package.json",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_react_three_drei",
-      "confidence_score": 1.0
+      "target": "package_dependencies_react_three_drei"
     },
     {
       "relation": "contains",
@@ -4461,9 +4571,9 @@
       "source_file": "package.json",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_react_three_fiber",
-      "confidence_score": 1.0
+      "target": "package_dependencies_react_three_fiber"
     },
     {
       "relation": "contains",
@@ -4561,9 +4671,9 @@
       "source_file": "package.json",
       "source_location": "L70",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_three",
-      "confidence_score": 1.0
+      "target": "package_dependencies_three"
     },
     {
       "relation": "contains",
@@ -4761,9 +4871,9 @@
       "source_file": "package.json",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_types_three",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_types_three"
     },
     {
       "relation": "contains",
@@ -4842,9 +4952,9 @@
       "source_file": "src/routes/projects.$slug.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_slug",
-      "target": "sections_archdiagram",
-      "confidence_score": 1.0
+      "target": "sections_archdiagram"
     },
     {
       "relation": "contains",
@@ -4852,9 +4962,9 @@
       "source_file": "src/components/sections/ArchDiagram.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_archdiagram",
-      "target": "sections_archdiagram_archdiagram",
-      "confidence_score": 1.0
+      "target": "sections_archdiagram_archdiagram"
     },
     {
       "relation": "imports_from",
@@ -4863,9 +4973,9 @@
       "source_file": "src/components/sections/FlagshipProject.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_flagshipproject",
-      "target": "sections_archdiagram",
-      "confidence_score": 1.0
+      "target": "sections_archdiagram"
     },
     {
       "relation": "imports",
@@ -4874,9 +4984,9 @@
       "source_file": "src/routes/projects.$slug.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_slug",
-      "target": "sections_archdiagram_archdiagram",
-      "confidence_score": 1.0
+      "target": "sections_archdiagram_archdiagram"
     },
     {
       "relation": "imports",
@@ -4885,9 +4995,9 @@
       "source_file": "src/components/sections/FlagshipProject.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_flagshipproject",
-      "target": "sections_archdiagram_archdiagram",
-      "confidence_score": 1.0
+      "target": "sections_archdiagram_archdiagram"
     },
     {
       "relation": "imports_from",
@@ -4896,9 +5006,9 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_button",
-      "confidence_score": 1.0
+      "target": "sections_button"
     },
     {
       "relation": "imports_from",
@@ -4907,9 +5017,9 @@
       "source_file": "src/routes/contact.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_contact",
-      "target": "sections_button",
-      "confidence_score": 1.0
+      "target": "sections_button"
     },
     {
       "relation": "imports_from",
@@ -4918,9 +5028,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "sections_button",
-      "confidence_score": 1.0
+      "target": "sections_button"
     },
     {
       "relation": "imports_from",
@@ -4929,9 +5039,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "lib_utils",
-      "confidence_score": 1.0
+      "target": "lib_utils"
     },
     {
       "relation": "imports",
@@ -4940,9 +5050,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "lib_utils_cn",
-      "confidence_score": 1.0
+      "target": "lib_utils_cn"
     },
     {
       "relation": "imports_from",
@@ -4951,9 +5061,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "motion_magnetic",
-      "confidence_score": 1.0
+      "target": "motion_magnetic"
     },
     {
       "relation": "imports",
@@ -4962,9 +5072,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "motion_magnetic_magnetic",
-      "confidence_score": 1.0
+      "target": "motion_magnetic_magnetic"
     },
     {
       "relation": "contains",
@@ -4972,9 +5082,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "sections_button_anchorbutton",
-      "confidence_score": 1.0
+      "target": "sections_button_anchorbutton"
     },
     {
       "relation": "contains",
@@ -4982,9 +5092,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "sections_button_anchorbuttonprops",
-      "confidence_score": 1.0
+      "target": "sections_button_anchorbuttonprops"
     },
     {
       "relation": "contains",
@@ -4992,9 +5102,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "sections_button_button",
-      "confidence_score": 1.0
+      "target": "sections_button_button"
     },
     {
       "relation": "contains",
@@ -5002,9 +5112,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "sections_button_buttonprops",
-      "confidence_score": 1.0
+      "target": "sections_button_buttonprops"
     },
     {
       "relation": "contains",
@@ -5012,9 +5122,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "sections_button_getvariantstyles",
-      "confidence_score": 1.0
+      "target": "sections_button_getvariantstyles"
     },
     {
       "relation": "contains",
@@ -5022,9 +5132,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "sections_button_linkbutton",
-      "confidence_score": 1.0
+      "target": "sections_button_linkbutton"
     },
     {
       "relation": "contains",
@@ -5032,9 +5142,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button",
-      "target": "sections_button_linkbuttonprops",
-      "confidence_score": 1.0
+      "target": "sections_button_linkbuttonprops"
     },
     {
       "relation": "calls",
@@ -5043,9 +5153,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button_anchorbutton",
-      "target": "sections_button_getvariantstyles",
-      "confidence_score": 1.0
+      "target": "sections_button_getvariantstyles"
     },
     {
       "relation": "calls",
@@ -5054,9 +5164,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button_button",
-      "target": "sections_button_getvariantstyles",
-      "confidence_score": 1.0
+      "target": "sections_button_getvariantstyles"
     },
     {
       "relation": "calls",
@@ -5065,9 +5175,9 @@
       "source_file": "src/components/sections/Button.tsx",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_button_linkbutton",
-      "target": "sections_button_getvariantstyles",
-      "confidence_score": 1.0
+      "target": "sections_button_getvariantstyles"
     },
     {
       "relation": "calls",
@@ -5087,9 +5197,9 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_button_linkbutton",
-      "confidence_score": 1.0
+      "target": "sections_button_linkbutton"
     },
     {
       "relation": "imports",
@@ -5098,9 +5208,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "sections_button_linkbutton",
-      "confidence_score": 1.0
+      "target": "sections_button_linkbutton"
     },
     {
       "relation": "calls",
@@ -5120,9 +5230,9 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_button_anchorbutton",
-      "confidence_score": 1.0
+      "target": "sections_button_anchorbutton"
     },
     {
       "relation": "imports",
@@ -5131,9 +5241,9 @@
       "source_file": "src/routes/contact.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_contact",
-      "target": "sections_button_anchorbutton",
-      "confidence_score": 1.0
+      "target": "sections_button_anchorbutton"
     },
     {
       "relation": "imports",
@@ -5142,9 +5252,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "sections_button_anchorbutton",
-      "confidence_score": 1.0
+      "target": "sections_button_anchorbutton"
     },
     {
       "relation": "calls",
@@ -5164,9 +5274,9 @@
       "source_file": "src/routes/__root.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_root",
-      "target": "sections_chatwidget",
-      "confidence_score": 1.0
+      "target": "sections_chatwidget"
     },
     {
       "relation": "imports_from",
@@ -5175,9 +5285,9 @@
       "source_file": "src/components/sections/ChatWidget.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_chatwidget",
-      "target": "api_assistant_functions",
-      "confidence_score": 1.0
+      "target": "api_assistant_functions"
     },
     {
       "relation": "imports",
@@ -5186,9 +5296,9 @@
       "source_file": "src/components/sections/ChatWidget.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_chatwidget",
-      "target": "api_assistant_functions_askassistant",
-      "confidence_score": 1.0
+      "target": "api_assistant_functions_askassistant"
     },
     {
       "relation": "imports_from",
@@ -5197,9 +5307,9 @@
       "source_file": "src/components/sections/ChatWidget.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_chatwidget",
-      "target": "lib_utils",
-      "confidence_score": 1.0
+      "target": "lib_utils"
     },
     {
       "relation": "imports",
@@ -5208,9 +5318,9 @@
       "source_file": "src/components/sections/ChatWidget.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_chatwidget",
-      "target": "lib_utils_cn",
-      "confidence_score": 1.0
+      "target": "lib_utils_cn"
     },
     {
       "relation": "contains",
@@ -5218,9 +5328,9 @@
       "source_file": "src/components/sections/ChatWidget.tsx",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_chatwidget",
-      "target": "sections_chatwidget_chatwidget",
-      "confidence_score": 1.0
+      "target": "sections_chatwidget_chatwidget"
     },
     {
       "relation": "contains",
@@ -5228,9 +5338,9 @@
       "source_file": "src/components/sections/ChatWidget.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_chatwidget",
-      "target": "sections_chatwidget_getsessionid",
-      "confidence_score": 1.0
+      "target": "sections_chatwidget_getsessionid"
     },
     {
       "relation": "contains",
@@ -5238,9 +5348,9 @@
       "source_file": "src/components/sections/ChatWidget.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_chatwidget",
-      "target": "sections_chatwidget_msg",
-      "confidence_score": 1.0
+      "target": "sections_chatwidget_msg"
     },
     {
       "relation": "imports",
@@ -5249,9 +5359,9 @@
       "source_file": "src/routes/__root.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_root",
-      "target": "sections_chatwidget_chatwidget",
-      "confidence_score": 1.0
+      "target": "sections_chatwidget_chatwidget"
     },
     {
       "relation": "imports_from",
@@ -5260,9 +5370,9 @@
       "source_file": "src/routes/projects.index.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_index",
-      "target": "sections_flagshipproject",
-      "confidence_score": 1.0
+      "target": "sections_flagshipproject"
     },
     {
       "relation": "imports_from",
@@ -5271,9 +5381,9 @@
       "source_file": "src/components/sections/FlagshipProject.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_flagshipproject",
-      "target": "content_projects",
-      "confidence_score": 1.0
+      "target": "content_projects"
     },
     {
       "relation": "imports",
@@ -5282,9 +5392,9 @@
       "source_file": "src/components/sections/FlagshipProject.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_flagshipproject",
-      "target": "content_projects_project",
-      "confidence_score": 1.0
+      "target": "content_projects_project"
     },
     {
       "relation": "contains",
@@ -5292,9 +5402,9 @@
       "source_file": "src/components/sections/FlagshipProject.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_flagshipproject",
-      "target": "sections_flagshipproject_flagshipproject",
-      "confidence_score": 1.0
+      "target": "sections_flagshipproject_flagshipproject"
     },
     {
       "relation": "imports_from",
@@ -5303,9 +5413,9 @@
       "source_file": "src/components/sections/FlagshipProject.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_flagshipproject",
-      "target": "sections_statusbadge",
-      "confidence_score": 1.0
+      "target": "sections_statusbadge"
     },
     {
       "relation": "imports",
@@ -5314,9 +5424,9 @@
       "source_file": "src/components/sections/FlagshipProject.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_flagshipproject",
-      "target": "sections_statusbadge_statusbadge",
-      "confidence_score": 1.0
+      "target": "sections_statusbadge_statusbadge"
     },
     {
       "relation": "imports_from",
@@ -5325,9 +5435,9 @@
       "source_file": "src/components/sections/FlagshipProject.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_flagshipproject",
-      "target": "sections_techpill",
-      "confidence_score": 1.0
+      "target": "sections_techpill"
     },
     {
       "relation": "imports",
@@ -5336,9 +5446,9 @@
       "source_file": "src/components/sections/FlagshipProject.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_flagshipproject",
-      "target": "sections_techpill_techpillrow",
-      "confidence_score": 1.0
+      "target": "sections_techpill_techpillrow"
     },
     {
       "relation": "imports",
@@ -5347,9 +5457,9 @@
       "source_file": "src/routes/projects.index.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_index",
-      "target": "sections_flagshipproject_flagshipproject",
-      "confidence_score": 1.0
+      "target": "sections_flagshipproject_flagshipproject"
     },
     {
       "relation": "imports_from",
@@ -5358,9 +5468,9 @@
       "source_file": "src/components/sections/Footer.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_footer",
-      "target": "content_site",
-      "confidence_score": 1.0
+      "target": "content_site"
     },
     {
       "relation": "imports",
@@ -5369,9 +5479,9 @@
       "source_file": "src/components/sections/Footer.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_footer",
-      "target": "content_site_site",
-      "confidence_score": 1.0
+      "target": "content_site_site"
     },
     {
       "relation": "contains",
@@ -5379,9 +5489,9 @@
       "source_file": "src/components/sections/Footer.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_footer",
-      "target": "sections_footer_footer",
-      "confidence_score": 1.0
+      "target": "sections_footer_footer"
     },
     {
       "relation": "imports_from",
@@ -5390,9 +5500,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "sections_footer",
-      "confidence_score": 1.0
+      "target": "sections_footer"
     },
     {
       "relation": "imports",
@@ -5401,9 +5511,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "sections_footer_footer",
-      "confidence_score": 1.0
+      "target": "sections_footer_footer"
     },
     {
       "relation": "imports_from",
@@ -5412,9 +5522,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "sections_imageslot",
-      "confidence_score": 1.0
+      "target": "sections_imageslot"
     },
     {
       "relation": "contains",
@@ -5422,9 +5532,9 @@
       "source_file": "src/components/sections/ImageSlot.tsx",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_imageslot",
-      "target": "sections_imageslot_imageslot",
-      "confidence_score": 1.0
+      "target": "sections_imageslot_imageslot"
     },
     {
       "relation": "contains",
@@ -5432,9 +5542,9 @@
       "source_file": "src/components/sections/ImageSlot.tsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_imageslot",
-      "target": "sections_imageslot_imageslotprops",
-      "confidence_score": 1.0
+      "target": "sections_imageslot_imageslotprops"
     },
     {
       "relation": "contains",
@@ -5442,9 +5552,9 @@
       "source_file": "src/components/sections/ImageSlot.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_imageslot",
-      "target": "sections_imageslot_ratio",
-      "confidence_score": 1.0
+      "target": "sections_imageslot_ratio"
     },
     {
       "relation": "contains",
@@ -5452,9 +5562,9 @@
       "source_file": "src/components/sections/ImageSlot.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_imageslot",
-      "target": "sections_imageslot_ratioclass",
-      "confidence_score": 1.0
+      "target": "sections_imageslot_ratioclass"
     },
     {
       "relation": "imports",
@@ -5463,9 +5573,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "sections_imageslot_imageslot",
-      "confidence_score": 1.0
+      "target": "sections_imageslot_imageslot"
     },
     {
       "relation": "contains",
@@ -5473,9 +5583,9 @@
       "source_file": "src/components/sections/Monogram.tsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_monogram",
-      "target": "sections_monogram_monogram",
-      "confidence_score": 1.0
+      "target": "sections_monogram_monogram"
     },
     {
       "relation": "contains",
@@ -5483,9 +5593,9 @@
       "source_file": "src/components/sections/Monogram.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_monogram",
-      "target": "sections_monogram_props",
-      "confidence_score": 1.0
+      "target": "sections_monogram_props"
     },
     {
       "relation": "imports_from",
@@ -5494,9 +5604,9 @@
       "source_file": "src/components/sections/Nav.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_nav",
-      "target": "sections_monogram",
-      "confidence_score": 1.0
+      "target": "sections_monogram"
     },
     {
       "relation": "imports",
@@ -5505,9 +5615,9 @@
       "source_file": "src/components/sections/Nav.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_nav",
-      "target": "sections_monogram_monogram",
-      "confidence_score": 1.0
+      "target": "sections_monogram_monogram"
     },
     {
       "relation": "contains",
@@ -5515,9 +5625,9 @@
       "source_file": "src/components/sections/Nav.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_nav",
-      "target": "sections_nav_links",
-      "confidence_score": 1.0
+      "target": "sections_nav_links"
     },
     {
       "relation": "contains",
@@ -5525,9 +5635,9 @@
       "source_file": "src/components/sections/Nav.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_nav",
-      "target": "sections_nav_nav",
-      "confidence_score": 1.0
+      "target": "sections_nav_nav"
     },
     {
       "relation": "imports_from",
@@ -5536,9 +5646,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "sections_nav",
-      "confidence_score": 1.0
+      "target": "sections_nav"
     },
     {
       "relation": "imports",
@@ -5547,9 +5657,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "sections_nav_nav",
-      "confidence_score": 1.0
+      "target": "sections_nav_nav"
     },
     {
       "relation": "imports_from",
@@ -5558,9 +5668,9 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell"
     },
     {
       "relation": "imports_from",
@@ -5569,9 +5679,9 @@
       "source_file": "src/routes/contact.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_contact",
-      "target": "sections_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell"
     },
     {
       "relation": "imports_from",
@@ -5580,9 +5690,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "sections_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell"
     },
     {
       "relation": "imports_from",
@@ -5591,9 +5701,9 @@
       "source_file": "src/routes/projects.index.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_index",
-      "target": "sections_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell"
     },
     {
       "relation": "imports_from",
@@ -5602,9 +5712,9 @@
       "source_file": "src/routes/projects.$slug.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_slug",
-      "target": "sections_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell"
     },
     {
       "relation": "contains",
@@ -5612,9 +5722,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "sections_pageshell_container",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_container"
     },
     {
       "relation": "contains",
@@ -5622,9 +5732,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "sections_pageshell_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_pageshell"
     },
     {
       "relation": "imports_from",
@@ -5633,9 +5743,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "three_scenecanvas",
-      "confidence_score": 1.0
+      "target": "three_scenecanvas"
     },
     {
       "relation": "imports",
@@ -5644,9 +5754,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "three_scenecanvas_scenecanvas",
-      "confidence_score": 1.0
+      "target": "three_scenecanvas_scenecanvas"
     },
     {
       "relation": "imports_from",
@@ -5655,9 +5765,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "ui_commandpalette",
-      "confidence_score": 1.0
+      "target": "ui_commandpalette"
     },
     {
       "relation": "imports",
@@ -5666,9 +5776,9 @@
       "source_file": "src/components/sections/PageShell.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_pageshell",
-      "target": "ui_commandpalette_commandpalette",
-      "confidence_score": 1.0
+      "target": "ui_commandpalette_commandpalette"
     },
     {
       "relation": "imports",
@@ -5677,9 +5787,9 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_pageshell_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_pageshell"
     },
     {
       "relation": "imports",
@@ -5688,9 +5798,9 @@
       "source_file": "src/routes/contact.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_contact",
-      "target": "sections_pageshell_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_pageshell"
     },
     {
       "relation": "imports",
@@ -5699,9 +5809,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "sections_pageshell_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_pageshell"
     },
     {
       "relation": "imports",
@@ -5710,9 +5820,9 @@
       "source_file": "src/routes/projects.index.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_index",
-      "target": "sections_pageshell_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_pageshell"
     },
     {
       "relation": "imports",
@@ -5721,9 +5831,9 @@
       "source_file": "src/routes/projects.$slug.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_slug",
-      "target": "sections_pageshell_pageshell",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_pageshell"
     },
     {
       "relation": "imports",
@@ -5732,9 +5842,9 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_pageshell_container",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_container"
     },
     {
       "relation": "imports",
@@ -5743,9 +5853,9 @@
       "source_file": "src/routes/contact.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_contact",
-      "target": "sections_pageshell_container",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_container"
     },
     {
       "relation": "imports",
@@ -5754,9 +5864,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "sections_pageshell_container",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_container"
     },
     {
       "relation": "imports",
@@ -5765,9 +5875,9 @@
       "source_file": "src/routes/projects.index.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_index",
-      "target": "sections_pageshell_container",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_container"
     },
     {
       "relation": "imports",
@@ -5776,9 +5886,9 @@
       "source_file": "src/routes/projects.$slug.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_slug",
-      "target": "sections_pageshell_container",
-      "confidence_score": 1.0
+      "target": "sections_pageshell_container"
     },
     {
       "relation": "imports_from",
@@ -5787,9 +5897,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "sections_projectcard",
-      "confidence_score": 1.0
+      "target": "sections_projectcard"
     },
     {
       "relation": "imports_from",
@@ -5798,9 +5908,31 @@
       "source_file": "src/routes/projects.index.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_index",
-      "target": "sections_projectcard",
-      "confidence_score": 1.0
+      "target": "sections_projectcard"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/ProjectCard.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "sections_projectcard",
+      "target": "content_projects"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/ProjectCard.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "sections_projectcard",
+      "target": "content_projects_project"
     },
     {
       "relation": "imports_from",
@@ -5810,180 +5942,6 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "sections_projectcard",
-      "target": "content_projects",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/sections/ProjectCard.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "sections_projectcard",
-      "target": "content_projects_project",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/sections/ProjectCard.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "source": "sections_projectcard",
-      "target": "sections_projectcard_projectcard",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/sections/ProjectCard.tsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "sections_projectcard",
-      "target": "sections_statusbadge",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/sections/ProjectCard.tsx",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "sections_projectcard",
-      "target": "sections_statusbadge_statusbadge",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/sections/ProjectCard.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "sections_projectcard",
-      "target": "sections_techpill",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/sections/ProjectCard.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "sections_projectcard",
-      "target": "sections_techpill_techpillrow",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/index.tsx",
-      "source_location": "L6",
-      "weight": 1.0,
-      "source": "routes_index",
-      "target": "sections_projectcard_projectcard",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/projects.index.tsx",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "routes_projects_index",
-      "target": "sections_projectcard_projectcard",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/about.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "routes_about",
-      "target": "sections_sectionheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/index.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "source": "routes_index",
-      "target": "sections_sectionheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/projects.index.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "routes_projects_index",
-      "target": "sections_sectionheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/sections/SectionHeader.tsx",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "sections_sectionheader",
-      "target": "sections_sectionheader_sectionheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/about.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "routes_about",
-      "target": "sections_sectionheader_sectionheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/index.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "source": "routes_index",
-      "target": "sections_sectionheader_sectionheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/projects.index.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "routes_projects_index",
-      "target": "sections_sectionheader_sectionheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/sections/Skills.tsx",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "sections_skills",
       "target": "motion_spotlightcard",
       "confidence_score": 1.0
     },
@@ -5991,12 +5949,186 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/ProjectCard.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "sections_projectcard",
+      "target": "motion_spotlightcard_spotlightcard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/ProjectCard.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "sections_projectcard",
+      "target": "sections_projectcard_projectcard"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/ProjectCard.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "sections_projectcard",
+      "target": "sections_statusbadge"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/ProjectCard.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "sections_projectcard",
+      "target": "sections_statusbadge_statusbadge"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/ProjectCard.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "sections_projectcard",
+      "target": "sections_techpill"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/ProjectCard.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "sections_projectcard",
+      "target": "sections_techpill_techpillrow"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/index.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_index",
+      "target": "sections_projectcard_projectcard"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/projects.index.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_projects_index",
+      "target": "sections_projectcard_projectcard"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/about.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_about",
+      "target": "sections_sectionheader"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/index.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_index",
+      "target": "sections_sectionheader"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/projects.index.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_projects_index",
+      "target": "sections_sectionheader"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/SectionHeader.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "sections_sectionheader",
+      "target": "sections_sectionheader_sectionheader"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/about.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_about",
+      "target": "sections_sectionheader_sectionheader"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/index.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_index",
+      "target": "sections_sectionheader_sectionheader"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/projects.index.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_projects_index",
+      "target": "sections_sectionheader_sectionheader"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/components/sections/Skills.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_skills",
-      "target": "motion_spotlightcard_spotlightcard",
-      "confidence_score": 1.0
+      "target": "motion_spotlightcard"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/sections/Skills.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "sections_skills",
+      "target": "motion_spotlightcard_spotlightcard"
     },
     {
       "relation": "imports_from",
@@ -6005,9 +6137,9 @@
       "source_file": "src/components/sections/Skills.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_skills",
-      "target": "motion_staggercontainer",
-      "confidence_score": 1.0
+      "target": "motion_staggercontainer"
     },
     {
       "relation": "imports",
@@ -6016,9 +6148,9 @@
       "source_file": "src/components/sections/Skills.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_skills",
-      "target": "motion_staggercontainer_staggercontainer",
-      "confidence_score": 1.0
+      "target": "motion_staggercontainer_staggercontainer"
     },
     {
       "relation": "imports",
@@ -6027,9 +6159,9 @@
       "source_file": "src/components/sections/Skills.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_skills",
-      "target": "motion_staggercontainer_staggeritem",
-      "confidence_score": 1.0
+      "target": "motion_staggercontainer_staggeritem"
     },
     {
       "relation": "contains",
@@ -6037,9 +6169,9 @@
       "source_file": "src/components/sections/Skills.tsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_skills",
-      "target": "sections_skills_skills",
-      "confidence_score": 1.0
+      "target": "sections_skills_skills"
     },
     {
       "relation": "imports_from",
@@ -6048,9 +6180,9 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_sourcebadge",
-      "confidence_score": 1.0
+      "target": "sections_sourcebadge"
     },
     {
       "relation": "imports_from",
@@ -6059,9 +6191,9 @@
       "source_file": "src/components/sections/SourceBadge.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_sourcebadge",
-      "target": "content_skills",
-      "confidence_score": 1.0
+      "target": "content_skills"
     },
     {
       "relation": "imports",
@@ -6070,9 +6202,9 @@
       "source_file": "src/components/sections/SourceBadge.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_sourcebadge",
-      "target": "content_skills_skillsource",
-      "confidence_score": 1.0
+      "target": "content_skills_skillsource"
     },
     {
       "relation": "imports",
@@ -6081,9 +6213,9 @@
       "source_file": "src/components/sections/SourceBadge.tsx",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_sourcebadge",
-      "target": "content_skills_sourcelabel",
-      "confidence_score": 1.0
+      "target": "content_skills_sourcelabel"
     },
     {
       "relation": "contains",
@@ -6091,9 +6223,9 @@
       "source_file": "src/components/sections/SourceBadge.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_sourcebadge",
-      "target": "sections_sourcebadge_cls",
-      "confidence_score": 1.0
+      "target": "sections_sourcebadge_cls"
     },
     {
       "relation": "contains",
@@ -6101,9 +6233,9 @@
       "source_file": "src/components/sections/SourceBadge.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_sourcebadge",
-      "target": "sections_sourcebadge_sourcebadge",
-      "confidence_score": 1.0
+      "target": "sections_sourcebadge_sourcebadge"
     },
     {
       "relation": "imports",
@@ -6112,9 +6244,9 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_sourcebadge_sourcebadge",
-      "confidence_score": 1.0
+      "target": "sections_sourcebadge_sourcebadge"
     },
     {
       "relation": "imports_from",
@@ -6123,9 +6255,9 @@
       "source_file": "src/routes/projects.$slug.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_slug",
-      "target": "sections_statusbadge",
-      "confidence_score": 1.0
+      "target": "sections_statusbadge"
     },
     {
       "relation": "imports_from",
@@ -6134,9 +6266,9 @@
       "source_file": "src/components/sections/StatusBadge.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_statusbadge",
-      "target": "content_projects",
-      "confidence_score": 1.0
+      "target": "content_projects"
     },
     {
       "relation": "imports",
@@ -6145,9 +6277,9 @@
       "source_file": "src/components/sections/StatusBadge.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_statusbadge",
-      "target": "content_projects_projectstatus",
-      "confidence_score": 1.0
+      "target": "content_projects_projectstatus"
     },
     {
       "relation": "contains",
@@ -6155,9 +6287,9 @@
       "source_file": "src/components/sections/StatusBadge.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_statusbadge",
-      "target": "sections_statusbadge_config",
-      "confidence_score": 1.0
+      "target": "sections_statusbadge_config"
     },
     {
       "relation": "contains",
@@ -6165,9 +6297,9 @@
       "source_file": "src/components/sections/StatusBadge.tsx",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_statusbadge",
-      "target": "sections_statusbadge_statusbadge",
-      "confidence_score": 1.0
+      "target": "sections_statusbadge_statusbadge"
     },
     {
       "relation": "imports",
@@ -6176,9 +6308,9 @@
       "source_file": "src/routes/projects.$slug.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_slug",
-      "target": "sections_statusbadge_statusbadge",
-      "confidence_score": 1.0
+      "target": "sections_statusbadge_statusbadge"
     },
     {
       "relation": "imports_from",
@@ -6187,9 +6319,9 @@
       "source_file": "src/routes/projects.$slug.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_slug",
-      "target": "sections_techpill",
-      "confidence_score": 1.0
+      "target": "sections_techpill"
     },
     {
       "relation": "contains",
@@ -6197,9 +6329,9 @@
       "source_file": "src/components/sections/TechPill.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_techpill",
-      "target": "sections_techpill_techpill",
-      "confidence_score": 1.0
+      "target": "sections_techpill_techpill"
     },
     {
       "relation": "contains",
@@ -6207,9 +6339,9 @@
       "source_file": "src/components/sections/TechPill.tsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_techpill",
-      "target": "sections_techpill_techpillrow",
-      "confidence_score": 1.0
+      "target": "sections_techpill_techpillrow"
     },
     {
       "relation": "imports",
@@ -6218,9 +6350,9 @@
       "source_file": "src/routes/projects.$slug.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_projects_slug",
-      "target": "sections_techpill_techpillrow",
-      "confidence_score": 1.0
+      "target": "sections_techpill_techpillrow"
     },
     {
       "relation": "imports_from",
@@ -6229,9 +6361,9 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_timeline",
-      "confidence_score": 1.0
+      "target": "sections_timeline"
     },
     {
       "relation": "imports_from",
@@ -6240,9 +6372,9 @@
       "source_file": "src/components/sections/Timeline.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_timeline",
-      "target": "content_journey",
-      "confidence_score": 1.0
+      "target": "content_journey"
     },
     {
       "relation": "imports",
@@ -6251,9 +6383,9 @@
       "source_file": "src/components/sections/Timeline.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_timeline",
-      "target": "content_journey_journeycategory",
-      "confidence_score": 1.0
+      "target": "content_journey_journeycategory"
     },
     {
       "relation": "imports",
@@ -6262,9 +6394,9 @@
       "source_file": "src/components/sections/Timeline.tsx",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_timeline",
-      "target": "content_journey_journeyentry",
-      "confidence_score": 1.0
+      "target": "content_journey_journeyentry"
     },
     {
       "relation": "contains",
@@ -6272,9 +6404,9 @@
       "source_file": "src/components/sections/Timeline.tsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_timeline",
-      "target": "sections_timeline_catcls",
-      "confidence_score": 1.0
+      "target": "sections_timeline_catcls"
     },
     {
       "relation": "contains",
@@ -6282,9 +6414,9 @@
       "source_file": "src/components/sections/Timeline.tsx",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_timeline",
-      "target": "sections_timeline_catlabel",
-      "confidence_score": 1.0
+      "target": "sections_timeline_catlabel"
     },
     {
       "relation": "contains",
@@ -6292,9 +6424,9 @@
       "source_file": "src/components/sections/Timeline.tsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "sections_timeline",
-      "target": "sections_timeline_timeline",
-      "confidence_score": 1.0
+      "target": "sections_timeline_timeline"
     },
     {
       "relation": "imports",
@@ -6303,8 +6435,18 @@
       "source_file": "src/routes/about.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_about",
-      "target": "sections_timeline_timeline",
+      "target": "sections_timeline_timeline"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L337",
+      "weight": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_beacon",
       "confidence_score": 1.0
     },
     {
@@ -6313,8 +6455,38 @@
       "source_file": "src/components/three/Scene.tsx",
       "source_location": "L135",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "three_scene",
-      "target": "three_scene_camerarig",
+      "target": "three_scene_camerarig"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L160",
+      "weight": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_cluster",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_coreknot"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L101",
+      "weight": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_followlight",
       "confidence_score": 1.0
     },
     {
@@ -6324,7 +6496,7 @@
       "source_location": "L38",
       "weight": 1.0,
       "source": "three_scene",
-      "target": "three_scene_coreknot",
+      "target": "three_scene_pageprogress",
       "confidence_score": 1.0
     },
     {
@@ -6333,8 +6505,38 @@
       "source_file": "src/components/three/Scene.tsx",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "three_scene",
-      "target": "three_scene_particles",
+      "target": "three_scene_particles"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L427",
+      "weight": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_pathbeam",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L280",
+      "weight": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_rings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_samplepath",
       "confidence_score": 1.0
     },
     {
@@ -6343,18 +6545,48 @@
       "source_file": "src/components/three/Scene.tsx",
       "source_location": "L146",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "three_scene",
-      "target": "three_scene_scene",
+      "target": "three_scene_scene"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L218",
+      "weight": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_sentinel",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/three/Scene.tsx",
-      "source_location": "L33",
+      "source_location": "L59",
       "weight": 1.0,
       "source": "three_scene",
-      "target": "three_scene_scrollprogress",
+      "target": "three_scene_smooth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_station",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "three_scene",
+      "target": "three_scene_stations",
       "confidence_score": 1.0
     },
     {
@@ -6363,9 +6595,9 @@
       "source_file": "src/components/three/Scene.tsx",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "three_scene",
-      "target": "three_scene_useprefersreducedmotion",
-      "confidence_score": 1.0
+      "target": "three_scene_useprefersreducedmotion"
     },
     {
       "relation": "calls",
@@ -6374,8 +6606,19 @@
       "source_file": "src/components/three/Scene.tsx",
       "source_location": "L147",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "three_scene_scene",
-      "target": "three_scene_useprefersreducedmotion",
+      "target": "three_scene_useprefersreducedmotion"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/Scene.tsx",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "three_scene_samplepath",
+      "target": "three_scene_smooth",
       "confidence_score": 1.0
     },
     {
@@ -6384,9 +6627,9 @@
       "source_file": "src/components/three/SceneCanvas.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "three_scenecanvas",
-      "target": "three_scenecanvas_scene",
-      "confidence_score": 1.0
+      "target": "three_scenecanvas_scene"
     },
     {
       "relation": "contains",
@@ -6394,9 +6637,9 @@
       "source_file": "src/components/three/SceneCanvas.tsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "three_scenecanvas",
-      "target": "three_scenecanvas_scenecanvas",
-      "confidence_score": 1.0
+      "target": "three_scenecanvas_scenecanvas"
     },
     {
       "relation": "contains",
@@ -6404,9 +6647,9 @@
       "source_file": "src/components/three/SceneCanvas.tsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "three_scenecanvas",
-      "target": "three_scenecanvas_supportswebgl",
-      "confidence_score": 1.0
+      "target": "three_scenecanvas_supportswebgl"
     },
     {
       "relation": "imports_from",
@@ -7481,9 +7724,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "content_skills",
-      "confidence_score": 1.0
+      "target": "content_skills"
     },
     {
       "relation": "imports",
@@ -7525,9 +7768,9 @@
       "source_file": "src/routes/index.tsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_index",
-      "target": "content_skills_skillgroups",
-      "confidence_score": 1.0
+      "target": "content_skills_skillgroups"
     },
     {
       "relation": "contains",
@@ -8395,6 +8638,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/index.tsx",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "routes_index",
+      "target": "routes_index_cinematichero",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/index.tsx",
       "source_location": "L57",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -8849,9 +9102,9 @@
       "source_file": "PROJECT_MASTER.md",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "project_master_project_master_md",
-      "target": "project_master_design_system_v4_2026_07_07_wira_portfolio_3d_via_skill_ui_ux_pro_max",
-      "confidence_score": 1.0
+      "target": "project_master_design_system_v4_2026_07_07_wira_portfolio_3d_via_skill_ui_ux_pro_max"
     },
     {
       "relation": "contains",
@@ -8979,9 +9232,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master",
-      "target": "wira_portfolio_3d_master_design_system_master_file",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_design_system_master_file"
     },
     {
       "relation": "contains",
@@ -8989,9 +9242,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L196",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_design_system_master_file",
-      "target": "wira_portfolio_3d_master_anti_patterns_do_not_use",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_anti_patterns_do_not_use"
     },
     {
       "relation": "contains",
@@ -8999,9 +9252,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L70",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_design_system_master_file",
-      "target": "wira_portfolio_3d_master_component_specs",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_component_specs"
     },
     {
       "relation": "contains",
@@ -9009,9 +9262,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_design_system_master_file",
-      "target": "wira_portfolio_3d_master_global_rules",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_global_rules"
     },
     {
       "relation": "contains",
@@ -9019,9 +9272,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L180",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_design_system_master_file",
-      "target": "wira_portfolio_3d_master_motion",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_motion"
     },
     {
       "relation": "contains",
@@ -9029,9 +9282,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L212",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_design_system_master_file",
-      "target": "wira_portfolio_3d_master_pre_delivery_checklist",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_pre_delivery_checklist"
     },
     {
       "relation": "contains",
@@ -9039,9 +9292,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L160",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_design_system_master_file",
-      "target": "wira_portfolio_3d_master_style_guidelines",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_style_guidelines"
     },
     {
       "relation": "contains",
@@ -9049,9 +9302,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_global_rules",
-      "target": "wira_portfolio_3d_master_color_palette",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_color_palette"
     },
     {
       "relation": "contains",
@@ -9059,9 +9312,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_global_rules",
-      "target": "wira_portfolio_3d_master_shadow_depths",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_shadow_depths"
     },
     {
       "relation": "contains",
@@ -9069,9 +9322,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_global_rules",
-      "target": "wira_portfolio_3d_master_spacing_variables",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_spacing_variables"
     },
     {
       "relation": "contains",
@@ -9079,9 +9332,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_global_rules",
-      "target": "wira_portfolio_3d_master_typography",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_typography"
     },
     {
       "relation": "contains",
@@ -9089,9 +9342,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L72",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_component_specs",
-      "target": "wira_portfolio_3d_master_buttons",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_buttons"
     },
     {
       "relation": "contains",
@@ -9099,9 +9352,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L104",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_component_specs",
-      "target": "wira_portfolio_3d_master_cards",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_cards"
     },
     {
       "relation": "contains",
@@ -9109,9 +9362,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_component_specs",
-      "target": "wira_portfolio_3d_master_inputs",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_inputs"
     },
     {
       "relation": "contains",
@@ -9119,9 +9372,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L140",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_component_specs",
-      "target": "wira_portfolio_3d_master_modals",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_modals"
     },
     {
       "relation": "contains",
@@ -9129,9 +9382,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L170",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_style_guidelines",
-      "target": "wira_portfolio_3d_master_page_pattern",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_page_pattern"
     },
     {
       "relation": "contains",
@@ -9139,9 +9392,9 @@
       "source_file": "design-system/wira-portfolio-3d/MASTER.md",
       "source_location": "L201",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "wira_portfolio_3d_master_anti_patterns_do_not_use",
-      "target": "wira_portfolio_3d_master_additional_forbidden_patterns",
-      "confidence_score": 1.0
+      "target": "wira_portfolio_3d_master_additional_forbidden_patterns"
     },
     {
       "relation": "contains",
@@ -9165,5 +9418,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "928c4e4b7543c23fe94cc8db000e914ae69cd489"
+  "built_at_commit": "1069b8401a979a596d1018b7a6d05e72b423ce4f"
 }

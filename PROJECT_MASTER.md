@@ -66,6 +66,7 @@ Floating chat widget "Operator" yang menjawab pertanyaan soal portofolio, ditena
 | 2026-06-27 | Replace Spline 3D hero with custom canvas                  | Drop `@splinetool/*` (~1MB+); dependency-free, SSR-safe, on-brand                                                                                                    |
 | 2026-07-07 | Redesign v3 pakai skill `ui-ux-pro-max`                    | Monokrom zinc + aksen biru; Archivo/Space Grotesk; light mode hidup lagi — **digantikan v4 di hari yang sama**                                                       |
 | 2026-07-07 | **Redesign v4: 3D immersive full WebGL** (permintaan user) | three.js + R3F + drei; pattern Immersive/Interactive Experience + Bento Grids; slate + hijau; Inter; dark-only lagi; folder `operator/`→`sections/`, tambah `three/` |
+| 2026-07-12 | **v4.1 full-3D: scroll camera journey** (permintaan user, ref Awwwards 3D) | Kamera turun melewati 5 stasiun 3D (knot→cluster→sentinel→rings→beacon) scrub scroll lag-lerp; hero sticky sinematik 175vh; tilt 3D bento/ProjectCard via `SpotlightCard maxTilt`; **tanpa ungu** (eksplisit user). Deps `bun update --latest`; TS dipin `^5` (TS7 pecahkan typescript-eslint); output build pindah `dist/`→`.output/` (nitro) → `serve.ts` disesuaikan + shim `ctx.waitUntil` |
 
 ## Design System (v4 — 2026-07-07, "Wira Portfolio 3D", via skill ui-ux-pro-max)
 
@@ -159,6 +160,7 @@ Tautan: `op-link-underline`. Semua hormati `prefers-reduced-motion`.
 
 ## Changelog
 
+- 2026-07-12: **v4.1 full-3D immersive.** `Scene.tsx` jadi dunia ber-stasiun: path kamera keyframed (samplePath + smoothstep) turun ~24 unit melewati torus knot (hero), server cluster instanced 3×3×3 (tour), sentinel icosahedron + 2 satelit orbit (work), gyro rings (about), beacon berdenyut (CTA); FollowLight menemani kamera, PathBeam CatmullRom menjejak rute, partikel membentang sepanjang kedalaman. Sub-halaman = mode `ambient` (knot+partikel, kamera diam). `CinematicHero` (index.tsx): section 175vh dengan konten sticky yang memudar/menyusut saat kamera berangkat; reduced-motion → hero statis biasa. `SpotlightCard` dapat `maxTilt` + `transformPerspective` → dipakai semua tile bento + `ProjectCard` (tilt 5–6°); `StaggerItem` reveal dapat rotateX 8°. Deps di-update ke latest (`bun update --latest`); `typescript` dipin `^5`; rules eksperimental react-hooks v6 (purity, set-state-in-effect) off; layout build nitro `.output/` → `serve.ts` import `.output/server/index.mjs` + serve `.output/public` + shim `ctx.waitUntil`. Lint 0 error, tsc clean, build hijau, smoke test 4 rute 200, deploy live (lokal+publik 200).
 - 2026-06-17: Created initial project master file.
 - 2026-06-17: Installed dependencies, formatted portfolio files, and validated lint status.
 - 2026-06-17: Verified production build via temporary Node 20 runtime and regenerated route tree.
