@@ -3,6 +3,8 @@ import { PALETTE } from "../types";
 import { roomAudio } from "./audio";
 import { downloadCertificate } from "./certificate";
 import type { ExploreMap } from "./layout";
+import { LoginModal } from "./LoginModal";
+import { connectPresence, disconnectPresence, loadAuth, logout } from "./online";
 import { PuzzleModal } from "./PuzzleModal";
 import { StudyModal } from "./StudyModal";
 import { TerminalModal } from "./TerminalModal";
@@ -11,6 +13,7 @@ import {
   input,
   setModal,
   setMuted,
+  setUser,
   toggleView,
   triggerInteract,
   useExplore,
@@ -43,6 +46,8 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const purging = useExplore((s) => s.purging);
   const moksa = useExplore((s) => s.moksa);
   const dialogue = useExplore((s) => s.dialogue);
+  const user = useExplore((s) => s.user);
+  const onlineCount = useExplore((s) => s.onlinePeers.length);
 
   const [locked, setLocked] = useState(false);
   const lockpad = useRef<HTMLDivElement>(null);
@@ -50,6 +55,23 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
     () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
     [],
   );
+
+  // Restore the badge session and keep presence alive for the whole EXPLORE
+  // session (login via the modal reuses the same socket lifecycle).
+  useEffect(() => {
+    const auth = loadAuth();
+    if (auth) {
+      setUser({ name: auth.name });
+      connectPresence();
+      // Server may have expired the token — verify quietly, demote if so.
+      fetch("/api/room/me", { headers: { Authorization: `Bearer ${auth.token}` } })
+        .then((r) => {
+          if (r.status === 401) logout();
+        })
+        .catch(() => {});
+    }
+    return () => disconnectPresence();
+  }, []);
 
   /* --------------------- pointer lock + mouse look --------------------- */
 
@@ -196,10 +218,30 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
         POV: {view === "first" ? "1ST" : "3RD"}
       </button>
 
+      {/* Online badge / login — stacked under POV */}
+      <button
+        onClick={() => {
+          if (user) {
+            if (window.confirm(`Keluar dari badge ${user.name}?`)) logout();
+          } else {
+            setModal({ type: "login" });
+          }
+        }}
+        className={`fixed left-4 top-40 z-30 rounded-md border px-3 py-1.5 ${mono} text-[11px] tracking-[0.2em]`}
+        style={{
+          borderColor: user ? "rgba(56,189,248,0.55)" : "rgba(124,141,176,0.4)",
+          background: "rgba(15,23,42,0.7)",
+          color: user ? PALETTE.secondary : "#9fb0cc",
+        }}
+        aria-label={user ? "Keluar dari akun" : "Masuk atau daftar untuk tampil online"}
+      >
+        {user ? `● ${onlineCount + 1} ONLINE · ${user.name}` : "○ LOGIN — TAMPIL ONLINE"}
+      </button>
+
       {/* ------------------------- SHIFT MALAM ------------------------- */}
       {nightOn && (
         <div
-          className={`pointer-events-none fixed left-4 top-[10.5rem] z-30 rounded-md border px-3 py-1.5 ${mono} text-[11px] tracking-[0.2em]`}
+          className={`pointer-events-none fixed left-4 top-[13rem] z-30 rounded-md border px-3 py-1.5 ${mono} text-[11px] tracking-[0.2em]`}
           style={{
             borderColor: "rgba(245,158,11,0.5)",
             background: "rgba(15,23,42,0.7)",
@@ -403,6 +445,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       )}
       {modal?.type === "terminal" && <TerminalModal />}
       {modal?.type === "study" && <StudyModal slug={modal.slug} />}
+      {modal?.type === "login" && <LoginModal />}
       {modal?.type === "certificate" && <CertificateModal achievements={achievements} />}
     </>
   );

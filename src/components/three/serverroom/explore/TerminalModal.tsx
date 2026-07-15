@@ -82,7 +82,11 @@ export function TerminalModal() {
         print([out("  telemetry offline — coba lagi")]);
       }
     } else if (c === "ls projects/" || c === "ls projects" || c === "ls") {
-      print(projects.map((p) => out(`  ${p.slug}/`)));
+      print([
+        ...projects.map((p) => out(`  ${p.slug}/`)),
+        // Breadcrumb to the hidden MOKSA.CLOUD door (command stays out of help).
+        { text: "  arsip/   (7 volume · terkunci · coba: sudo open --night-shift)", kind: "dim" },
+      ]);
     } else if (c === "cat cv.txt") {
       print([{ text: "  membuka /cv.pdf …", kind: "dim" }]);
       window.open("/cv.pdf", "_blank", "noopener");

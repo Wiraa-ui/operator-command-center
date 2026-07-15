@@ -7,6 +7,7 @@ import { StatusRack } from "../StatusRack";
 import { PALETTE, type Station } from "../types";
 import { DoorGate } from "./DoorGate";
 import { NightShift } from "./nightshift/NightShift";
+import { OnlinePlayers } from "./OnlinePlayers";
 import { useExplore } from "./store";
 import {
   ACCESS_CODE,
@@ -259,6 +260,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
         distance={12}
         decay={1.8}
       />
+
+      {/* --------------------- pengunjung online ---------------------------- */}
+      <OnlinePlayers />
 
       {/* ------------------------- MOKSA.CLOUD ----------------------------- */}
       {isNight && <NightShift map={map} />}

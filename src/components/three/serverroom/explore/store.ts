@@ -21,6 +21,7 @@ export type ExploreModal =
   | { type: "terminal" }
   | { type: "certificate" }
   | { type: "study"; slug: string }
+  | { type: "login" }
   | null;
 
 export interface Toast {
@@ -60,6 +61,10 @@ export interface ExploreState {
   moksa: boolean;
   /** Current subtitle line, if a character is speaking. */
   dialogue: DialogueLine | null;
+  /** Logged-in room account (persisted by online.ts). */
+  user: { name: string } | null;
+  /** Names of other players currently online (positions live in online.ts). */
+  onlinePeers: string[];
 }
 
 /* ------------------------- mutable fast lane -------------------------- */
@@ -153,6 +158,8 @@ function initialState(): ExploreState {
     purging: null,
     moksa: false,
     dialogue: null,
+    user: null,
+    onlinePeers: [],
   };
 }
 
@@ -236,6 +243,16 @@ export function setMuted(muted: boolean) {
 /** story.ts owns queueing/timing; this just publishes the current line. */
 export function setDialogue(dialogue: DialogueLine | null) {
   state = { ...state, dialogue };
+  emit();
+}
+
+export function setUser(user: { name: string } | null) {
+  state = { ...state, user };
+  emit();
+}
+
+export function setOnlinePeers(onlinePeers: string[]) {
+  state = { ...state, onlinePeers };
   emit();
 }
 
