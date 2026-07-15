@@ -25,6 +25,9 @@ export default tseslint.config(
       // for R3F particle buffers). Re-evaluate when the rules stabilize.
       "react-hooks/purity": "off",
       "react-hooks/set-state-in-effect": "off",
+      // R3F frame loops mutate useMemo'd materials/refs by design (zero
+      // per-frame React state) — the immutability rule can't see that.
+      "react-hooks/immutability": "off",
       "no-restricted-imports": [
         "error",
         {

@@ -4,7 +4,7 @@ import { site } from "@/content/site";
 import { getRoomStatus } from "@/lib/api/roomStatus";
 import { PALETTE } from "../types";
 import { roomAudio } from "./audio";
-import { setModal, useExplore } from "./store";
+import { beginNightShift, setModal, useExplore } from "./store";
 
 /**
  * TerminalModal — the CORE's interactive shell, styled after a modern
@@ -93,6 +93,18 @@ export function TerminalModal() {
         out(`  email    : ${site.email.display}`),
         { text: "  (atau tekan tombol sertifikat — bawa buktinya)", kind: "dim" },
       ]);
+    } else if (c === "sudo open --night-shift" || c === "open --night-shift") {
+      // Hidden on purpose (not in help): the MOKSA.CLOUD door.
+      print([
+        { text: "mounting /dev/arsip … 7 volume ditemukan", kind: "dim" },
+        { text: "PERINGATAN: retensi arsip = kebijakan Ibu Direktur.", kind: "accent" },
+        out("  lampu lorong dialihkan ke mode malam."),
+        { text: "  selamat bertugas, operator shift tiga.", kind: "dim" },
+      ]);
+      window.setTimeout(() => {
+        setModal(null);
+        beginNightShift();
+      }, 1600);
     } else if (c === "rm -rf /" || c.startsWith("rm -rf")) {
       print([
         { text: "PERMISSION DENIED — nice try 🙂", kind: "accent" },

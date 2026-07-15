@@ -21,6 +21,7 @@ import {
   triggerInteract,
   useExplore,
 } from "./store";
+import { ARSIP_RACKS, lampIsOn, night } from "./nightshift/state";
 
 /**
  * PlayerRig — player body for EXPLORE mode. Consumes the mutable
@@ -42,6 +43,12 @@ const BOOM_LEN = 2.8;
 const BOOM_UP = 0.35;
 const BOOM_STEP = 0.2; // sample spacing < wall band thickness (0.4) — no skip
 const CAM_PAD = 0.2; // keep the lens off wall faces / map bounds
+
+/* Sprint & jump (standard FPS feel; jump is vertical-only — collision is 2D). */
+const SPRINT_MULT = 1.65;
+const JUMP_V = 4.6; // apex ≈ 0.88u, well under the 4.2u ceiling
+const GRAVITY = 12;
+const HELD_KEYS = new Set(["ShiftLeft", "ShiftRight", "Space"]);
 
 const MOVE_KEYS: Record<string, [number, number]> = {
   KeyW: [0, 1],
@@ -71,11 +78,13 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (getExploreState().modal) return; // modals own the keyboard
-      if (MOVE_KEYS[e.code]) {
+      if (MOVE_KEYS[e.code] || HELD_KEYS.has(e.code)) {
         input.keys.add(e.code);
         e.preventDefault();
       }
       if (e.code === "KeyE") triggerInteract();
+      // SHIFT MALAM: L toggles the headlamp (light draws the VHS ghost).
+      if (e.code === "KeyL" && getExploreState().night) night.lamp = !night.lamp;
       if (e.code === "KeyV" || e.code === "F5") {
         if (e.code === "F5") e.preventDefault(); // browser reload
         toggleView();
@@ -124,13 +133,16 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
         const sin = Math.sin(player.yaw);
         const cos = Math.cos(player.yaw);
         const walls = wallsFor(s.unlocked);
+        const speed =
+          PLAYER_SPEED *
+          (input.keys.has("ShiftLeft") || input.keys.has("ShiftRight") ? SPRINT_MULT : 1);
         // Substep integration: low-fps devices keep full walking speed while
         // each collision step stays < wall thickness (no tunneling).
         let remaining = Math.min(dt, 0.3);
         while (remaining > 0) {
           const stepDt = Math.min(remaining, 0.05);
           remaining -= stepDt;
-          const step = PLAYER_SPEED * stepDt;
+          const step = speed * stepDt;
           // forward = (−sin yaw, −cos yaw); right = (cos yaw, −sin yaw)
           const dx = (-sin * f + cos * strafe) * step;
           const dz = (-cos * f - sin * strafe) * step;
@@ -140,6 +152,15 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
         }
       }
     }
+
+    /* ------------------------------ jump ------------------------------- */
+    if (!frozen && input.keys.has("Space") && player.y === 0) player.vy = JUMP_V;
+    if (player.y > 0 || player.vy > 0) {
+      const jdt = Math.min(dt, 0.3);
+      player.y = Math.max(0, player.y + player.vy * jdt);
+      player.vy = player.y > 0 ? player.vy - GRAVITY * jdt : 0;
+    }
+    const eyeY = EYE_Y + player.y;
 
     if (s.view === "third") {
       // Chase boom: orbit behind the head along the inverse look direction,
@@ -180,12 +201,12 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
       }
       camera.position.set(
         player.x + bx * len,
-        THREE.MathUtils.clamp(EYE_Y + BOOM_UP + by * len, 0.4, ROOM_H - 0.3),
+        THREE.MathUtils.clamp(eyeY + BOOM_UP + by * len, 0.4, ROOM_H - 0.3),
         player.z + bz * len,
       );
-      camera.lookAt(player.x, EYE_Y, player.z);
+      camera.lookAt(player.x, eyeY, player.z);
     } else {
-      camera.position.set(player.x, EYE_Y, player.z);
+      camera.position.set(player.x, eyeY, player.z);
       camera.rotation.set(player.pitch, player.yaw, 0, "YXZ");
     }
 
@@ -209,6 +230,17 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
     }
     const tDist = Math.hypot(TERMINAL_POS.x - player.x, TERMINAL_POS.z - player.z);
     if (tDist < bestD) nearest = { id: "terminal", label: "TERMINAL CORE" };
+    // SHIFT MALAM: unpurged archives become the priority interactables.
+    if (s.night && !s.purging) {
+      for (const r of ARSIP_RACKS) {
+        if (s.purged.includes(r.id)) continue;
+        const dist = Math.hypot(r.x - player.x, r.z - player.z);
+        if (dist < bestD) {
+          bestD = dist;
+          nearest = { id: r.id, label: `HAPUS ${r.label}` };
+        }
+      }
+    }
     setInteract(nearest);
 
     /* ------------------------- zone tracking --------------------------- */
@@ -257,6 +289,9 @@ function HeadLamp({ reduced }: { reduced: boolean }) {
       target.position.copy(camera.position).addScaledVector(dir, 6);
     }
     target.updateMatrixWorld();
+    // SHIFT MALAM: lamp off (or static-locked by the ghost) → near-darkness.
+    const s = getExploreState();
+    light.intensity = s.night && !lampIsOn(Date.now()) ? 1.2 : 18;
   });
 
   // Reduced mode keeps the lamp (it's lighting, not motion).

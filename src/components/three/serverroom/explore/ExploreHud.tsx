@@ -6,7 +6,16 @@ import type { ExploreMap } from "./layout";
 import { PuzzleModal } from "./PuzzleModal";
 import { StudyModal } from "./StudyModal";
 import { TerminalModal } from "./TerminalModal";
-import { input, setModal, setMuted, toggleView, triggerInteract, useExplore } from "./store";
+import {
+  endNightShift,
+  input,
+  setModal,
+  setMuted,
+  toggleView,
+  triggerInteract,
+  useExplore,
+} from "./store";
+import { ARSIP_RACKS } from "./nightshift/state";
 
 /**
  * ExploreHud — every DOM control of EXPLORE mode: pointer-lock pad + mouse
@@ -28,6 +37,10 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const muted = useExplore((s) => s.muted);
   const achievements = useExplore((s) => s.achievements);
   const view = useExplore((s) => s.view);
+  const nightOn = useExplore((s) => s.night);
+  const purgedCount = useExplore((s) => s.purged.length);
+  const purging = useExplore((s) => s.purging);
+  const moksa = useExplore((s) => s.moksa);
 
   const [locked, setLocked] = useState(false);
   const lockpad = useRef<HTMLDivElement>(null);
@@ -143,7 +156,8 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
               KLIK UNTUK KENDALI
             </div>
             <div className="mt-2" style={{ color: "#9fb0cc" }}>
-              WASD jalan · mouse lihat 360° · E interaksi · V sudut pandang · ESC jeda
+              WASD jalan · Shift lari · Space lompat · mouse 360° · E interaksi · V sudut pandang ·
+              ESC jeda
             </div>
           </div>
         </div>
@@ -172,11 +186,86 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
           color: PALETTE.accentBright,
         }}
         aria-label={
-          view === "first" ? "Ganti ke sudut pandang orang ketiga" : "Ganti ke sudut pandang orang pertama"
+          view === "first"
+            ? "Ganti ke sudut pandang orang ketiga"
+            : "Ganti ke sudut pandang orang pertama"
         }
       >
         POV: {view === "first" ? "1ST" : "3RD"}
       </button>
+
+      {/* ------------------------- SHIFT MALAM ------------------------- */}
+      {nightOn && (
+        <div
+          className={`pointer-events-none fixed left-4 top-[10.5rem] z-30 rounded-md border px-3 py-1.5 ${mono} text-[11px] tracking-[0.2em]`}
+          style={{
+            borderColor: "rgba(245,158,11,0.5)",
+            background: "rgba(15,23,42,0.7)",
+            color: PALETTE.accentBright,
+          }}
+        >
+          ARSIP {purgedCount}/{ARSIP_RACKS.length} · L LAMPU
+        </div>
+      )}
+      {nightOn && purging && (
+        <div className="pointer-events-none fixed bottom-40 left-1/2 z-30 w-56 -translate-x-1/2">
+          <style>{`@keyframes ns-fill { from { width: 0%; } to { width: 100%; } }`}</style>
+          <div
+            className={`${mono} mb-1 text-center text-[10px] tracking-[0.25em]`}
+            style={{ color: PALETTE.accentBright }}
+          >
+            NGABEN DIGITAL…
+          </div>
+          <div
+            className="h-1.5 overflow-hidden rounded-full"
+            style={{ background: "rgba(245,158,11,0.18)" }}
+          >
+            <div
+              key={purging.id}
+              className="h-full"
+              style={{
+                background: PALETTE.accentBright,
+                animation: `ns-fill ${Math.max(purging.until - Date.now(), 100)}ms linear forwards`,
+              }}
+            />
+          </div>
+        </div>
+      )}
+      {moksa && (
+        <div
+          className="fixed inset-0 z-40 flex items-center justify-center"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(253,233,200,0.32), rgba(15,23,42,0.94) 75%)",
+          }}
+        >
+          <div className="max-w-md px-8 text-center">
+            <div className={`${mono} text-[11px] tracking-[0.3em]`} style={{ color: "#fde9c8" }}>
+              // 7/7 ARSIP DILEPASKAN
+            </div>
+            <h2 className="mt-3 text-3xl font-bold" style={{ color: "#f8fafc" }}>
+              MOKSA
+            </h2>
+            <p className="mt-3 text-[14px] leading-relaxed" style={{ color: "#cbd5e1" }}>
+              Server sunyi. Tidak ada lagi yang menunggu di dalam rak. Bu Kirana berdiri di lorong,
+              melepas kacamatanya — malam ini tak ada yang perlu dia jaga.
+            </p>
+            <button
+              onClick={() => {
+                endNightShift();
+              }}
+              className={`${mono} mt-6 rounded-full border px-5 py-2 text-[12px] font-bold tracking-[0.2em]`}
+              style={{
+                borderColor: PALETTE.accentBright,
+                background: "rgba(245,158,11,0.18)",
+                color: PALETTE.accentBright,
+              }}
+            >
+              KEMBALI KE SHIFT PAGI
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Interact prompt / button */}
       {interact &&

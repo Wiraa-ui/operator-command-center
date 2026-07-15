@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { SPAWN } from "./layout";
+import { ARSIP_RACKS, night, resetNight, RITUAL_MS } from "./nightshift/state";
 
 /**
  * EXPLORE mode state. Two tiers on purpose:
@@ -39,6 +40,14 @@ export interface ExploreState {
   view: "first" | "third";
   /** ms epoch when this explore session started (speedrun timer). */
   startedAt: number;
+  /** MOKSA.CLOUD (SHIFT MALAM) — hidden horror mode. Session-only. */
+  night: boolean;
+  /** Purged arsip ids (digital ngaben progress, max 7). */
+  purged: string[];
+  /** Active hold-still ritual, for the HUD progress readout. */
+  purging: { id: string; until: number } | null;
+  /** All 7 purged — the moksa ending overlay is up. */
+  moksa: boolean;
 }
 
 /* ------------------------- mutable fast lane -------------------------- */
@@ -53,17 +62,26 @@ export const input = {
   pointerLocked: false,
 };
 
-export const player = { x: SPAWN.x, z: SPAWN.z, yaw: SPAWN.yaw, pitch: 0 };
+/** y/vy: jump arc — y is height above the floor, 0 = grounded. */
+export const player = { x: SPAWN.x, z: SPAWN.z, y: 0, vy: 0, yaw: SPAWN.yaw, pitch: 0 };
 
 // Read-only debug/E2E hook (console: __ra.player) — cheap, and the state is
 // all client-side game progress anyway.
 if (typeof window !== "undefined") {
-  (window as unknown as { __ra?: object }).__ra = { player, getState: () => state };
+  (window as unknown as { __ra?: object }).__ra = {
+    player,
+    getState: () => state,
+    // E2E hooks for the hidden night mode (all state is client-side anyway).
+    night,
+    beginNightShift: () => beginNightShift(),
+  };
 }
 
 export function resetPlayer() {
   player.x = SPAWN.x;
   player.z = SPAWN.z;
+  player.y = 0;
+  player.vy = 0;
   player.yaw = SPAWN.yaw;
   player.pitch = 0;
   input.keys.clear();
@@ -118,6 +136,10 @@ function initialState(): ExploreState {
     muted: p.muted,
     view: "first",
     startedAt: Date.now(),
+    night: false,
+    purged: [],
+    purging: null,
+    moksa: false,
   };
 }
 
@@ -212,7 +234,18 @@ export function markVisited(zone: string) {
 }
 
 export function beginSession() {
-  state = { ...state, startedAt: Date.now(), visited: [], modal: null, interact: null };
+  state = {
+    ...state,
+    startedAt: Date.now(),
+    visited: [],
+    modal: null,
+    interact: null,
+    // A fresh explore session always starts on the day shift.
+    night: false,
+    purged: [],
+    purging: null,
+    moksa: false,
+  };
   emit();
 }
 
@@ -235,10 +268,62 @@ export function isUnlocked(id: DoorId): boolean {
   return state.unlocked.includes(id);
 }
 
+/* --------------------------- SHIFT MALAM ------------------------------ */
+
+/** Enter MOKSA.CLOUD (hidden terminal command). Session-only, no persist. */
+export function beginNightShift() {
+  resetNight();
+  state = { ...state, night: true, purged: [], purging: null, moksa: false, modal: null };
+  emit();
+  addToast("// SHIFT MALAM — hapus 7 arsip. Ia tahu kamu di sini.");
+  addToast("L = lampu · lampu menarik sesuatu dari 1998");
+}
+
+export function endNightShift() {
+  state = { ...state, night: false, purging: null, moksa: false };
+  emit();
+}
+
+/** Movement past tolerance (checked by NightShift's frame loop) lands here. */
+export function cancelPurge(reason?: string) {
+  if (!state.purging) return;
+  state = { ...state, purging: null };
+  emit();
+  if (reason) addToast(reason);
+}
+
+export function completePurge() {
+  const id = state.purging?.id;
+  if (!id || state.purged.includes(id)) return;
+  const purged = [...state.purged, id];
+  const moksa = purged.length >= ARSIP_RACKS.length;
+  state = { ...state, purged, purging: null, moksa };
+  emit();
+  addToast(`ARSIP TERHAPUS — satu arwah moksa (${purged.length}/${ARSIP_RACKS.length})`);
+  if (moksa) {
+    addAchievement("MOKSA — semua arwah pulang");
+    // The ending overlay needs a clickable cursor.
+    if (typeof document !== "undefined" && document.pointerLockElement) {
+      document.exitPointerLock();
+    }
+  }
+}
+
 /** E / tap: open the modal for whatever interactable is in range. */
 export function triggerInteract() {
   if (state.modal || !state.interact) return;
   const id = state.interact.id;
+  if (id.startsWith("arsip:")) {
+    // Hold-still ritual, not a modal — pointer lock stays, the world keeps
+    // moving (that's the danger). NightShift's frame loop resolves it.
+    if (state.purging) return;
+    night.purgeAnchor.x = player.x;
+    night.purgeAnchor.z = player.z;
+    state = { ...state, purging: { id, until: Date.now() + RITUAL_MS } };
+    emit();
+    addToast("Ritual ngaben digital — tahan posisi…");
+    return;
+  }
   if (id === "terminal") {
     setModal({ type: "terminal" });
   } else if (id.startsWith("study:")) {

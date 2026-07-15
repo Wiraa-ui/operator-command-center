@@ -175,7 +175,7 @@ export function Cables({ stations, reduced }: { stations: Station[]; reduced: bo
     if (reduced) return; // frozen uTime → static pulses
     // Mutating a uniform per frame is the standard R3F escape hatch —
     // routing this through React state would re-render 60×/s.
-    // eslint-disable-next-line react-hooks/immutability
+
     material.uniforms.uTime.value += dt;
   });
 

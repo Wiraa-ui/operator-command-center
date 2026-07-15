@@ -100,7 +100,7 @@ const HEAD_PITCH_MAX = 0.5;
 
 export function ThirdPersonBody() {
   const a = useAvatarAssets();
-  const gait = useMemo(newGait, []);
+  const gait = useMemo(() => newGait(), []);
   const root = useRef<THREE.Group>(null);
   const head = useRef<THREE.Group>(null);
   const torso = useRef<THREE.Group>(null);
@@ -116,7 +116,7 @@ export function ThirdPersonBody() {
 
     // Model is built facing local +z; PlayerRig forward = (−sin yaw, −cos yaw),
     // and rotation.y = yaw + π maps local +z exactly onto that vector.
-    g.position.set(player.x, 0, player.z);
+    g.position.set(player.x, player.y, player.z);
     g.rotation.y = player.yaw + Math.PI;
 
     const amp = Math.min(gait.speed / PLAYER_SPEED, 1);
@@ -148,7 +148,13 @@ export function ThirdPersonBody() {
     <group ref={root}>
       {/* Self-fill: the headlamp points away from the body in third person,
           so without this the Operator reads as a black blob. One cheap light. */}
-      <pointLight color="#fde9c8" intensity={2.2} distance={3.8} decay={1.8} position={[0, 2.05, 0.5]} />
+      <pointLight
+        color="#fde9c8"
+        intensity={2.2}
+        distance={3.8}
+        decay={1.8}
+        position={[0, 2.05, 0.5]}
+      />
       {/* torso group carries chest gear so breathing moves it all */}
       <group ref={torso}>
         <Part geo={a.box} mat={a.suit} p={[0, 1.13, 0]} s={[0.42, 0.62, 0.24]} />
@@ -203,7 +209,7 @@ const LOOK_LAG = 12; // 1/s — rotation catches up to the camera at this rate
 
 export function FirstPersonArms() {
   const a = useAvatarAssets();
-  const gait = useMemo(newGait, []);
+  const gait = useMemo(() => newGait(), []);
   const rig = useRef<THREE.Group>(null);
   const bob = useRef<THREE.Group>(null);
 
@@ -249,7 +255,13 @@ export function FirstPersonArms() {
     <group ref={rig}>
       {/* Tiny fill so the navy sleeves read against the dark floor — the
           headlamp cone starts at the camera and barely grazes them. */}
-      <pointLight color="#fde9c8" intensity={0.8} distance={1.4} decay={2} position={[0, -0.05, -0.2]} />
+      <pointLight
+        color="#fde9c8"
+        intensity={0.8}
+        distance={1.4}
+        decay={2}
+        position={[0, -0.05, -0.2]}
+      />
       <group ref={bob}>
         {arm(1)}
         {arm(-1)}

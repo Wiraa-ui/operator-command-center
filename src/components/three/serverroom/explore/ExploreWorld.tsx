@@ -6,6 +6,8 @@ import { Panels } from "../Panels";
 import { StatusRack } from "../StatusRack";
 import { PALETTE, type Station } from "../types";
 import { DoorGate } from "./DoorGate";
+import { NightShift } from "./nightshift/NightShift";
+import { useExplore } from "./store";
 import {
   ACCESS_CODE,
   CORE,
@@ -62,6 +64,10 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
   const coreC = wallCenter({ ...CORE, zMax: LAB.zMin });
 
   const visibleWalls = useMemo(() => map.walls.filter((w) => !w.hidden), [map]);
+  // SHIFT MALAM: house lights drop to a fraction — the headlamp (toggleable,
+  // ghost-lockable) becomes the player's main light source.
+  const isNight = useExplore((s) => s.night);
+  const lightMul = isNight ? 0.18 : 1;
 
   return (
     <group>
@@ -234,25 +240,28 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
       {/* ---------------------------- lighting ------------------------------ */}
       <pointLight
         position={[7, ROOM_H - 0.6, -10.5]}
-        intensity={7}
+        intensity={7 * lightMul}
         color={PALETTE.accent}
         distance={11}
         decay={1.8}
       />
       <pointLight
         position={[14.5, ROOM_H - 0.6, -10.5]}
-        intensity={7}
+        intensity={7 * lightMul}
         color={PALETTE.accent}
         distance={11}
         decay={1.8}
       />
       <pointLight
         position={[14, ROOM_H - 0.6, -21]}
-        intensity={6}
+        intensity={6 * lightMul}
         color={PALETTE.secondary}
         distance={12}
         decay={1.8}
       />
+
+      {/* ------------------------- MOKSA.CLOUD ----------------------------- */}
+      {isNight && <NightShift map={map} />}
     </group>
   );
 }
