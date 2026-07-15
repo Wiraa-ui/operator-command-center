@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784137594.8280213,
-    "ast_hash": "246daa986d418f47546afa32372b2366",
+    "mtime": 1784139934.0207222,
+    "ast_hash": "8dbbc4f0089740dc8af1b8e678271da7",
     "semantic_hash": ""
   },
   "README.md": {
@@ -420,13 +420,13 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreHud.tsx": {
-    "mtime": 1784136270.0548086,
-    "ast_hash": "2865b6566603460d166868cc7a71f573",
+    "mtime": 1784138592.5077393,
+    "ast_hash": "858ea91ad7b236b40250acd6c28d6ba6",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreWorld.tsx": {
-    "mtime": 1784136331.626656,
-    "ast_hash": "1f4257dab4e94c02e442f9f7b213ffc9",
+    "mtime": 1784138813.1059277,
+    "ast_hash": "90ccfba36169932b08f0f6d45e5563f4",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/LoginModal.tsx": {
@@ -445,8 +445,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/PlayerRig.tsx": {
-    "mtime": 1784122198.1355784,
-    "ast_hash": "2b0092ef229b66d7037060f031ad54cd",
+    "mtime": 1784138378.9088998,
+    "ast_hash": "551179c5f3c99bd86ac6c98508ebf130",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/PuzzleModal.tsx": {
@@ -460,8 +460,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/TerminalModal.tsx": {
-    "mtime": 1784136720.1611516,
-    "ast_hash": "995a6944cdcaeebbf325efafd3fb2d9c",
+    "mtime": 1784138515.3294647,
+    "ast_hash": "c1d748769fb983e7e492e5ddc4b8189a",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/audio.ts": {
@@ -485,8 +485,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/layout.ts": {
-    "mtime": 1783858407.046378,
-    "ast_hash": "1e1aaae65040b9307261bfb949ba6cb4",
+    "mtime": 1784138813.1059277,
+    "ast_hash": "86fe1e65a83f844937b0efbb2ed07aaf",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/Entities.tsx": {
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/NightShift.tsx": {
-    "mtime": 1784135143.531072,
-    "ast_hash": "358656058dc55195e84136ec93e0a977",
+    "mtime": 1784138566.3169794,
+    "ast_hash": "249d42869ad90c4b201904d28e6c294d",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/gamelan.ts": {
@@ -505,8 +505,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/state.ts": {
-    "mtime": 1784121977.297544,
-    "ast_hash": "262d0855c550c213cc59441dbc01c517",
+    "mtime": 1784138548.0501504,
+    "ast_hash": "3f9bf518fea322180ba71847d9f21f92",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/story.ts": {
@@ -515,8 +515,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/voice.ts": {
-    "mtime": 1784134751.2398193,
-    "ast_hash": "0b6912fc784aaf432b74cdc8de0e3b7d",
+    "mtime": 1784138284.190037,
+    "ast_hash": "e24aa100e9fe63b4fa12bf3fd6ab6bdd",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/online.ts": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/store.ts": {
-    "mtime": 1784136124.2948925,
-    "ast_hash": "ac28300e0df1bc1ad73e37417dd03889",
+    "mtime": 1784138607.792602,
+    "ast_hash": "53cf8970cfa820c294c15848b36c5bff",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/stations.ts": {
@@ -547,6 +547,16 @@
   "src/components/three/serverroom/CONTRACT.md": {
     "mtime": 1784117540.7310464,
     "ast_hash": "b637109db8619d0c8287f03dc15514d0",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/NpcModal.tsx": {
+    "mtime": 1784138353.0841973,
+    "ast_hash": "8ec01d4a66caa5aaf8b3f7ff82697509",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/rpg.ts": {
+    "mtime": 1784138844.4686954,
+    "ast_hash": "68c2b2fc79731d54a260acf0af58154d",
     "semantic_hash": ""
   }
 }
