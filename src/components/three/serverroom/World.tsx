@@ -46,7 +46,22 @@ function sideQuaternion(side: "left" | "right") {
   );
 }
 
-export function World({ stations, reduced }: { stations: Station[]; reduced: boolean }) {
+export interface WallGap {
+  side: "left" | "right";
+  zMin: number;
+  zMax: number;
+}
+
+export function World({
+  stations,
+  reduced,
+  gaps = [],
+}: {
+  stations: Station[];
+  reduced: boolean;
+  /** Doorway openings (EXPLORE mode): decor racks skip these z-ranges. */
+  gaps?: WallGap[];
+}) {
   const decorRef = useRef<THREE.InstancedMesh>(null);
   const bodyRef = useRef<THREE.InstancedMesh>(null);
   const panelRef = useRef<THREE.InstancedMesh>(null);
@@ -71,6 +86,8 @@ export function World({ stations, reduced }: { stations: Station[]; reduced: boo
       for (let z = zStart - RACK_W / 2; z > zEnd + RACK_W / 2; z -= DECOR_STEP) {
         // Leave the slot open where a station rack (any kind) lives.
         if (occupied.some((s) => s.side === side && Math.abs(z - s.z) < STATION_GAP)) continue;
+        // Doorway gaps (EXPLORE mode) stay clear of decor racks too.
+        if (gaps.some((g) => g.side === side && z > g.zMin && z < g.zMax)) continue;
         const h = 0.92 + rand() * 0.08; // slight height jitter breaks the extrusion look
         pos.set(SIDE_X[side], (RACK_H / 2) * h, z);
         scale.set(1, h, 1);
@@ -78,7 +95,7 @@ export function World({ stations, reduced }: { stations: Station[]; reduced: boo
       }
     }
     return matrices;
-  }, [stations, zEnd]);
+  }, [stations, zEnd, gaps]);
 
   /* ------------- detailed station racks (project / skills) ------------ */
 

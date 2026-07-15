@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useActiveStation } from "./CameraRig";
+import { corridorEndZ, useActiveStation } from "./CameraRig";
 import { PALETTE, type Station } from "./types";
 
 /**
@@ -11,9 +11,9 @@ import { PALETTE, type Station } from "./types";
 /** Scroll position (px) that parks the camera at station i. */
 function scrollTopFor(stations: Station[], index: number): number {
   const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-  // Camera z runs +4 → deepest−4 linearly with progress (CameraRig contract).
+  // Camera z runs +4 → corridorEndZ linearly with progress (CameraRig contract).
   const start = 4;
-  const end = Math.min(0, ...stations.map((s) => s.z)) - 4;
+  const end = corridorEndZ(stations);
   const p = (start - stations[index].z) / (start - end);
   return Math.min(Math.max(p, 0), 1) * max;
 }

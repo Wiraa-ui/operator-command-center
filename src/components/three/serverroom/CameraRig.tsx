@@ -19,7 +19,9 @@ import { RACK_SPACING, SIDE_X, type Station } from "./types";
 
 const EYE_Y = 1.7; // walking eye height (CONTRACT §Geometri)
 const START_Z = 4; // corridor entrance, in front of station z=0
-const END_MARGIN = 4; // stop this far past the deepest rack
+const END_MARGIN = -2.4; // park this far IN FRONT of the deepest rack — the
+// contact panel faces +z there, so overshooting past it clips the camera
+// through the card (giant text) and strands the viewer in an empty corridor.
 const LOOK_AHEAD = 6; // how far down the aisle the default look target sits
 const SWAY_X_MAX = 0.7; // max camera lean toward the active rack side
 const LOOK_SWAY_X = 0.9; // max look-target drift toward the active rack
@@ -36,8 +38,8 @@ function pageProgress(): number {
   return Math.min(window.scrollY / max, 1);
 }
 
-/** z the dolly parks at when progress hits 1: deepest rack minus END_MARGIN. */
-function corridorEndZ(stations: Station[]): number {
+/** z the dolly parks at when progress hits 1 (exported: Hud maps dots → scroll). */
+export function corridorEndZ(stations: Station[]): number {
   let deepest = 0;
   for (const s of stations) deepest = Math.min(deepest, s.z);
   return deepest - END_MARGIN;

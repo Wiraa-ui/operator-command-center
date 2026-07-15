@@ -17,7 +17,7 @@ konten asli (drei `Html`). Kabel amber berdenyut mengalir antar rak. Satu rak
 
 ## Geometri dunia
 
-- Lorong: lebar 6, tinggi 4.2 (`CORRIDOR` di types.ts). Lantai y=0, plafon y=4.2. Kamera berjalan di x≈0, y≈1.7, dari z=4 menuju z = terdalam stasiun − 4.
+- Lorong: lebar 6, tinggi 4.2 (`CORRIDOR` di types.ts). Lantai y=0, plafon y=4.2. Kamera berjalan di x≈0, y≈1.7, dari z=4 dan parkir 2.4 unit DI DEPAN stasiun terdalam (`corridorEndZ` di CameraRig.tsx — jangan melewati panel contact yang menghadap +z; geometri lorong di World.tsx tetap memanjang sampai terdalam − 4).
 - Stasiun: dari `stations.ts` (`getStations()`), spacing `RACK_SPACING=7` pada z negatif. `side` menentukan rak di x=-2.4 (left) / x=+2.4 (right) / tengah (center, untuk entrance & contact).
 - Fog: FogExp2 bg, density ±0.06 — modul tidak memasang fog sendiri (dipasang integrator di Canvas).
 
