@@ -14,7 +14,13 @@ import type { Speaker } from "./nightshift/voice";
  */
 
 export type Privilege = "guest" | "operator" | "root";
-export type DoorId = "door-lab" | "door-core";
+export type DoorId = "door-lab" | "door-core" | "door-bengkel" | "door-noc";
+
+/** RPG quest state: questId → current step index, plus finished quests. */
+export interface QuestProgress {
+  active: Record<string, number>;
+  completed: string[];
+}
 
 export type ExploreModal =
   | { type: "puzzle"; doorId: DoorId }
@@ -22,6 +28,7 @@ export type ExploreModal =
   | { type: "certificate" }
   | { type: "study"; slug: string }
   | { type: "login" }
+  | { type: "npc"; npcId: string }
   | null;
 
 export interface Toast {
@@ -65,6 +72,8 @@ export interface ExploreState {
   user: { name: string } | null;
   /** Names of other players currently online (positions live in online.ts). */
   onlinePeers: string[];
+  /** RPG quest-line progress (persisted). Engine lives in rpg.ts. */
+  questProgress: QuestProgress;
 }
 
 /* ------------------------- mutable fast lane -------------------------- */
@@ -116,21 +125,34 @@ interface Persisted {
   unlocked: DoorId[];
   achievements: string[];
   muted: boolean;
+  questProgress: QuestProgress;
 }
 
+const EMPTY_PERSIST: Persisted = {
+  unlocked: [],
+  achievements: [],
+  muted: false,
+  questProgress: { active: {}, completed: [] },
+};
+
 function loadPersisted(): Persisted {
-  if (typeof window === "undefined") return { unlocked: [], achievements: [], muted: false };
+  if (typeof window === "undefined") return EMPTY_PERSIST;
   try {
     const raw = window.localStorage.getItem(PERSIST_KEY);
-    if (!raw) return { unlocked: [], achievements: [], muted: false };
+    if (!raw) return EMPTY_PERSIST;
     const p = JSON.parse(raw) as Partial<Persisted>;
+    const qp = p.questProgress;
     return {
       unlocked: Array.isArray(p.unlocked) ? p.unlocked : [],
       achievements: Array.isArray(p.achievements) ? p.achievements : [],
       muted: Boolean(p.muted),
+      questProgress:
+        qp && typeof qp.active === "object" && Array.isArray(qp.completed)
+          ? { active: qp.active, completed: qp.completed }
+          : { active: {}, completed: [] },
     };
   } catch {
-    return { unlocked: [], achievements: [], muted: false };
+    return EMPTY_PERSIST;
   }
 }
 
@@ -147,6 +169,7 @@ function initialState(): ExploreState {
     unlocked: p.unlocked,
     visited: [],
     achievements: p.achievements,
+    questProgress: p.questProgress,
     modal: null,
     interact: null,
     toasts: [],
@@ -178,6 +201,7 @@ function persist() {
         unlocked: state.unlocked,
         achievements: state.achievements,
         muted: state.muted,
+        questProgress: state.questProgress,
       } satisfies Persisted),
     );
   } catch {
@@ -256,6 +280,21 @@ export function setOnlinePeers(onlinePeers: string[]) {
   emit();
 }
 
+export function setQuestProgress(questProgress: QuestProgress) {
+  state = { ...state, questProgress };
+  persist();
+  emit();
+}
+
+/** rpg.ts registers its questEvent here (avoids a store↔rpg import cycle). */
+let questSink: (tag: string) => void = () => {};
+export function registerQuestSink(fn: (tag: string) => void) {
+  questSink = fn;
+}
+export function emitQuestEvent(tag: string) {
+  questSink(tag);
+}
+
 /** V / F5 / HUD button: flip first-person ↔ third-person (session-only). */
 export function toggleView() {
   state = { ...state, view: state.view === "first" ? "third" : "first" };
@@ -309,10 +348,26 @@ export function isUnlocked(id: DoorId): boolean {
 /** Enter MOKSA.CLOUD (hidden terminal command). Session-only, no persist. */
 export function beginNightShift() {
   resetNight();
-  state = { ...state, night: true, purged: [], purging: null, moksa: false, modal: null };
+  // Maintenance access opens for the night crew: two of the seven archives
+  // sit in BENGKEL/NOC, so their doors must never soft-lock the ending.
+  const unlocked = [...state.unlocked];
+  for (const id of ["door-bengkel", "door-noc"] as const) {
+    if (!unlocked.includes(id)) unlocked.push(id);
+  }
+  state = {
+    ...state,
+    unlocked,
+    privilege: privilegeOf(unlocked),
+    night: true,
+    purged: [],
+    purging: null,
+    moksa: false,
+    modal: null,
+  };
+  persist();
   emit();
   addToast("// SHIFT MALAM — hapus 7 arsip. Ia tahu kamu di sini.");
-  addToast("L = lampu · lampu menarik sesuatu dari 1998");
+  addToast("L = lampu · akses maintenance dibuka untuk shift malam");
 }
 
 export function endNightShift() {
@@ -360,10 +415,20 @@ export function triggerInteract() {
     addToast("Ritual ngaben digital — tahan posisi…");
     return;
   }
+  if (id.startsWith("node:")) {
+    // Quest patch panel: instant check, stay in pointer lock.
+    emitQuestEvent(id);
+    return;
+  }
   if (id === "terminal") {
     setModal({ type: "terminal" });
+    emitQuestEvent("terminal");
   } else if (id.startsWith("study:")) {
     setModal({ type: "study", slug: id.slice("study:".length) });
+    emitQuestEvent("study");
+  } else if (id.startsWith("npc:")) {
+    setModal({ type: "npc", npcId: id });
+    emitQuestEvent(`talk:${id}`);
   } else {
     setModal({ type: "puzzle", doorId: id as DoorId });
   }

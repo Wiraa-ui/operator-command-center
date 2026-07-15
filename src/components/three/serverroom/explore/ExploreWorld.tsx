@@ -6,16 +6,20 @@ import { Panels } from "../Panels";
 import { StatusRack } from "../StatusRack";
 import { PALETTE, type Station } from "../types";
 import { DoorGate } from "./DoorGate";
+import { HumanoidFigure } from "./humanoid";
 import { NightShift } from "./nightshift/NightShift";
 import { OnlinePlayers } from "./OnlinePlayers";
+import { NPCS, QUEST_NODES } from "./rpg";
 import { useExplore } from "./store";
 import {
   ACCESS_CODE,
+  BENGKEL,
   CORE,
   HEART_POS,
   HIRE_POS,
   LAB,
   LAB_PANELS,
+  NOC,
   NOTE_POS,
   ROOM_H,
   STATUS_POS,
@@ -63,6 +67,8 @@ const HIRE_STATION: Station = {
 export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boolean }) {
   const labC = wallCenter(LAB);
   const coreC = wallCenter({ ...CORE, zMax: LAB.zMin });
+  const bengkelC = wallCenter(BENGKEL);
+  const nocC = wallCenter(NOC);
 
   const visibleWalls = useMemo(() => map.walls.filter((w) => !w.hidden), [map]);
   // SHIFT MALAM: house lights drop to a fraction — the headlamp (toggleable,
@@ -78,6 +84,10 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
         { c: labC, y: ROOM_H, rx: Math.PI / 2 },
         { c: coreC, y: 0, rx: -Math.PI / 2 },
         { c: coreC, y: ROOM_H, rx: Math.PI / 2 },
+        { c: bengkelC, y: 0, rx: -Math.PI / 2 },
+        { c: bengkelC, y: ROOM_H, rx: Math.PI / 2 },
+        { c: nocC, y: 0, rx: -Math.PI / 2 },
+        { c: nocC, y: ROOM_H, rx: Math.PI / 2 },
       ].map((p, i) => (
         <mesh key={i} rotation={[p.rx, 0, 0]} position={[p.c.x, p.y, p.c.z]}>
           <planeGeometry args={[p.c.w, p.c.d]} />
@@ -260,6 +270,106 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
         distance={12}
         decay={1.8}
       />
+
+      {/* ----------------------- RPG: BENGKEL & NOC ------------------------- */}
+      {/* Workbench along the bengkel north wall + tool glow. */}
+      <group position={[-9.5, 0, -13.95]}>
+        <mesh position={[0, 0.5, 0]}>
+          <boxGeometry args={[2.2, 1.0, 0.7]} />
+          <meshStandardMaterial color={PALETTE.metal} metalness={0.7} roughness={0.4} />
+        </mesh>
+        <mesh position={[0, 1.03, 0]}>
+          <boxGeometry args={[2.24, 0.06, 0.74]} />
+          <meshStandardMaterial color={PALETTE.slate} metalness={0.5} roughness={0.5} />
+        </mesh>
+        <pointLight
+          position={[0, 2.2, 0.6]}
+          intensity={4 * lightMul}
+          color={PALETTE.accent}
+          distance={6}
+          decay={1.8}
+        />
+      </group>
+      {/* NOC monitor wall: a bank of dim sky screens above the desk. */}
+      <group position={[10, 0, -1.62]}>
+        <mesh position={[0, 0.55, 0]}>
+          <boxGeometry args={[3.1, 1.1, 0.6]} />
+          <meshStandardMaterial color={PALETTE.metal} metalness={0.75} roughness={0.35} />
+        </mesh>
+        {[0, 1, 2].map((i) => (
+          <mesh key={i} position={[(i - 1) * 1.05, 1.85, -0.05]}>
+            <planeGeometry args={[0.95, 0.6]} />
+            <meshBasicMaterial
+              color={PALETTE.secondary}
+              transparent
+              opacity={0.28}
+              toneMapped={false}
+            />
+          </mesh>
+        ))}
+        <pointLight
+          position={[0, 2.1, 1]}
+          intensity={4.5 * lightMul}
+          color={PALETTE.secondary}
+          distance={6.5}
+          decay={1.8}
+        />
+      </group>
+      {/* Q2 patch panels — small sky boxes that read as inspectable. */}
+      {QUEST_NODES.map((q) => (
+        <group key={q.id} position={[q.x, 0, q.z]}>
+          <mesh position={[0, 1.25, 0]}>
+            <boxGeometry args={[0.34, 0.5, 0.16]} />
+            <meshStandardMaterial
+              color={PALETTE.metal}
+              emissive={PALETTE.secondary}
+              emissiveIntensity={0.5}
+              metalness={0.6}
+              roughness={0.4}
+            />
+          </mesh>
+        </group>
+      ))}
+      {/* NPC cast — day shift only; they go home before SHIFT MALAM. */}
+      {!isNight &&
+        NPCS.map((n) => (
+          <group key={n.id}>
+            <group position={[n.x, 2.05, n.z]}>
+              <Html
+                center
+                distanceFactor={3.2}
+                style={{ pointerEvents: "none", userSelect: "none" }}
+              >
+                <div
+                  style={{
+                    fontFamily: mono,
+                    fontSize: 11,
+                    letterSpacing: "0.16em",
+                    color: PALETTE.accentBright,
+                    background: "rgba(11,17,32,0.75)",
+                    border: "1px solid rgba(245,158,11,0.4)",
+                    borderRadius: 6,
+                    padding: "2px 8px",
+                    whiteSpace: "nowrap",
+                    textAlign: "center",
+                  }}
+                >
+                  {n.name}
+                </div>
+              </Html>
+            </group>
+            <HumanoidFigure
+              look={n.look}
+              sample={(out) => {
+                out.x = n.x;
+                out.y = 0;
+                out.z = n.z;
+                out.yaw = n.yaw;
+                out.pitch = 0;
+              }}
+            />
+          </group>
+        ))}
 
       {/* --------------------- pengunjung online ---------------------------- */}
       <OnlinePlayers />

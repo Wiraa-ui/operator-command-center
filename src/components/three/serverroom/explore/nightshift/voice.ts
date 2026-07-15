@@ -6,7 +6,7 @@
  * atmosphere, so "no voices installed" simply degrades to silent subtitles.
  */
 
-export type Speaker = "kirana" | "arwah" | "gede" | "system";
+export type Speaker = "kirana" | "arwah" | "gede" | "system" | "ayu" | "putu";
 
 const PERSONA: Record<Speaker, { rate: number; pitch: number; volume: number }> = {
   // Soft, unhurried, pitch-deck calm — the scariest thing in the room.
@@ -17,6 +17,9 @@ const PERSONA: Record<Speaker, { rate: number; pitch: number; volume: number }> 
   gede: { rate: 1.0, pitch: 0.85, volume: 0.85 },
   // Building PA system.
   system: { rate: 1.05, pitch: 0.45, volume: 0.7 },
+  // Day shift (RPG): warm front desk + eager intern.
+  ayu: { rate: 1.02, pitch: 1.15, volume: 0.85 },
+  putu: { rate: 1.1, pitch: 1.05, volume: 0.85 },
 };
 
 let cachedVoice: SpeechSynthesisVoice | null | undefined;

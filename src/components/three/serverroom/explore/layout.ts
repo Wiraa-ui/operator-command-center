@@ -30,7 +30,7 @@ export interface WallRect {
 }
 
 export interface DoorDef {
-  id: "door-lab" | "door-core";
+  id: "door-lab" | "door-core" | "door-bengkel" | "door-noc";
   /** Collision + render volume while locked. */
   rect: WallRect;
   /** Center of the doorway, for proximity + keypad placement. */
@@ -45,7 +45,7 @@ export interface DoorDef {
 }
 
 export interface ZoneDef {
-  id: "aisle" | "lab" | "core";
+  id: "aisle" | "lab" | "core" | "bengkel" | "noc";
   rect: WallRect;
   label: string;
 }
@@ -78,6 +78,20 @@ export const CORE = { xMin: 11.6, xMax: 22.4, zMin: -24, zMax: -13 } as const;
 const D2_X_MIN = 14;
 const D2_X_MAX = 16;
 
+/* RPG expansion (2026-07-16): two quest rooms flanking the original map. */
+
+/** BENGKEL (workshop) — west of Aisle-A, Bli Gede's domain. */
+export const BENGKEL = { xMin: -11.4, xMax: -3.4, zMin: -19, zMax: -13 } as const;
+/** Door-W opening in the aisle's left rack band. */
+const DW_Z_MIN = -17;
+const DW_Z_MAX = -15;
+
+/** NOC (monitoring) — north of the LAB, Putu's domain. */
+export const NOC = { xMin: 6, xMax: 14, zMin: -7.6, zMax: -1.2 } as const;
+/** Door-N opening in the LAB's north wall band. */
+const DN_X_MIN = 9;
+const DN_X_MAX = 11;
+
 /* ------------------------------- map --------------------------------- */
 
 /** Readable-on-screen case study spot (project racks in Aisle-A). */
@@ -104,8 +118,9 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
   const zDeep = Math.min(0, ...stations.map((s) => s.z)) - 4;
 
   const walls: WallRect[] = [
-    // Aisle-A left rack band, full depth (visuals = existing decor racks).
-    { xMin: -3.4, xMax: -AISLE_X, zMin: zDeep - 1, zMax: 5, hidden: true },
+    // Aisle-A left rack band, split by the DOOR-W opening (→ BENGKEL).
+    { xMin: -3.4, xMax: -AISLE_X, zMin: DW_Z_MAX, zMax: 5, hidden: true },
+    { xMin: -3.4, xMax: -AISLE_X, zMin: zDeep - 1, zMax: DW_Z_MIN, hidden: true },
     // Aisle-A right rack band, split by the DOOR-1 opening.
     { xMin: AISLE_X, xMax: 3.4, zMin: D1_Z_MAX, zMax: 5, hidden: true },
     { xMin: AISLE_X, xMax: 3.4, zMin: zDeep - 1, zMax: D1_Z_MIN, hidden: true },
@@ -113,9 +128,37 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
     { xMin: -3.4, xMax: 3.4, zMin: 4.5, zMax: 5, hidden: true },
     { xMin: -3.4, xMax: 3.4, zMin: zDeep - 1, zMax: zDeep - 0.5, hidden: true },
 
+    // BENGKEL walls (west room): north, south, west; east side is the split
+    // aisle band above.
+    {
+      xMin: BENGKEL.xMin - WALL_T,
+      xMax: -AISLE_X,
+      zMin: BENGKEL.zMax,
+      zMax: BENGKEL.zMax + WALL_T,
+    },
+    {
+      xMin: BENGKEL.xMin - WALL_T,
+      xMax: -AISLE_X,
+      zMin: BENGKEL.zMin - WALL_T,
+      zMax: BENGKEL.zMin,
+    },
+    { xMin: BENGKEL.xMin - WALL_T, xMax: BENGKEL.xMin, zMin: BENGKEL.zMin, zMax: BENGKEL.zMax },
+    // BENGKEL workbench (custom mesh visual).
+    { xMin: -10.6, xMax: -8.4, zMin: -14.3, zMax: -13.6, hidden: true },
+
     // LAB north wall — band deepened to also fence off the archive racks
-    // and their Html panels (player stays ≥0.35 from the panel plane).
-    { xMin: LAB.xMin, xMax: LAB.xMax + WALL_T, zMin: -9.0, zMax: LAB.zMax + 0.4 },
+    // and their Html panels (player stays ≥0.35 from the panel plane);
+    // split by the DOOR-N opening (→ NOC).
+    { xMin: LAB.xMin, xMax: DN_X_MIN, zMin: -9.0, zMax: LAB.zMax + 0.4 },
+    { xMin: DN_X_MAX, xMax: LAB.xMax + WALL_T, zMin: -9.0, zMax: LAB.zMax + 0.4 },
+
+    // NOC walls (north room): west, east, north; south side is the split LAB
+    // band above.
+    { xMin: NOC.xMin - WALL_T, xMax: NOC.xMin, zMin: NOC.zMin, zMax: NOC.zMax },
+    { xMin: NOC.xMax, xMax: NOC.xMax + WALL_T, zMin: NOC.zMin, zMax: NOC.zMax },
+    { xMin: NOC.xMin - WALL_T, xMax: NOC.xMax + WALL_T, zMin: NOC.zMax, zMax: NOC.zMax + WALL_T },
+    // NOC monitor desk (custom mesh visual).
+    { xMin: 8.4, xMax: 11.6, zMin: -2.4, zMax: -1.7, hidden: true },
     // LAB/CORE shared south/north wall band, split by DOOR-2.
     { xMin: LAB.xMin, xMax: D2_X_MIN, zMin: LAB.zMin - WALL_T, zMax: LAB.zMin },
     { xMin: D2_X_MAX, xMax: CORE.xMax, zMin: LAB.zMin - WALL_T, zMax: LAB.zMin },
@@ -174,6 +217,37 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
       hint: "hint: panel menyala kuning di ujung timur LAB.",
       answers: [ACCESS_CODE.toLowerCase(), "amber 22", "amber22"],
     },
+    {
+      id: "door-bengkel",
+      rect: { xMin: -3.4, xMax: -AISLE_X, zMin: DW_Z_MIN, zMax: DW_Z_MAX },
+      center: { x: -2.7, z: (DW_Z_MIN + DW_Z_MAX) / 2 },
+      axis: "x",
+      grants: "operator",
+      label: "PINTU BENGKEL — MAINTENANCE",
+      prompt: [
+        "AKSES BENGKEL · staf teknis",
+        "Sebelum kerja berat, operator mesin ini selalu",
+        "mengecek RAM dengan satu perintah pendek.",
+        "Perintah apa?",
+      ],
+      hint: "hint: lawan kata 'berbayar' — 4 huruf, sering dipanggil dengan -h.",
+      answers: ["free", "free -h", "free-h"],
+    },
+    {
+      id: "door-noc",
+      rect: { xMin: DN_X_MIN, xMax: DN_X_MAX, zMin: -9.0, zMax: LAB.zMax + 0.4 },
+      center: { x: (DN_X_MIN + DN_X_MAX) / 2, z: -8.3 },
+      axis: "z",
+      grants: "operator",
+      label: "PINTU NOC — MONITORING",
+      prompt: [
+        "AKSES NOC · network ops",
+        "Semua lalu lintas aman situs ini lewat satu",
+        "port TLS. Port berapa?",
+      ],
+      hint: "hint: tiga digit, https://",
+      answers: ["443", "port 443"],
+    },
   ];
 
   const zones: ZoneDef[] = [
@@ -187,6 +261,16 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
       id: "core",
       rect: { xMin: CORE.xMin, xMax: CORE.xMax, zMin: CORE.zMin, zMax: LAB.zMin },
       label: "CORE",
+    },
+    {
+      id: "bengkel",
+      rect: { xMin: BENGKEL.xMin, xMax: BENGKEL.xMax, zMin: BENGKEL.zMin, zMax: BENGKEL.zMax },
+      label: "BENGKEL",
+    },
+    {
+      id: "noc",
+      rect: { xMin: NOC.xMin, xMax: NOC.xMax, zMin: NOC.zMin, zMax: NOC.zMax },
+      label: "NOC",
     },
   ];
 
@@ -207,12 +291,15 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
     zones,
     studies,
     zDeep,
-    bounds: { xMin: -4, xMax: CORE.xMax + 1, zMin: CORE.zMin - 1, zMax: 5.5 },
+    bounds: { xMin: BENGKEL.xMin - 1, xMax: CORE.xMax + 1, zMin: CORE.zMin - 1, zMax: 5.5 },
   };
 }
 
 /** Decor-rack gaps World.tsx must leave open in EXPLORE mode. */
-export const DOOR_GAPS = [{ side: "right" as const, zMin: D1_Z_MIN - 0.7, zMax: D1_Z_MAX + 0.7 }];
+export const DOOR_GAPS = [
+  { side: "right" as const, zMin: D1_Z_MIN - 0.7, zMax: D1_Z_MAX + 0.7 },
+  { side: "left" as const, zMin: DW_Z_MIN - 0.7, zMax: DW_Z_MAX + 0.7 },
+];
 
 /* --------------------------- placed content -------------------------- */
 

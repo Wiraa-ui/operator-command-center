@@ -42,23 +42,33 @@ const WAYPOINT_DIST = 0.7;
 /** Door thresholds used as waypoints when target is in another zone. */
 const DOOR1 = { x: 2.7, z: -10.5 }; // aisle ↔ lab
 const DOOR2 = { x: 15, z: -13.2 }; // lab ↔ core
+const DOORW = { x: -2.7, z: -16 }; // aisle ↔ bengkel (RPG expansion)
+const DOORN = { x: 10, z: -8.3 }; // lab ↔ noc (RPG expansion)
 
-type Zone = "aisle" | "lab" | "core";
+type Zone = "aisle" | "lab" | "core" | "bengkel" | "noc";
 
 function zoneOf(x: number, z: number): Zone {
+  if (x < -3.4) return "bengkel";
   if (x < LAB.xMin) return "aisle";
+  if (z > -7.6) return "noc";
   if (z < LAB.zMin) return "core";
   return "lab";
 }
 
-/** Next point on the door-graph path from (x,z) toward the player's zone. */
+/** Next point on the door-graph path from (x,z) toward the player's zone.
+    Graph: bengkel—aisle—lab—core, lab—noc; each hop is one door waypoint. */
 function pursuitTarget(x: number, z: number): { x: number; z: number } {
   const from = zoneOf(x, z);
   const to = zoneOf(player.x, player.z);
   if (from === to) return { x: player.x, z: player.z };
-  if (from === "aisle") return DOOR1; // lab and core both start through DOOR1
-  if (from === "core") return DOOR2; // aisle and lab both start through DOOR2
-  return to === "core" ? DOOR2 : DOOR1; // from lab, pick the boundary door
+  if (from === "bengkel") return DOORW;
+  if (from === "noc") return DOORN;
+  if (from === "aisle") return to === "bengkel" ? DOORW : DOOR1;
+  if (from === "core") return DOOR2;
+  // from lab:
+  if (to === "noc") return DOORN;
+  if (to === "core") return DOOR2;
+  return DOOR1; // aisle or bengkel — first hop is always DOOR1
 }
 
 export function NightShift({ map }: { map: ExploreMap }) {

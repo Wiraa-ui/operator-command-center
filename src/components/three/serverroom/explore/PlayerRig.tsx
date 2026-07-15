@@ -22,6 +22,7 @@ import {
   useExplore,
 } from "./store";
 import { ARSIP_RACKS, lampIsOn, night } from "./nightshift/state";
+import { NPCS, QUEST_NODES } from "./rpg";
 
 /**
  * PlayerRig — player body for EXPLORE mode. Consumes the mutable
@@ -230,6 +231,25 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
     }
     const tDist = Math.hypot(TERMINAL_POS.x - player.x, TERMINAL_POS.z - player.z);
     if (tDist < bestD) nearest = { id: "terminal", label: "TERMINAL CORE" };
+    // Day-shift RPG: NPCs to talk to (they go home at night) + Q2 panels.
+    if (!s.night) {
+      for (const n of NPCS) {
+        const dist = Math.hypot(n.x - player.x, n.z - player.z);
+        if (dist < bestD) {
+          bestD = dist;
+          nearest = { id: n.id, label: `BICARA — ${n.name}` };
+        }
+      }
+      if (s.questProgress.active["q-sinyal"] !== undefined) {
+        for (const q of QUEST_NODES) {
+          const dist = Math.hypot(q.x - player.x, q.z - player.z);
+          if (dist < bestD) {
+            bestD = dist;
+            nearest = { id: q.id, label: q.label };
+          }
+        }
+      }
+    }
     // SHIFT MALAM: unpurged archives become the priority interactables.
     if (s.night && !s.purging) {
       for (const r of ARSIP_RACKS) {

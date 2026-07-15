@@ -4,7 +4,9 @@ import { roomAudio } from "./audio";
 import { downloadCertificate } from "./certificate";
 import type { ExploreMap } from "./layout";
 import { LoginModal } from "./LoginModal";
+import { NpcModal } from "./NpcModal";
 import { connectPresence, disconnectPresence, loadAuth, logout } from "./online";
+import { activeQuestInfo, type NpcId } from "./rpg";
 import { PuzzleModal } from "./PuzzleModal";
 import { StudyModal } from "./StudyModal";
 import { TerminalModal } from "./TerminalModal";
@@ -48,6 +50,10 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const dialogue = useExplore((s) => s.dialogue);
   const user = useExplore((s) => s.user);
   const onlineCount = useExplore((s) => s.onlinePeers.length);
+  // Select the stable reference, derive outside — a fresh object from the
+  // selector would make useSyncExternalStore re-render forever.
+  const questProgress = useExplore((s) => s.questProgress);
+  const quest = useMemo(() => activeQuestInfo(questProgress), [questProgress]);
 
   const [locked, setLocked] = useState(false);
   const lockpad = useRef<HTMLDivElement>(null);
@@ -237,6 +243,27 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       >
         {user ? `● ${onlineCount + 1} ONLINE · ${user.name}` : "○ LOGIN — TAMPIL ONLINE"}
       </button>
+
+      {/* Quest tracker — under the minimap; night mode has its own goals */}
+      {quest && !nightOn && (
+        <div
+          className={`pointer-events-none fixed right-4 top-[17.5rem] z-30 w-[9.5rem] rounded-md border px-3 py-2 ${mono}`}
+          style={{
+            borderColor: "rgba(245,158,11,0.4)",
+            background: "rgba(15,23,42,0.7)",
+          }}
+        >
+          <div
+            className="text-[9px] font-bold tracking-[0.22em]"
+            style={{ color: PALETTE.accentBright }}
+          >
+            📜 {quest.title}
+          </div>
+          <div className="mt-1 text-[10px] leading-snug" style={{ color: "#cbd5e1" }}>
+            {quest.step}
+          </div>
+        </div>
+      )}
 
       {/* ------------------------- SHIFT MALAM ------------------------- */}
       {nightOn && (
@@ -446,6 +473,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       {modal?.type === "terminal" && <TerminalModal />}
       {modal?.type === "study" && <StudyModal slug={modal.slug} />}
       {modal?.type === "login" && <LoginModal />}
+      {modal?.type === "npc" && <NpcModal npcId={modal.npcId as NpcId} />}
       {modal?.type === "certificate" && <CertificateModal achievements={achievements} />}
     </>
   );

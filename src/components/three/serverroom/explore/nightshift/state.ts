@@ -16,14 +16,17 @@ export interface ArsipDef {
   z: number;
 }
 
-/** Seven archives across all three zones — the purge route IS the map tour. */
+/** Seven archives across all five zones — the purge route IS the map tour.
+    (RPG expansion 2026-07-16b: penenun moved to BENGKEL, nelayan to NOC, so
+    the night shift also visits the new rooms — doors must be unlocked by
+    day, which is exactly the RPG quest route.) */
 export const ARSIP_RACKS: ArsipDef[] = [
   { id: "arsip:penari", label: "ARSIP 001 — PENARI, 1963", x: -1.5, z: -3 },
   { id: "arsip:pemangku", label: "ARSIP 014 — PEMANGKU, 1977", x: 1.4, z: -20 },
   { id: "arsip:pantai", label: "ARSIP 098 — ANAK PANTAI, 1998", x: -1.5, z: -33 },
   { id: "arsip:ibu", label: "ARSIP 121 — IBU, 2004", x: 5, z: -12.4 },
-  { id: "arsip:penenun", label: "ARSIP 133 — PENENUN, 2009", x: 12, z: -12.4 },
-  { id: "arsip:nelayan", label: "ARSIP 152 — NELAYAN, 2015", x: 13, z: -21 },
+  { id: "arsip:penenun", label: "ARSIP 133 — PENENUN, 2009", x: -8.5, z: -17.6 },
+  { id: "arsip:nelayan", label: "ARSIP 152 — NELAYAN, 2015", x: 12.8, z: -3.4 },
   { id: "arsip:operator", label: "ARSIP 166 — OPERATOR SHIFT TIGA", x: 21, z: -14.5 },
 ];
 

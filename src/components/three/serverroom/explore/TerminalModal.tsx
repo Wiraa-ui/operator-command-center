@@ -4,7 +4,7 @@ import { site } from "@/content/site";
 import { getRoomStatus } from "@/lib/api/roomStatus";
 import { PALETTE } from "../types";
 import { roomAudio } from "./audio";
-import { beginNightShift, setModal, useExplore } from "./store";
+import { beginNightShift, emitQuestEvent, setModal, useExplore } from "./store";
 
 /**
  * TerminalModal — the CORE's interactive shell, styled after a modern
@@ -91,6 +91,7 @@ export function TerminalModal() {
       print([{ text: "  membuka /cv.pdf …", kind: "dim" }]);
       window.open("/cv.pdf", "_blank", "noopener");
     } else if (c === "sudo hire-me" || c === "hire-me") {
+      emitQuestEvent("hire");
       print([
         { text: "eskalasi diterima. kontak operator:", kind: "accent" },
         out(`  whatsapp : ${site.whatsapp.display}`),
