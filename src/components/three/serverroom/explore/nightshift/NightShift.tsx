@@ -14,6 +14,14 @@ import {
 import { ArsipRack, KiranaBody, VhsGhost } from "./Entities";
 import { nightAudio } from "./gamelan";
 import { ARSIP_RACKS, lampIsOn, night, RITUAL_MOVE_TOL } from "./state";
+import {
+  storyIntro,
+  storyMoksa,
+  storyOnCaught,
+  storyOnPurged,
+  storyStop,
+  storyTick,
+} from "./story";
 
 /**
  * NightShift — the MOKSA.CLOUD game brain, mounted by ExploreWorld only
@@ -55,20 +63,34 @@ function pursuitTarget(x: number, z: number): { x: number; z: number } {
 
 export function NightShift({ map }: { map: ExploreMap }) {
   const purged = useExplore((s) => s.purged);
+  const moksa = useExplore((s) => s.moksa);
 
-  // Gamelan score lives exactly as long as the shift.
+  // Gamelan score + opening narration live exactly as long as the shift.
   useEffect(() => {
     nightAudio.setMuted(getExploreState().muted);
     nightAudio.start();
-    return () => nightAudio.stop();
+    storyIntro();
+    return () => {
+      nightAudio.stop();
+      storyStop();
+    };
   }, []);
 
-  // Gong on each completed purge (skip mount).
+  // Gong + the freed arwah's goodbye on each completed purge (skip mount).
   const prevPurged = useRef(purged.length);
   useEffect(() => {
-    if (purged.length > prevPurged.current) nightAudio.gong();
+    if (purged.length > prevPurged.current) {
+      nightAudio.gong();
+      const latest = purged[purged.length - 1];
+      if (latest) storyOnPurged(latest);
+    }
     prevPurged.current = purged.length;
-  }, [purged.length]);
+  }, [purged]);
+
+  // Ending narration under the moksa overlay.
+  useEffect(() => {
+    if (moksa) storyMoksa();
+  }, [moksa]);
 
   // Kirana's presence flickers the emergency light she carries with her.
   const kiranaLight = useRef<THREE.PointLight>(null);
@@ -103,10 +125,12 @@ export function NightShift({ map }: { map: ExploreMap }) {
         player.z = SPAWN.z;
         player.yaw = SPAWN.yaw;
         cancelPurge();
-        addToast("Bu Kirana: “Kamu belum boleh pulang, Dik.”");
+        storyOnCaught();
         k.x = DOOR2.x;
         k.z = DOOR2.z - 2;
       }
+      // Close encounters earn a taunt (cooldown + escalation in story.ts).
+      storyTick(now, dPlayer, s.purged.length);
       // Score tension: distance-driven, with a floor that rises per purge.
       const tension = Math.max(
         THREE.MathUtils.clamp(1 - (dPlayer - 1.5) / 10, 0, 1),

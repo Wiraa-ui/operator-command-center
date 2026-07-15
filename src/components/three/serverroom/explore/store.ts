@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from "react";
 import { SPAWN } from "./layout";
 import { ARSIP_RACKS, night, resetNight, RITUAL_MS } from "./nightshift/state";
+import type { Speaker } from "./nightshift/voice";
 
 /**
  * EXPLORE mode state. Two tiers on purpose:
@@ -27,6 +28,15 @@ export interface Toast {
   text: string;
 }
 
+/** One spoken subtitle line (DialogueOverlay); story.ts runs the queue. */
+export interface DialogueLine {
+  id: number;
+  speaker: Speaker;
+  /** Display name on the subtitle ("BU DEWI KIRANA", "PENARI, 1963", …). */
+  name: string;
+  text: string;
+}
+
 export interface ExploreState {
   privilege: Privilege;
   unlocked: DoorId[];
@@ -48,6 +58,8 @@ export interface ExploreState {
   purging: { id: string; until: number } | null;
   /** All 7 purged — the moksa ending overlay is up. */
   moksa: boolean;
+  /** Current subtitle line, if a character is speaking. */
+  dialogue: DialogueLine | null;
 }
 
 /* ------------------------- mutable fast lane -------------------------- */
@@ -140,6 +152,7 @@ function initialState(): ExploreState {
     purged: [],
     purging: null,
     moksa: false,
+    dialogue: null,
   };
 }
 
@@ -220,6 +233,12 @@ export function setMuted(muted: boolean) {
   emit();
 }
 
+/** story.ts owns queueing/timing; this just publishes the current line. */
+export function setDialogue(dialogue: DialogueLine | null) {
+  state = { ...state, dialogue };
+  emit();
+}
+
 /** V / F5 / HUD button: flip first-person ↔ third-person (session-only). */
 export function toggleView() {
   state = { ...state, view: state.view === "first" ? "third" : "first" };
@@ -280,7 +299,7 @@ export function beginNightShift() {
 }
 
 export function endNightShift() {
-  state = { ...state, night: false, purging: null, moksa: false };
+  state = { ...state, night: false, purging: null, moksa: false, dialogue: null };
   emit();
 }
 

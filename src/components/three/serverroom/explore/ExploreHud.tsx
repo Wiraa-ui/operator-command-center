@@ -16,6 +16,7 @@ import {
   useExplore,
 } from "./store";
 import { ARSIP_RACKS } from "./nightshift/state";
+import { stopSpeaking } from "./nightshift/voice";
 
 /**
  * ExploreHud — every DOM control of EXPLORE mode: pointer-lock pad + mouse
@@ -41,6 +42,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const purgedCount = useExplore((s) => s.purged.length);
   const purging = useExplore((s) => s.purging);
   const moksa = useExplore((s) => s.moksa);
+  const dialogue = useExplore((s) => s.dialogue);
 
   const [locked, setLocked] = useState(false);
   const lockpad = useRef<HTMLDivElement>(null);
@@ -267,6 +269,40 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
         </div>
       )}
 
+      {/* Dialogue subtitle — one line at a time, story.ts runs the queue */}
+      {dialogue && (
+        <div
+          key={dialogue.id}
+          className="pointer-events-none fixed bottom-44 left-1/2 z-30 w-[min(92vw,40rem)] -translate-x-1/2 text-center"
+        >
+          {/* Slide only — never animate opacity here: on slow devices a
+              stalled animation would hold the subtitle invisible forever. */}
+          <style>{`@keyframes ns-sub { from { transform: translateY(10px); } to { transform: none; } }`}</style>
+          <div
+            className="rounded-xl border px-5 py-3"
+            style={{
+              animation: "ns-sub 320ms ease-out both",
+              borderColor:
+                dialogue.speaker === "kirana" ? "rgba(245,158,11,0.55)" : "rgba(56,189,248,0.4)",
+              background: "rgba(11,17,32,0.86)",
+              backdropFilter: "blur(6px)",
+            }}
+          >
+            <div
+              className={`${mono} text-[10px] font-bold tracking-[0.28em]`}
+              style={{
+                color: dialogue.speaker === "kirana" ? PALETTE.accentBright : PALETTE.secondary,
+              }}
+            >
+              {dialogue.name}
+            </div>
+            <div className="mt-1.5 text-[14px] leading-relaxed" style={{ color: "#e2e8f0" }}>
+              “{dialogue.text}”
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Interact prompt / button */}
       {interact &&
         !modal &&
@@ -333,6 +369,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
           onClick={() => {
             setMuted(!muted);
             roomAudio.setMuted(!muted);
+            if (!muted) stopSpeaking(); // muting also silences the cast
           }}
           className={`rounded-full border px-3 py-2 ${mono} text-[13px]`}
           style={{
