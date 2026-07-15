@@ -335,3 +335,12 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* EXPLORE mode (ROOT ACCESS): the fixed canvas owns the whole viewport, but
+   the page footer and chat launcher live outside it and bleed through over
+   the game HUD (KELUAR/joystick collisions on phones). Experience.tsx sets
+   body[data-explore] for the session. */
+body[data-explore] footer,
+body[data-explore] [data-chat-launcher] {
+  display: none;
+}

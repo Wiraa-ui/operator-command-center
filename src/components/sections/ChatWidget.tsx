@@ -111,6 +111,7 @@ export function ChatWidget() {
     <>
       {/* Launcher */}
       <motion.button
+        data-chat-launcher
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close assistant" : "Open assistant"}
         whileHover={{ scale: 1.05 }}

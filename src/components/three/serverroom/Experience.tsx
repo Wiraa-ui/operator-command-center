@@ -46,8 +46,12 @@ export function ServerRoomExperience({
     const prevOverflow = document.documentElement.style.overflow;
     const prevScroll = window.scrollY;
     document.documentElement.style.overflow = "hidden";
+    // Page chrome (footer, chat launcher) shows through the fixed canvas and
+    // collides with the explore HUD on phones — hidden via styles.css rule.
+    document.body.dataset.explore = "1";
     return () => {
       document.documentElement.style.overflow = prevOverflow;
+      delete document.body.dataset.explore;
       window.scrollTo({ top: prevScroll });
       roomAudio.stop();
     };

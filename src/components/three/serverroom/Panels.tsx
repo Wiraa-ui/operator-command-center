@@ -35,6 +35,13 @@ const TEXT = "#e2e8f0"; // ≥12:1 on the glass bg
 const TEXT_DIM = "#9fb0cc"; // ≥5:1 on the glass bg
 const AMBER_BORDER = "rgba(245, 158, 11, 0.35)";
 
+/** Card base width, clamped so near-camera panels fit narrow phone
+    viewports (Html transform scale ≈1 at reading distance — a 420px card
+    overflows a 390px screen). No-op on desktop widths. */
+function cardW(px: number): number {
+  return typeof window === "undefined" ? px : Math.min(px, Math.round(window.innerWidth * 0.86));
+}
+
 const cardStyle: React.CSSProperties = {
   boxSizing: "border-box",
   background: "rgba(15, 23, 42, 0.85)",
@@ -87,7 +94,7 @@ const pillStyle: React.CSSProperties = {
 
 function EntranceScreen({ station, reduced }: { station: Station; reduced: boolean }) {
   return (
-    <div style={{ ...cardStyle, width: 420, padding: "26px 30px", textAlign: "center" }}>
+    <div style={{ ...cardStyle, width: cardW(420), padding: "26px 30px", textAlign: "center" }}>
       {!reduced && (
         // Scoped keyframes for the scroll hint — injected here (not styles.css)
         // because this module may not edit shared files.
@@ -130,7 +137,7 @@ function EntranceScreen({ station, reduced }: { station: Station; reduced: boole
 function ProjectScreen({ station }: { station: Station }) {
   const stack = station.project?.stack.slice(0, 4) ?? [];
   return (
-    <div style={{ ...cardStyle, width: 340, padding: "18px 22px" }}>
+    <div style={{ ...cardStyle, width: cardW(340), padding: "18px 22px" }}>
       <div style={kickerStyle}>// project</div>
       <h2
         style={{
@@ -169,7 +176,7 @@ function ProjectScreen({ station }: { station: Station }) {
 
 function SkillsScreen({ station }: { station: Station }) {
   return (
-    <div style={{ ...cardStyle, width: 340, padding: "18px 22px" }}>
+    <div style={{ ...cardStyle, width: cardW(340), padding: "18px 22px" }}>
       <div style={kickerStyle}>// capabilities</div>
       <h2
         style={{
@@ -213,7 +220,7 @@ function ContactScreen({ station }: { station: Station }) {
     textDecoration: "none",
   };
   return (
-    <div style={{ ...cardStyle, width: 380, padding: "24px 28px", textAlign: "center" }}>
+    <div style={{ ...cardStyle, width: cardW(380), padding: "24px 28px", textAlign: "center" }}>
       <div style={kickerStyle}>// end of corridor</div>
       <h2
         style={{
