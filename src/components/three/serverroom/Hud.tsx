@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useActiveStation } from "./CameraRig";
 import { PALETTE, type Station } from "./types";
 
@@ -17,17 +18,40 @@ function scrollTopFor(stations: Station[], index: number): number {
   return Math.min(Math.max(p, 0), 1) * max;
 }
 
-export function RoomHUD({ stations, onExit }: { stations: Station[]; onExit: () => void }) {
+export function RoomHUD({
+  stations,
+  onExit,
+  onExplore,
+}: {
+  stations: Station[];
+  onExit: () => void;
+  onExplore: () => void;
+}) {
   const active = useActiveStation(stations);
   const idx = Math.max(
     stations.findIndex((s) => s.id === active?.id),
     0,
   );
 
+  // The HUD floats above the page footer at the end of the walk; yield to it
+  // so its links stay readable and clickable.
+  const [footerVisible, setFooterVisible] = useState(false);
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const io = new IntersectionObserver(([e]) => setFooterVisible(e.isIntersecting));
+    io.observe(footer);
+    return () => io.disconnect();
+  }, []);
+
+  const interactive = footerVisible ? "pointer-events-none" : "pointer-events-auto";
+
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex items-end justify-between gap-4 p-4 sm:p-6">
+    <div
+      className={`pointer-events-none fixed inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-4 transition-opacity duration-300 sm:p-6 ${footerVisible ? "opacity-0" : "opacity-100"}`}
+    >
       {/* Station readout + jump dots */}
-      <div className="pointer-events-auto">
+      <div className={`${interactive} min-w-0 max-w-[48vw] sm:max-w-none`}>
         <p className="font-op-mono text-[11px] uppercase tracking-[0.22em] text-op-text-3">
           rack {String(idx + 1).padStart(2, "0")} / {String(stations.length).padStart(2, "0")}
         </p>
@@ -58,13 +82,30 @@ export function RoomHUD({ stations, onExit }: { stations: Station[]; onExit: () 
         </div>
       </div>
 
-      {/* Escape hatch — the pattern requires an exit for impatient users */}
-      <button
-        onClick={onExit}
-        className="pointer-events-auto rounded-full border border-op-line bg-op-surface/70 px-4 py-2 font-op-mono text-[11px] uppercase tracking-[0.18em] text-op-text-2 backdrop-blur-md transition-colors hover:text-op-accent"
+      {/* Mode switches: dive into the game, or bail to the classic page.
+          Right margin clears the fixed chat launcher (52px + 20px offset);
+          on phones the pair stacks so neither label wraps. */}
+      <div
+        className={`${interactive} mr-14 flex flex-col items-end gap-2 sm:mr-16 sm:flex-row sm:items-center`}
       >
-        classic view
-      </button>
+        <button
+          onClick={onExplore}
+          className="whitespace-nowrap rounded-full border px-4 py-2 font-op-mono text-[11px] font-bold uppercase tracking-[0.18em] backdrop-blur-md transition-transform hover:scale-105"
+          style={{
+            borderColor: PALETTE.accentBright,
+            background: "rgba(245,158,11,0.18)",
+            color: PALETTE.accentBright,
+          }}
+        >
+          ▶ explore<span className="hidden sm:inline"> — root access</span>
+        </button>
+        <button
+          onClick={onExit}
+          className="whitespace-nowrap rounded-full border border-op-line bg-op-surface/70 px-4 py-2 font-op-mono text-[11px] uppercase tracking-[0.18em] text-op-text-2 backdrop-blur-md transition-colors hover:text-op-accent"
+        >
+          classic view
+        </button>
+      </div>
     </div>
   );
 }
