@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { PALETTE } from "../types";
 import type { ExploreMap } from "./layout";
+import { ARSIP_RACKS, night } from "./nightshift/state";
+import { peerState } from "./online";
 import { getExploreState, player } from "./store";
 
 /**
@@ -84,6 +86,30 @@ export function Minimap({ map }: { map: ExploreMap }) {
           Math.max((r.xMax - r.xMin) * sx, 2),
           Math.max((r.zMax - r.zMin) * sz, 2),
         );
+      }
+
+      // SHIFT MALAM: remaining archives pulse amber; Kirana is a red-hot dot.
+      if (s.night) {
+        const t = performance.now() / 1000;
+        for (const r of ARSIP_RACKS) {
+          if (s.purged.includes(r.id)) continue;
+          ctx.fillStyle = `rgba(251, 191, 36, ${0.55 + Math.sin(t * 4 + r.x + r.z) * 0.35})`;
+          ctx.beginPath();
+          ctx.arc(X(r.x), Z(r.z), 2.4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = "rgba(248, 113, 113, 0.9)";
+        ctx.beginPath();
+        ctx.arc(X(night.kirana.x), Z(night.kirana.z), 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Other online visitors — sky dots.
+      ctx.fillStyle = "rgba(56, 189, 248, 0.9)";
+      for (const m of peerState.values()) {
+        ctx.beginPath();
+        ctx.arc(X(m.cx), Z(m.cz), 2.2, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       // Player arrow
