@@ -150,6 +150,21 @@ Urut prioritas saran; semua harus patuh pagar: nol service baru, RAM server suci
 9. **Gyro look di HP** (DeviceOrientation, opt-in permission iOS) sebagai alternatif drag.
 10. **Endgame narasi** — setelah root, lampu korridor berubah nuansa + pesan personal operator di layar entrance.
 
+## ROADMAP "GAME ROOM SERVER" — mandat user 2026-07-16 (loop sampai selesai, dicek besok)
+
+User menyetujui & memperluas konsep MOKSA.CLOUD: "rombak arsitektur portofolionya… buat story, audio, karakter berbicara, login, online bisa melihat… karakter natural jangan kotak-kotak harus seperti manusia… harus sampai selesai."
+
+- [x] **P0 — Night Shift core loop** (commit `4043e7a`): Kirana AI, hantu VHS, 7 arsip ritual, gamelan, lampu L.
+- [ ] **P1 — Karakter manusiawi**: modul bersama `explore/humanoid.tsx` (rig organik capsule/sphere, sendi siku/lutut, walk-cycle natural, napas+kedip); Operator (player 3rd-person), lengan 1st-person membulat, Kirana kebaya (glide), dipakai juga ghost pemain online.
+- [ ] **P2 — Story & dialog**: `nightshift/story.ts` (beats: briefing pembuka, kisah 7 arsip saat purge, taunt Kirana berbasis jarak/progres, ending moksa) + `DialogueOverlay` subtitle typewriter di HUD.
+- [ ] **P3 — Karakter berbicara**: Web Speech `speechSynthesis` (id-ID bila ada) + fallback murmur WebAudio prosedural; hormati muted.
+- [ ] **P4 — Login**: `serve.ts` + `bun:sqlite` (`data/room.db`, gitignore) + `Bun.password`; endpoint `/api/room/register|login|me`; HUD LoginModal; token sesi localStorage. Batas keras: rate-limit, cap user.
+- [ ] **P5 — Online presence**: WebSocket `/ws/room` di serve.ts (relay posisi 5 Hz, cap 16 klien, pesan kecil); pemain lain tampil sbg humanoid translusen + name tag. (Catatan: relay ringan ≠ authoritative server; RAM ≈ nol.)
+- [ ] **P6 — Integrasi & polish**: marker arsip di minimap saat night, HUD counter purge/lampu, akses night dari terminal terdokumentasi in-game, achievements.
+- [ ] **P7 — Verifikasi & rilis**: lint+tsc+build, E2E playthrough headless, deploy (`sudo systemctl restart portfolio`), smoke publik, update docs+memory+graph, commit+push.
+
+Pagar tetap: palet amber/sky tanpa hijau/ungu, RAM server suci (presence = relay in-process di serve.ts yang sudah ada, bukan service baru), scroll-walk default tak boleh rusak, konten terminal whitelist.
+
 ## Backlog "MOKSA.CLOUD" — konsep mode horor kejar-kejaran (disetujui konsep? MENUNGGU user; draft 2026-07-15)
 
 Cerita orisinal (revisi — konsep lama "perusahaan daycare jahat" dibuang karena pasaran): startup **MOKSA.CLOUD** menjual "pelestarian digital leluhur" — keluarga meng-upload kenangan mendiang supaya abadi. Protagonis = fresh grad SMK polos, operator shift malam. Twist inti: arwah di rak tersiksa karena *selama datanya tersimpan mereka tak bisa moksa* → **objective pemain MENGHAPUS data (ngaben digital `rm` ritual) di 7 rak**, kebalikan semua game horor "selamatkan data". Hantu bukan musuh; yang memburu = 2 manusia: **Bu Dewi Kirana** (founder psikopat KPI, kacamata bundar, bicara lembut bahasa pitch-deck) + **Bli Gede "Kurator"** (eks-pemangku jadi teknisi; genta = audio cue kedekatan). 4 arwah ber-mekanik unik: **Penari Rejang** (gerak terkunci irama gamelan prosedural — musik = mekanik), **Pemangku Tua** (dekat dia semua teks UI jadi aksara — buta objective), **Anak Pantai 1998** (statis VHS tertarik cahaya — gelap justru aman), **Ibu Arsip** (menolak dihapus; tidak membunuh tapi menyabotase: pindahkan objective, kunci rak). Musik: gamelan-synth prosedural WebAudio 4 layer state (ambience/stalked/chase/hiding) + leitmotif per karakter — nol aset audio. Multiplayer: fase 1 async "pegawai lain" (replay siluet, endpoint kecil); fase 2 co-op 2–4 WebRTC P2P (server hanya signaling route di serve.ts — beban ≈ nol; JANGAN WebSocket authoritative di RAM produksi). Akses: opt-in tersembunyi via terminal ROOT ACCESS (mis. `sudo open --night-shift`) supaya recruiter tak kaget. Pagar tetap: nol service baru, palet amber/sky, semua prosedural tanpa aset eksternal.

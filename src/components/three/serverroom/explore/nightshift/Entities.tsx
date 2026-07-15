@@ -2,6 +2,7 @@ import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { PALETTE } from "../../types";
+import { HumanoidFigure } from "../humanoid";
 // Written in parallel by the integrator — mutable singleton, read per frame:
 // { active, lamp, kirana: { x, z, yaw }, ghost: { x, z, fade } }
 import { night } from "./state";
@@ -39,76 +40,38 @@ function darkened(hex: string, k: number): THREE.Color {
 
 const TWO_PI = Math.PI * 2;
 
+/** Near-black navy kebaya family, derived from the palette. */
+const KIRANA_LOOK = {
+  skin: "#a87c5c",
+  hair: darkened(PALETTE.bg, 0.3).getStyle(),
+  outfit: darkened(PALETTE.bg, 0.55).getStyle(),
+  outfitDark: darkened(PALETTE.bg, 0.45).getStyle(),
+  accent: PALETTE.accent,
+  height: 1.76,
+  hairStyle: "bun",
+  glasses: true,
+  skirt: true,
+  gait: "glide",
+  fill: false, // she carries her own flickering emergency light (NightShift)
+} as const;
+
 /**
- * KiranaBody — the founder. ~1.75u, kebaya-dark silhouette. She GLIDES:
- * no walk cycle, only a slow bob + faint sway — the stillness is the point.
- * Her round glasses carry the only real light on her.
+ * KiranaBody — the founder, now a real human figure on the shared humanoid
+ * rig. She GLIDES: hands folded, no walk cycle — the stillness is the point.
+ * Her round glasses carry the only real light on her (rig pulses them).
  */
 export function KiranaBody() {
-  const a = useMemo(() => {
-    const box = new THREE.BoxGeometry(1, 1, 1);
-    // Low-poly ring: radius fits a 0.24u head, 6x16 segments keep it cheap.
-    const ring = new THREE.TorusGeometry(0.055, 0.008, 6, 16);
-    // Near-black navy (#0b1120-ish) = PALETTE.bg pulled toward black.
-    const kebaya = new THREE.MeshStandardMaterial({
-      color: darkened(PALETTE.bg, 0.55),
-      roughness: 0.9,
-      metalness: 0.05,
-    });
-    const hair = new THREE.MeshStandardMaterial({
-      color: darkened(PALETTE.bg, 0.3),
-      roughness: 0.95,
-    });
-    // Brightest thing about her — intensity animated 0.8→2.2 in useFrame.
-    const glint = new THREE.MeshStandardMaterial({
-      color: PALETTE.accent,
-      emissive: PALETTE.accent,
-      emissiveIntensity: 1.5,
-      roughness: 0.3,
-    });
-    // Brooch stays faint so the glasses keep the hierarchy.
-    const brooch = new THREE.MeshStandardMaterial({
-      color: PALETTE.accent,
-      emissive: PALETTE.accent,
-      emissiveIntensity: 0.35,
-      roughness: 0.5,
-    });
-    return { box, ring, kebaya, hair, glint, brooch };
-  }, []);
-
-  const root = useRef<THREE.Group>(null);
-
-  useFrame(({ clock }) => {
-    const g = root.current;
-    if (!g) return;
-    const t = clock.elapsedTime;
-    // Same convention as Avatar.tsx: model faces local +z, yaw + π maps it
-    // onto the rig's forward vector. Glide bob rides on root y directly.
-    g.position.set(night.kirana.x, Math.sin(t * TWO_PI * 0.7) * 0.015, night.kirana.z);
-    g.rotation.y = night.kirana.yaw + Math.PI;
-    g.rotation.z = Math.sin(t * 0.45) * 0.012; // barely-there sway
-    // Glasses glint: slow 0.8→2.2 pulse.
-    a.glint.emissiveIntensity = 1.5 + Math.sin(t * 0.9) * 0.7;
-  });
-
   return (
-    <group ref={root}>
-      {/* floor-length kebaya skirt — no legs, she never walks */}
-      <Part geo={a.box} mat={a.kebaya} p={[0, 0.48, 0]} s={[0.4, 0.96, 0.28]} />
-      {/* torso, slightly narrower — elegant taper in two boxes */}
-      <Part geo={a.box} mat={a.kebaya} p={[0, 1.18, 0]} s={[0.34, 0.46, 0.2]} />
-      {/* arms held perfectly still at her sides */}
-      <Part geo={a.box} mat={a.kebaya} p={[-0.22, 1.14, 0]} s={[0.08, 0.54, 0.09]} />
-      <Part geo={a.box} mat={a.kebaya} p={[0.22, 1.14, 0]} s={[0.08, 0.54, 0.09]} />
-      {/* head + tight bun at the back */}
-      <Part geo={a.box} mat={a.hair} p={[0, 1.57, 0]} s={[0.24, 0.24, 0.24]} />
-      <Part geo={a.box} mat={a.hair} p={[0, 1.71, -0.08]} s={[0.13, 0.11, 0.13]} />
-      {/* signature round glasses — torus faces +z by default, no rotation */}
-      <mesh geometry={a.ring} material={a.glint} position={[-0.06, 1.59, 0.125]} />
-      <mesh geometry={a.ring} material={a.glint} position={[0.06, 1.59, 0.125]} />
-      {/* thin amber brooch line at the chest */}
-      <Part geo={a.box} mat={a.brooch} p={[0, 1.3, 0.105]} s={[0.02, 0.14, 0.012]} />
-    </group>
+    <HumanoidFigure
+      look={KIRANA_LOOK}
+      sample={(out) => {
+        out.x = night.kirana.x;
+        out.y = 0;
+        out.z = night.kirana.z;
+        out.yaw = night.kirana.yaw;
+        out.pitch = 0;
+      }}
+    />
   );
 }
 
