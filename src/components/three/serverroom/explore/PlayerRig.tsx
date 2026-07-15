@@ -1,15 +1,33 @@
 import { useEffect, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { FirstPersonArms, ThirdPersonBody } from "./Avatar";
 import { slideMove } from "./collide";
-import { EYE_Y, INTERACT_RANGE, PLAYER_SPEED, TERMINAL_POS, type ExploreMap } from "./layout";
-import { getExploreState, input, markVisited, player, setInteract, triggerInteract } from "./store";
+import {
+  EYE_Y,
+  INTERACT_RANGE,
+  PLAYER_SPEED,
+  ROOM_H,
+  TERMINAL_POS,
+  type ExploreMap,
+} from "./layout";
+import {
+  getExploreState,
+  input,
+  markVisited,
+  player,
+  setInteract,
+  toggleView,
+  triggerInteract,
+  useExplore,
+} from "./store";
 
 /**
- * PlayerRig — first-person body for EXPLORE mode. Consumes the mutable
+ * PlayerRig — player body for EXPLORE mode. Consumes the mutable
  * `input` singleton (keys, joystick, accumulated look deltas), slides the
- * player against the map, drives the camera (YXZ yaw/pitch), keeps the
- * nearest interactable in the store, and carries the headlamp.
+ * player against the map, drives the camera (first-person YXZ yaw/pitch, or
+ * a wall-clipped third-person chase boom — V/F5 toggles), keeps the nearest
+ * interactable in the store, and carries the headlamp + view avatar.
  *
  * Interaction (E / tap) opens DOM modals via the store — never handled here
  * per-frame; keydown listeners live in this component so desktop input works
@@ -18,6 +36,12 @@ import { getExploreState, input, markVisited, player, setInteract, triggerIntera
 
 const LOOK_SENS = 0.0024; // rad per px (touch deltas are pre-scaled in the HUD)
 const PITCH_MAX = 1.45;
+
+/* Third-person chase boom (Minecraft-style F5). */
+const BOOM_LEN = 2.8;
+const BOOM_UP = 0.35;
+const BOOM_STEP = 0.2; // sample spacing < wall band thickness (0.4) — no skip
+const CAM_PAD = 0.2; // keep the lens off wall faces / map bounds
 
 const MOVE_KEYS: Record<string, [number, number]> = {
   KeyW: [0, 1],
@@ -31,6 +55,10 @@ const MOVE_KEYS: Record<string, [number, number]> = {
 };
 
 export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean }) {
+  // Only the avatar mount reacts to the toggle; the frame loop keeps reading
+  // getExploreState() so no per-frame React work is introduced.
+  const view = useExplore((s) => s.view);
+
   // Locked doors participate in collision; solved ones stop existing.
   const wallsFor = useMemo(
     () => (unlocked: string[]) => [
@@ -48,6 +76,10 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
         e.preventDefault();
       }
       if (e.code === "KeyE") triggerInteract();
+      if (e.code === "KeyV" || e.code === "F5") {
+        if (e.code === "F5") e.preventDefault(); // browser reload
+        toggleView();
+      }
     };
     const up = (e: KeyboardEvent) => input.keys.delete(e.code);
     window.addEventListener("keydown", down);
@@ -109,8 +141,53 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
       }
     }
 
-    camera.position.set(player.x, EYE_Y, player.z);
-    camera.rotation.set(player.pitch, player.yaw, 0, "YXZ");
+    if (s.view === "third") {
+      // Chase boom: orbit behind the head along the inverse look direction,
+      // shortened by marching x/z samples against the same wall rects
+      // slideMove uses (walls are full-height, so 2D containment suffices).
+      const cp = Math.cos(player.pitch);
+      const bx = Math.sin(player.yaw) * cp;
+      const by = -Math.sin(player.pitch);
+      const bz = Math.cos(player.yaw) * cp;
+      const walls = wallsFor(s.unlocked);
+      const b = map.bounds;
+      let len = BOOM_LEN;
+      for (let t = BOOM_STEP; t <= BOOM_LEN; t += BOOM_STEP) {
+        const sx = player.x + bx * t;
+        const sz = player.z + bz * t;
+        let hit =
+          sx < b.xMin + CAM_PAD ||
+          sx > b.xMax - CAM_PAD ||
+          sz < b.zMin + CAM_PAD ||
+          sz > b.zMax - CAM_PAD;
+        if (!hit) {
+          for (const r of walls) {
+            if (
+              sx > r.xMin - CAM_PAD &&
+              sx < r.xMax + CAM_PAD &&
+              sz > r.zMin - CAM_PAD &&
+              sz < r.zMax + CAM_PAD
+            ) {
+              hit = true;
+              break;
+            }
+          }
+        }
+        if (hit) {
+          len = Math.max(BOOM_STEP, t - BOOM_STEP);
+          break;
+        }
+      }
+      camera.position.set(
+        player.x + bx * len,
+        THREE.MathUtils.clamp(EYE_Y + BOOM_UP + by * len, 0.4, ROOM_H - 0.3),
+        player.z + bz * len,
+      );
+      camera.lookAt(player.x, EYE_Y, player.z);
+    } else {
+      camera.position.set(player.x, EYE_Y, player.z);
+      camera.rotation.set(player.pitch, player.yaw, 0, "YXZ");
+    }
 
     /* --------------------------- interact ----------------------------- */
     let nearest: { id: string; label: string } | null = null;
@@ -148,6 +225,7 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
      moody but whatever you look at reads. Cheap: one extra light. */
   return (
     <group>
+      {view === "first" ? <FirstPersonArms /> : <ThirdPersonBody />}
       <HeadLamp reduced={reduced} />
     </group>
   );
@@ -155,18 +233,29 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
 
 function HeadLamp({ reduced }: { reduced: boolean }) {
   // Light + target built together so the pairing never happens in render.
-  const { light, target } = useMemo(() => {
+  const { light, target, dir } = useMemo(() => {
     const tgt = new THREE.Object3D();
     const l = new THREE.SpotLight("#fde9c8", 18, 14, 0.62, 0.55, 1.6);
     l.target = tgt;
-    return { light: l, target: tgt };
+    return { light: l, target: tgt, dir: new THREE.Vector3() };
   }, []);
 
   useFrame(({ camera }) => {
-    light.position.copy(camera.position);
-    const dir = new THREE.Vector3();
-    camera.getWorldDirection(dir);
-    target.position.copy(camera.position).addScaledVector(dir, 6);
+    if (getExploreState().view === "third") {
+      // Lamp stays at the player's head, not the chase camera, so the body
+      // doesn't sit backlit inside its own cone.
+      const cp = Math.cos(player.pitch);
+      light.position.set(player.x, EYE_Y, player.z);
+      target.position.set(
+        player.x - Math.sin(player.yaw) * cp * 6,
+        EYE_Y + Math.sin(player.pitch) * 6,
+        player.z - Math.cos(player.yaw) * cp * 6,
+      );
+    } else {
+      light.position.copy(camera.position);
+      camera.getWorldDirection(dir);
+      target.position.copy(camera.position).addScaledVector(dir, 6);
+    }
     target.updateMatrixWorld();
   });
 

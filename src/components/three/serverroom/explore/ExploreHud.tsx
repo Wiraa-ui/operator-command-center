@@ -6,7 +6,7 @@ import type { ExploreMap } from "./layout";
 import { PuzzleModal } from "./PuzzleModal";
 import { StudyModal } from "./StudyModal";
 import { TerminalModal } from "./TerminalModal";
-import { input, setModal, setMuted, triggerInteract, useExplore } from "./store";
+import { input, setModal, setMuted, toggleView, triggerInteract, useExplore } from "./store";
 
 /**
  * ExploreHud — every DOM control of EXPLORE mode: pointer-lock pad + mouse
@@ -27,6 +27,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const toasts = useExplore((s) => s.toasts);
   const muted = useExplore((s) => s.muted);
   const achievements = useExplore((s) => s.achievements);
+  const view = useExplore((s) => s.view);
 
   const [locked, setLocked] = useState(false);
   const lockpad = useRef<HTMLDivElement>(null);
@@ -142,7 +143,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
               KLIK UNTUK KENDALI
             </div>
             <div className="mt-2" style={{ color: "#9fb0cc" }}>
-              WASD jalan · mouse lihat 360° · E interaksi · ESC jeda
+              WASD jalan · mouse lihat 360° · E interaksi · V sudut pandang · ESC jeda
             </div>
           </div>
         </div>
@@ -159,6 +160,23 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       >
         {privilege.toUpperCase()}@server-room
       </div>
+
+      {/* Perspective toggle — stacked under the badge; the bottom-right rows
+          (chrome + touch E button) are already full at 390px widths. */}
+      <button
+        onClick={toggleView}
+        className={`fixed left-4 top-28 z-30 rounded-md border px-3 py-1.5 ${mono} text-[11px] tracking-[0.2em]`}
+        style={{
+          borderColor: "rgba(245,158,11,0.5)",
+          background: "rgba(15,23,42,0.7)",
+          color: PALETTE.accentBright,
+        }}
+        aria-label={
+          view === "first" ? "Ganti ke sudut pandang orang ketiga" : "Ganti ke sudut pandang orang pertama"
+        }
+      >
+        POV: {view === "first" ? "1ST" : "3RD"}
+      </button>
 
       {/* Interact prompt / button */}
       {interact &&

@@ -35,6 +35,8 @@ export interface ExploreState {
   interact: { id: string; label: string } | null;
   toasts: Toast[];
   muted: boolean;
+  /** Camera perspective: first-person eye vs third-person chase boom. */
+  view: "first" | "third";
   /** ms epoch when this explore session started (speedrun timer). */
   startedAt: number;
 }
@@ -114,6 +116,7 @@ function initialState(): ExploreState {
     interact: null,
     toasts: [],
     muted: p.muted,
+    view: "first",
     startedAt: Date.now(),
   };
 }
@@ -192,6 +195,12 @@ export function setModal(modal: ExploreModal) {
 export function setMuted(muted: boolean) {
   state = { ...state, muted };
   persist();
+  emit();
+}
+
+/** V / F5 / HUD button: flip first-person ↔ third-person (session-only). */
+export function toggleView() {
+  state = { ...state, view: state.view === "first" ? "third" : "first" };
   emit();
 }
 
