@@ -316,6 +316,25 @@ export const REGISTRY: Record<string, Cmd> = {
     usage: "history",
     run: (_a, ctx) => ctx.history.map((h, i) => out(`  ${String(i + 1).padStart(3)}  ${h}`)),
   },
+  leaderboard: {
+    desc: "papan rekor ROOT speedrun",
+    usage: "leaderboard",
+    run: async () => {
+      const res = await fetch("/api/room/speedrun");
+      const data = (await res.json()) as { runs?: { name: string; ms: number }[] };
+      const runs = Array.isArray(data.runs) ? data.runs : [];
+      return runs.length === 0
+        ? [dim("papan rekor kosong — login, lalu capai ROOT secepatnya.")]
+        : [
+            accent("⏱ ROOT SPEEDRUN — waktu masuk EXPLORE → akses root:"),
+            ...runs.map((r, i) =>
+              out(
+                `  #${String(i + 1).padStart(2)}  ${r.name.padEnd(16)} ${(r.ms / 1000).toFixed(1)}s`,
+              ),
+            ),
+          ];
+    },
+  },
   sudo: {
     desc: "eskalasi (terbatas)",
     usage: "sudo <hire-me>",

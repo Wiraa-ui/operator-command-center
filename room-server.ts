@@ -41,6 +41,12 @@ db.exec(`
     text TEXT NOT NULL,
     created_at INTEGER NOT NULL
   );
+  CREATE TABLE IF NOT EXISTS speedruns (
+    user_id INTEGER PRIMARY KEY REFERENCES users(id),
+    name TEXT NOT NULL,
+    ms INTEGER NOT NULL,
+    created_at INTEGER NOT NULL
+  );
 `);
 
 const MAX_USERS = 2000;
@@ -243,6 +249,44 @@ function listWallNotes(): Response {
   return json(200, { notes });
 }
 
+/* ------------------------------ speedrun ------------------------------- */
+
+// ROOT SPEEDRUN: time from entering EXPLORE to unlocking door-core. One row
+// per account (personal best only). Client timing is trusted like any game
+// score, but nonsense is rejected: faster than any human path or slower
+// than a day is dropped, and only improvements are written.
+const RUN_MIN_MS = 15_000;
+const RUN_MAX_MS = 86_400_000;
+const RUN_TOP = 10;
+
+function postSpeedrun(userId: number, name: string, raw: unknown): Response {
+  const ms = Math.round(Number(raw));
+  if (!Number.isFinite(ms) || ms < RUN_MIN_MS || ms > RUN_MAX_MS) {
+    return json(400, { error: "waktu run tidak masuk akal" });
+  }
+  const prev = db
+    .query<{ ms: number }, [number]>("SELECT ms FROM speedruns WHERE user_id = ?")
+    .get(userId);
+  if (prev && prev.ms <= ms) return json(200, { ok: true, best: prev.ms, improved: false });
+  db.query(
+    "INSERT INTO speedruns (user_id, name, ms, created_at) VALUES (?, ?, ?, ?) " +
+      "ON CONFLICT(user_id) DO UPDATE SET ms = excluded.ms, created_at = excluded.created_at",
+  ).run(userId, name, ms, Date.now());
+  const rank = db
+    .query<{ n: number }, [number]>("SELECT COUNT(*) AS n FROM speedruns WHERE ms < ?")
+    .get(ms);
+  return json(200, { ok: true, best: ms, improved: true, rank: (rank?.n ?? 0) + 1 });
+}
+
+function listSpeedruns(): Response {
+  const rows = db
+    .query<{ name: string; ms: number }, []>(
+      `SELECT name, ms FROM speedruns ORDER BY ms ASC LIMIT ${RUN_TOP}`,
+    )
+    .all();
+  return json(200, { runs: rows });
+}
+
 /** Handles /api/room/*; returns null for any other path. */
 export async function roomApi(req: Request, url: URL, ip: string): Promise<Response | null> {
   if (!url.pathname.startsWith("/api/room/")) return null;
@@ -262,6 +306,23 @@ export async function roomApi(req: Request, url: URL, ip: string): Promise<Respo
 
   if (url.pathname === "/api/room/wall" && req.method === "GET") {
     return listWallNotes();
+  }
+
+  if (url.pathname === "/api/room/speedrun" && req.method === "GET") {
+    return listSpeedruns();
+  }
+
+  if (url.pathname === "/api/room/speedrun" && req.method === "POST") {
+    if (rateLimited(ip)) return json(429, { error: "terlalu cepat — tunggu sebentar" });
+    const u = userByToken(req.headers.get("authorization")?.replace(/^Bearer /, "") ?? null);
+    if (!u) return json(401, { error: "login dulu untuk masuk papan rekor" });
+    let body: { ms?: unknown };
+    try {
+      body = (await req.json()) as { ms?: unknown };
+    } catch {
+      return json(400, { error: "body json {ms} dibutuhkan" });
+    }
+    return postSpeedrun(u.id, u.name, body.ms);
   }
 
   if (url.pathname === "/api/room/wall" && req.method === "POST") {

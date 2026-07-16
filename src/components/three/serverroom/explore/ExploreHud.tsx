@@ -5,7 +5,14 @@ import { downloadCertificate } from "./certificate";
 import type { ExploreMap } from "./layout";
 import { LoginModal } from "./LoginModal";
 import { NpcModal } from "./NpcModal";
-import { connectPresence, disconnectPresence, loadAuth, logout, sendVisibility } from "./online";
+import {
+  connectPresence,
+  disconnectPresence,
+  loadAuth,
+  logout,
+  sendVisibility,
+  submitSpeedrun,
+} from "./online";
 import { activeQuestInfo, type NpcId } from "./rpg";
 import { PuzzleModal } from "./PuzzleModal";
 import { StudyModal } from "./StudyModal";
@@ -53,6 +60,23 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const user = useExplore((s) => s.user);
   const onlineCount = useExplore((s) => s.onlinePeers.length);
   const presenceVisible = useExplore((s) => s.presenceVisible);
+  const startedAt = useExplore((s) => s.startedAt);
+  const rootAt = useExplore((s) => s.rootAt);
+
+  // ROOT speedrun: submit once when root is earned this session while
+  // logged in. rootAt is session-only, so reloads can't fake a run.
+  const runSubmitted = useRef(false);
+  useEffect(() => {
+    if (rootAt === null || !user || runSubmitted.current) return;
+    runSubmitted.current = true;
+    const ms = rootAt - startedAt;
+    void submitSpeedrun(ms).then((r) => {
+      if (r?.improved) {
+        const s = (ms / 1000).toFixed(1);
+        addToast(`⏱ rekor ROOT pribadi: ${s}s — peringkat #${r.rank ?? "?"}`);
+      }
+    });
+  }, [rootAt, user, startedAt]);
   // Select the stable reference, derive outside — a fresh object from the
   // selector would make useSyncExternalStore re-render forever.
   const questProgress = useExplore((s) => s.questProgress);

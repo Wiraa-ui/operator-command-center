@@ -60,6 +60,9 @@ export interface ExploreState {
   view: "first" | "third";
   /** ms epoch when this explore session started (speedrun timer). */
   startedAt: number;
+  /** ms epoch when door-core was unlocked THIS session (null = not yet).
+      Session-only on purpose: a reload must never look like a run. */
+  rootAt: number | null;
   /** MOKSA.CLOUD (SHIFT MALAM) — hidden horror mode. Session-only. */
   night: boolean;
   /** Purged arsip ids (digital ngaben progress, max 7). */
@@ -185,6 +188,7 @@ function initialState(): ExploreState {
     muted: p.muted,
     view: "first",
     startedAt: Date.now(),
+    rootAt: null,
     night: false,
     purged: [],
     purging: null,
@@ -350,7 +354,14 @@ export function beginSession() {
 export function unlockDoor(id: DoorId) {
   if (state.unlocked.includes(id)) return;
   const unlocked = [...state.unlocked, id];
-  state = { ...state, unlocked, privilege: privilegeOf(unlocked), modal: null };
+  const rootNow = id === "door-core" && state.rootAt === null;
+  state = {
+    ...state,
+    unlocked,
+    privilege: privilegeOf(unlocked),
+    modal: null,
+    rootAt: rootNow ? Date.now() : state.rootAt,
+  };
   persist();
   emit();
   if (id === "door-lab") addAchievement("PRIVILEGE ESCALATED → OPERATOR");

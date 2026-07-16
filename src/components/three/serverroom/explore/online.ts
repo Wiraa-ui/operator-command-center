@@ -174,3 +174,29 @@ export function sendVisibility(show: boolean) {
     ws.send(JSON.stringify({ t: show ? "show" : "hide" }));
   }
 }
+
+/* ------------------------------ speedrun ------------------------------- */
+
+export interface RunResult {
+  improved: boolean;
+  best: number;
+  rank?: number;
+}
+
+/** Submit a ROOT speedrun time; resolves null when not logged in / failed. */
+export async function submitSpeedrun(ms: number): Promise<RunResult | null> {
+  const auth = loadAuth();
+  if (!auth) return null;
+  try {
+    const res = await fetch("/api/room/speedrun", {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${auth.token}` },
+      body: JSON.stringify({ ms }),
+    });
+    if (!res.ok) return null;
+    const body = (await res.json()) as { ok?: boolean } & RunResult;
+    return body.ok ? body : null;
+  } catch {
+    return null;
+  }
+}

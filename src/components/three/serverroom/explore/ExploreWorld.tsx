@@ -10,6 +10,7 @@ import { Hologram } from "./Hologram";
 import { HumanoidFigure } from "./humanoid";
 import { NightShift } from "./nightshift/NightShift";
 import { OnlinePlayers } from "./OnlinePlayers";
+import { RecordBoard } from "./RecordBoard";
 import { NPCS, QUEST_NODES } from "./rpg";
 import { ServiceRacks } from "./ServiceRacks";
 import { addToast, useExplore } from "./store";
@@ -302,6 +303,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
       <group position={[HIRE_POS.x, 0, HIRE_POS.z]}>
         <Panels stations={[HIRE_STATION]} reduced={reduced} />
       </group>
+
+      {/* ROOT speedrun hall-of-fame (south wall, west of the hire panel). */}
+      <RecordBoard reduced={reduced} />
 
       {/* Interactive terminal cabinet (west wall, facing east). */}
       <group position={[TERMINAL_POS.x, 0, TERMINAL_POS.z]} rotation-y={Math.PI / 2}>
