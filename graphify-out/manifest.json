@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784216069.7871277,
-    "ast_hash": "971f55fb2813a5c1c0d18d22069fe55f",
+    "mtime": 1784218427.6174645,
+    "ast_hash": "af7ccccf5598381395cb6f209106ebe1",
     "semantic_hash": ""
   },
   "README.md": {
@@ -365,8 +365,8 @@
     "semantic_hash": ""
   },
   "room-server.ts": {
-    "mtime": 1784214928.885334,
-    "ast_hash": "aa36d4e07370cef04cdde927fe03037b",
+    "mtime": 1784216438.4381878,
+    "ast_hash": "c8bf00ea68623d5dba377a1ce0f2281d",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/Cables.tsx": {
@@ -420,13 +420,13 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreHud.tsx": {
-    "mtime": 1784138592.5077393,
-    "ast_hash": "858ea91ad7b236b40250acd6c28d6ba6",
+    "mtime": 1784217950.1446307,
+    "ast_hash": "d7d6822bd31e2acf5a160505e13c7b90",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreWorld.tsx": {
-    "mtime": 1784215378.9722345,
-    "ast_hash": "82bf96b6d44ecf75db385f9602a0fb8c",
+    "mtime": 1784218077.2717462,
+    "ast_hash": "1f838f94c04ea011d2770a1257669a93",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/LoginModal.tsx": {
@@ -435,8 +435,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/Minimap.tsx": {
-    "mtime": 1784136937.3883946,
-    "ast_hash": "2b963753ac4c2cad6d88c38231ab666e",
+    "mtime": 1784218030.7876925,
+    "ast_hash": "8876b0ae2ff6cbe1fc7f2571da67d206",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/OnlinePlayers.tsx": {
@@ -445,8 +445,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/PlayerRig.tsx": {
-    "mtime": 1784138378.9088998,
-    "ast_hash": "551179c5f3c99bd86ac6c98508ebf130",
+    "mtime": 1784217912.3386166,
+    "ast_hash": "429985a43ff73475c58c4bdaad0e0639",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/PuzzleModal.tsx": {
@@ -460,8 +460,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/TerminalModal.tsx": {
-    "mtime": 1784138515.3294647,
-    "ast_hash": "c1d748769fb983e7e492e5ddc4b8189a",
+    "mtime": 1784216438.439188,
+    "ast_hash": "a2a5f1648c7a4190df7745dbf40e9197",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/audio.ts": {
@@ -572,6 +572,16 @@
   "src/components/three/serverroom/explore/WitaClock.tsx": {
     "mtime": 1784215299.584198,
     "ast_hash": "e9fd73cc64845b6ead5fdf8134a9e9cb",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/Hologram.tsx": {
+    "mtime": 1784218059.334724,
+    "ast_hash": "c2406658ee7cf77ba4d2423425fd0772",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/Wallboard.tsx": {
+    "mtime": 1784216347.1745937,
+    "ast_hash": "2d836ff1dd4aeb744802b7df9d45c6a3",
     "semantic_hash": ""
   }
 }
