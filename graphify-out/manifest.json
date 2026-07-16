@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784218427.6174645,
-    "ast_hash": "af7ccccf5598381395cb6f209106ebe1",
+    "mtime": 1784219530.2535586,
+    "ast_hash": "23a82274fbf8e1acc3f3e8eb29b5bbd2",
     "semantic_hash": ""
   },
   "README.md": {
@@ -425,8 +425,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreWorld.tsx": {
-    "mtime": 1784218077.2717462,
-    "ast_hash": "1f838f94c04ea011d2770a1257669a93",
+    "mtime": 1784218817.9956667,
+    "ast_hash": "59d820386774d44582af4f017b4d4b7c",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/LoginModal.tsx": {
@@ -445,8 +445,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/PlayerRig.tsx": {
-    "mtime": 1784217912.3386166,
-    "ast_hash": "429985a43ff73475c58c4bdaad0e0639",
+    "mtime": 1784218850.6357787,
+    "ast_hash": "1c8b7ebbad030153b78167ddd629c66f",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/PuzzleModal.tsx": {
@@ -485,8 +485,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/layout.ts": {
-    "mtime": 1784212528.9068913,
-    "ast_hash": "300f4619fec2f42d8aacd4e8c6607f37",
+    "mtime": 1784218732.2133796,
+    "ast_hash": "aae02d5b2f8926e5aace4b0ca9e9a678",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/Entities.tsx": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/store.ts": {
-    "mtime": 1784138607.792602,
-    "ast_hash": "53cf8970cfa820c294c15848b36c5bff",
+    "mtime": 1784218752.4524465,
+    "ast_hash": "4e5a39660a6911f94160fbf6ddfbe9e4",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/stations.ts": {
@@ -582,6 +582,11 @@
   "src/components/three/serverroom/explore/Wallboard.tsx": {
     "mtime": 1784216347.1745937,
     "ast_hash": "2d836ff1dd4aeb744802b7df9d45c6a3",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/VaultRoom.tsx": {
+    "mtime": 1784218779.592537,
+    "ast_hash": "559e829a687808c4af55720ce88d5eae",
     "semantic_hash": ""
   }
 }
