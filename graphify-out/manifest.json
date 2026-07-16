@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784231629.6337306,
-    "ast_hash": "a18799941b38236877f02247bbb65b98",
+    "mtime": 1784232496.4437804,
+    "ast_hash": "b28929302edd996c0538f2259c7201e7",
     "semantic_hash": ""
   },
   "README.md": {
@@ -420,13 +420,13 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreHud.tsx": {
-    "mtime": 1784230873.8505936,
-    "ast_hash": "d40a30edfc0284375c92f38beae569d2",
+    "mtime": 1784231935.5591838,
+    "ast_hash": "53b5520eb8bcfbb7181de81a3ebb523c",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreWorld.tsx": {
-    "mtime": 1784230183.9151359,
-    "ast_hash": "ba640f0f5bb118d1c57037c3c2dd52e7",
+    "mtime": 1784231945.3043172,
+    "ast_hash": "e4107f9f6bcb30e7a8cbbd1c899ec048",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/LoginModal.tsx": {
@@ -465,8 +465,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/audio.ts": {
-    "mtime": 1784230693.9238362,
-    "ast_hash": "8975163526f2be61bbf070bf00649f45",
+    "mtime": 1784232002.0065265,
+    "ast_hash": "8c46cbad0af9d5d5627e752fb406e42c",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/certificate.ts": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/store.ts": {
-    "mtime": 1784230807.2182028,
-    "ast_hash": "4a8e113449fcd30bed6ebd80b2d92f2c",
+    "mtime": 1784231799.2538333,
+    "ast_hash": "4f208bde91d0b97169b432736e33c908",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/stations.ts": {
@@ -625,8 +625,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/StoryLogModal.tsx": {
-    "mtime": 1784230994.9671197,
-    "ast_hash": "5aefe2c62c8fac4767e8a8adfc673b1d",
+    "mtime": 1784231847.5556495,
+    "ast_hash": "eaa0d7a4babcf2cb5b62af9a4e8aba0c",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/StoryLogs.tsx": {
@@ -637,6 +637,11 @@
   "src/components/three/serverroom/explore/story-logs.ts": {
     "mtime": 1784230726.404515,
     "ast_hash": "852bf74ed808c8779f917ab98bde452a",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/EndingOverlay.tsx": {
+    "mtime": 1784232002.0065265,
+    "ast_hash": "568107b0b0e4306f8cb8dd1ae613fe1f",
     "semantic_hash": ""
   }
 }
