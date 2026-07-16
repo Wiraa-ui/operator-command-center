@@ -1,6 +1,6 @@
 import { PALETTE } from "../types";
 import { STORY_LOGS } from "./story-logs";
-import { setModal, useExplore } from "./store";
+import { closeStoryLog, replayEnding, useExplore } from "./store";
 
 /** StoryLogModal — one LOG OPERATOR chapter as a datapad card. */
 
@@ -8,8 +8,10 @@ const mono = "var(--font-op-mono, monospace)";
 
 export function StoryLogModal({ logId }: { logId: string }) {
   const collected = useExplore((s) => s.collectedLogs);
+  const endingSeen = useExplore((s) => s.endingSeen);
   const log = STORY_LOGS.find((l) => l.id === logId);
   if (!log) return null;
+  const isFinale = logId === STORY_LOGS[STORY_LOGS.length - 1].id;
 
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4">
@@ -40,7 +42,7 @@ export function StoryLogModal({ logId }: { logId: string }) {
           ))}
         </div>
         <button
-          onClick={() => setModal(null)}
+          onClick={() => closeStoryLog()}
           className="mt-6 w-full rounded-md border px-3 py-2 text-[11px] font-bold uppercase tracking-[0.2em]"
           style={{
             borderColor: PALETTE.accentBright,
@@ -50,6 +52,19 @@ export function StoryLogModal({ logId }: { logId: string }) {
         >
           Tutup log
         </button>
+        {isFinale && endingSeen && (
+          <button
+            onClick={() => replayEnding()}
+            className="mt-2 w-full rounded-md border px-3 py-2 text-[10px] uppercase tracking-[0.2em]"
+            style={{
+              borderColor: "rgba(56,189,248,0.5)",
+              background: "transparent",
+              color: PALETTE.secondary,
+            }}
+          >
+            ▶ putar ulang epilog
+          </button>
+        )}
       </div>
     </div>
   );

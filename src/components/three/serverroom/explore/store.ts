@@ -87,6 +87,10 @@ export interface ExploreState {
   settings: GameSettings;
   /** Collected LOG OPERATOR story entries (persisted). */
   collectedLogs: string[];
+  /** Epilogue overlay is playing (session). */
+  endingActive: boolean;
+  /** Epilogue has been seen before (persisted; replay via LOG 07). */
+  endingSeen: boolean;
 }
 
 export interface GameSettings {
@@ -154,6 +158,7 @@ interface Persisted {
   presenceVisible: boolean;
   settings: GameSettings;
   collectedLogs: string[];
+  endingSeen: boolean;
 }
 
 const EMPTY_PERSIST: Persisted = {
@@ -164,6 +169,7 @@ const EMPTY_PERSIST: Persisted = {
   presenceVisible: true,
   settings: DEFAULT_SETTINGS,
   collectedLogs: [],
+  endingSeen: false,
 };
 
 function loadPersisted(): Persisted {
@@ -190,6 +196,7 @@ function loadPersisted(): Persisted {
         volume: clampNum((p.settings as GameSettings)?.volume, 0, 1, 1),
       },
       collectedLogs: Array.isArray(p.collectedLogs) ? p.collectedLogs : [],
+      endingSeen: Boolean(p.endingSeen),
     };
   } catch {
     return EMPTY_PERSIST;
@@ -218,6 +225,8 @@ function initialState(): ExploreState {
     presenceVisible: p.presenceVisible,
     settings: p.settings,
     collectedLogs: p.collectedLogs,
+    endingSeen: p.endingSeen,
+    endingActive: false,
     modal: null,
     interact: null,
     toasts: [],
@@ -254,6 +263,7 @@ function persist() {
         presenceVisible: state.presenceVisible,
         settings: state.settings,
         collectedLogs: state.collectedLogs,
+        endingSeen: state.endingSeen,
       } satisfies Persisted),
     );
   } catch {
@@ -347,6 +357,32 @@ export function collectLog(logId: string) {
     }
   }
   setModal({ type: "storylog", logId });
+}
+
+/** Close a story card; the seventh close rolls the epilogue (once). */
+export function closeStoryLog() {
+  const all = state.collectedLogs.length >= LOG_COUNT;
+  if (all && !state.endingSeen) {
+    state = { ...state, modal: null, endingActive: true, endingSeen: true };
+    persist();
+    emit();
+    roomAudio.sfx("ending");
+    return;
+  }
+  setModal(null);
+}
+
+/** Replay the epilogue (offered on LOG 07 once seen). */
+export function replayEnding() {
+  state = { ...state, modal: null, endingActive: true };
+  emit();
+  roomAudio.sfx("ending");
+}
+
+export function dismissEnding() {
+  state = { ...state, endingActive: false };
+  emit();
+  addAchievement("TAMAT — cerita ruang server selesai");
 }
 
 export function setPresenceVisible(presenceVisible: boolean) {

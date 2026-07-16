@@ -106,7 +106,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
     }
   }, [witching]);
 
-  const lightMul = isNight ? 0.18 : witching ? 0.55 : 1;
+  // Epilogue: the house lights warm up — the room says goodbye brightly.
+  const ending = useExplore((s) => s.endingActive);
+  const lightMul = isNight ? 0.18 : ending ? 1.35 : witching ? 0.55 : 1;
 
   // Hard dropouts on the house lights read as mains flicker; bases restore
   // whenever the effect is off, so mode changes never strand an intensity.

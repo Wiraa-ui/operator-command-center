@@ -336,7 +336,13 @@ class RoomAudio {
     src.start();
   }
 
-  sfx(kind: "unlock" | "deny" | "toast" | "achievement") {
+  sfx(kind: "unlock" | "deny" | "toast" | "achievement" | "ending") {
+    if (kind === "ending") {
+      // Epilogue sting: slow rising pentatonic swell, warmer and longer
+      // than the achievement arpeggio.
+      [0, 2, 4, 5, 7].forEach((n, i) => setTimeout(() => this.tone(SCALE[n], 0.055, 1.1), i * 320));
+      return;
+    }
     if (kind === "unlock") {
       // Rising two-note "access granted" on the shared scale.
       this.tone(SCALE[3], 0.06, 0.25);

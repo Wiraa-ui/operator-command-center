@@ -14,6 +14,7 @@ import {
   submitSpeedrun,
 } from "./online";
 import { activeQuestInfo, type NpcId } from "./rpg";
+import { EndingOverlay } from "./EndingOverlay";
 import { PuzzleModal } from "./PuzzleModal";
 import { SettingsModal } from "./SettingsModal";
 import { StoryLogModal } from "./StoryLogModal";
@@ -64,6 +65,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const presenceVisible = useExplore((s) => s.presenceVisible);
   const startedAt = useExplore((s) => s.startedAt);
   const rootAt = useExplore((s) => s.rootAt);
+  const endingActive = useExplore((s) => s.endingActive);
 
   // Persisted master volume applies as soon as the HUD exists.
   const volume = useExplore((s) => s.settings.volume);
@@ -617,6 +619,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       {modal?.type === "certificate" && <CertificateModal achievements={achievements} />}
       {modal?.type === "settings" && <SettingsModal />}
       {modal?.type === "storylog" && <StoryLogModal logId={modal.logId} />}
+      {endingActive && <EndingOverlay />}
     </>
   );
 }
