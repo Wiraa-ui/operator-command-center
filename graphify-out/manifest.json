@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "serve.ts": {
-    "mtime": 1784135981.5411453,
-    "ast_hash": "6aefbdba1afa31ab8989280c8fac7be4",
+    "mtime": 1784214980.425475,
+    "ast_hash": "eb35d127425112c80896489b958fad31",
     "semantic_hash": ""
   },
   "src/components/ui/motion/FadeIn.tsx": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784214516.5146873,
-    "ast_hash": "66e7254d88a4303f8051ab3ac3b90a63",
+    "mtime": 1784215068.5278034,
+    "ast_hash": "545df68af3e66338ed4b80ffecda1567",
     "semantic_hash": ""
   },
   "README.md": {
@@ -365,8 +365,8 @@
     "semantic_hash": ""
   },
   "room-server.ts": {
-    "mtime": 1784212493.8804326,
-    "ast_hash": "a8ba1ae32a904ef78a48bbbfc9d246ba",
+    "mtime": 1784214928.885334,
+    "ast_hash": "aa36d4e07370cef04cdde927fe03037b",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/Cables.tsx": {
@@ -562,6 +562,11 @@
   "src/components/three/serverroom/explore/ServiceRacks.tsx": {
     "mtime": 1784212827.3026273,
     "ast_hash": "b6c5b1f1707fec836f8f80ab3deac231",
+    "semantic_hash": ""
+  },
+  "ascii-room.ts": {
+    "mtime": 1784215019.1732259,
+    "ast_hash": "5cef8d3ecde6b62cb78a24b88a0ec363",
     "semantic_hash": ""
   }
 }
