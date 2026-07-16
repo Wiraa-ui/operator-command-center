@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784219530.2535586,
-    "ast_hash": "23a82274fbf8e1acc3f3e8eb29b5bbd2",
+    "mtime": 1784221292.331444,
+    "ast_hash": "5ac6ac44e7f97e549197fc5c64dd20e3",
     "semantic_hash": ""
   },
   "README.md": {
@@ -395,8 +395,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/RoomCanvas.tsx": {
-    "mtime": 1783854551.7336473,
-    "ast_hash": "bbd4e0317d23f7047a562f13faece3ce",
+    "mtime": 1784219842.4123468,
+    "ast_hash": "f2bd5a606bf56687c4711b2ad530204c",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/StatusRack.tsx": {
@@ -420,8 +420,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreHud.tsx": {
-    "mtime": 1784217950.1446307,
-    "ast_hash": "d7d6822bd31e2acf5a160505e13c7b90",
+    "mtime": 1784220148.7030678,
+    "ast_hash": "9e502b4ba2f11f4111ff55fd1eebb731",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreWorld.tsx": {
@@ -587,6 +587,16 @@
   "src/components/three/serverroom/explore/VaultRoom.tsx": {
     "mtime": 1784218779.592537,
     "ast_hash": "559e829a687808c4af55720ce88d5eae",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/PostFX.tsx": {
+    "mtime": 1784220991.5804446,
+    "ast_hash": "5aa7ea7da8aad9f4d68c90653adbc658",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/Dust.tsx": {
+    "mtime": 1784219811.5090044,
+    "ast_hash": "8de063109701e0910de63b03911c37fe",
     "semantic_hash": ""
   }
 }
