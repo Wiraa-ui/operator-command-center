@@ -31,6 +31,8 @@ export type ExploreModal =
   | { type: "study"; slug: string }
   | { type: "login" }
   | { type: "npc"; npcId: string }
+  | { type: "settings" }
+  | { type: "storylog"; logId: string }
   | null;
 
 export interface Toast {
@@ -81,7 +83,22 @@ export interface ExploreState {
   questProgress: QuestProgress;
   /** Presence ghost mode: false = other visitors can't see you. */
   presenceVisible: boolean;
+  /** Graphics/audio settings (persisted): story-game style options menu. */
+  settings: GameSettings;
+  /** Collected LOG OPERATOR story entries (persisted). */
+  collectedLogs: string[];
 }
+
+export interface GameSettings {
+  /** Bloom/dust gate: auto = device heuristic, ultra = force on, lite = off. */
+  graphics: "auto" | "ultra" | "lite";
+  /** Tone-mapping exposure 0.6–1.6 (1 = default). */
+  brightness: number;
+  /** Master volume 0–1 (multiplies the ambience master gain). */
+  volume: number;
+}
+
+export const DEFAULT_SETTINGS: GameSettings = { graphics: "auto", brightness: 1, volume: 1 };
 
 /* ------------------------- mutable fast lane -------------------------- */
 
@@ -135,6 +152,8 @@ interface Persisted {
   muted: boolean;
   questProgress: QuestProgress;
   presenceVisible: boolean;
+  settings: GameSettings;
+  collectedLogs: string[];
 }
 
 const EMPTY_PERSIST: Persisted = {
@@ -143,6 +162,8 @@ const EMPTY_PERSIST: Persisted = {
   muted: false,
   questProgress: { active: {}, completed: [] },
   presenceVisible: true,
+  settings: DEFAULT_SETTINGS,
+  collectedLogs: [],
 };
 
 function loadPersisted(): Persisted {
@@ -161,10 +182,23 @@ function loadPersisted(): Persisted {
           ? { active: qp.active, completed: qp.completed }
           : { active: {}, completed: [] },
       presenceVisible: p.presenceVisible !== false,
+      settings: {
+        graphics: ["auto", "ultra", "lite"].includes((p.settings as GameSettings)?.graphics)
+          ? (p.settings as GameSettings).graphics
+          : "auto",
+        brightness: clampNum((p.settings as GameSettings)?.brightness, 0.6, 1.6, 1),
+        volume: clampNum((p.settings as GameSettings)?.volume, 0, 1, 1),
+      },
+      collectedLogs: Array.isArray(p.collectedLogs) ? p.collectedLogs : [],
     };
   } catch {
     return EMPTY_PERSIST;
   }
+}
+
+function clampNum(v: unknown, min: number, max: number, dflt: number): number {
+  const n = Number(v);
+  return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : dflt;
 }
 
 function privilegeOf(unlocked: DoorId[]): Privilege {
@@ -182,6 +216,8 @@ function initialState(): ExploreState {
     achievements: p.achievements,
     questProgress: p.questProgress,
     presenceVisible: p.presenceVisible,
+    settings: p.settings,
+    collectedLogs: p.collectedLogs,
     modal: null,
     interact: null,
     toasts: [],
@@ -216,6 +252,8 @@ function persist() {
         muted: state.muted,
         questProgress: state.questProgress,
         presenceVisible: state.presenceVisible,
+        settings: state.settings,
+        collectedLogs: state.collectedLogs,
       } satisfies Persisted),
     );
   } catch {
@@ -288,6 +326,27 @@ export function setDialogue(dialogue: DialogueLine | null) {
 export function setUser(user: { name: string } | null) {
   state = { ...state, user };
   emit();
+}
+
+export function updateSettings(patch: Partial<GameSettings>) {
+  state = { ...state, settings: { ...state.settings, ...patch } };
+  persist();
+  emit();
+  if (patch.volume !== undefined) roomAudio.setVolume(patch.volume);
+}
+
+/** Total story logs; keep in sync with STORY_LOGS (story-logs.ts). */
+const LOG_COUNT = 7;
+
+export function collectLog(logId: string) {
+  if (!state.collectedLogs.includes(logId)) {
+    state = { ...state, collectedLogs: [...state.collectedLogs, logId] };
+    persist();
+    if (state.collectedLogs.length === LOG_COUNT) {
+      addAchievement("SEJARAWAN — seluruh LOG OPERATOR terkumpul");
+    }
+  }
+  setModal({ type: "storylog", logId });
 }
 
 export function setPresenceVisible(presenceVisible: boolean) {
@@ -458,6 +517,13 @@ export function triggerInteract() {
     // Collectible, not a modal: inspecting the golden master tape.
     addAchievement("PENJAGA ARSIP — master tape ditemukan");
     addToast("MASTER BACKUP · harian 02:00 WITA · uji-restore: LULUS");
+    return;
+  }
+  if (id.startsWith("log:")) {
+    collectLog(id);
+    if (typeof document !== "undefined" && document.pointerLockElement) {
+      document.exitPointerLock();
+    }
     return;
   }
   if (id === "terminal") {

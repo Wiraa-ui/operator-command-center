@@ -26,6 +26,7 @@ import {
 } from "./store";
 import { ARSIP_RACKS, lampIsOn, night } from "./nightshift/state";
 import { NPCS, QUEST_NODES } from "./rpg";
+import { STORY_LOGS } from "./story-logs";
 
 /**
  * PlayerRig — player body for EXPLORE mode. Consumes the mutable
@@ -259,6 +260,17 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
     if (mDist < bestD) {
       bestD = mDist;
       nearest = { id: "vault:master", label: "PERIKSA — MASTER BACKUP TAPE" };
+    }
+    for (const log of STORY_LOGS) {
+      const dist = Math.hypot(log.x - player.x, log.z - player.z);
+      if (dist < bestD) {
+        bestD = dist;
+        const read = s.collectedLogs.includes(log.id);
+        nearest = {
+          id: log.id,
+          label: read ? `BACA LAGI — ${log.chapter}` : `AMBIL — ${log.chapter}`,
+        };
+      }
     }
     // Day-shift RPG: NPCs to talk to (they go home at night) + Q2 panels.
     if (!s.night) {

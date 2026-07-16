@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { Canvas } from "@react-three/fiber";
+import { useEffect, useMemo } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
 import { PALETTE, type Station } from "./types";
 import { World } from "./World";
 import { Cables } from "./Cables";
@@ -10,6 +10,8 @@ import { Dust } from "./explore/Dust";
 import { ExploreWorld } from "./explore/ExploreWorld";
 import { DOOR_GAPS, type ExploreMap } from "./explore/layout";
 import { PlayerRig } from "./explore/PlayerRig";
+import { StoryLogs } from "./explore/StoryLogs";
+import { useExplore } from "./explore/store";
 import { autoFx, PostFX } from "./PostFX";
 
 /**
@@ -37,7 +39,10 @@ export default function RoomCanvas({
 }) {
   const statusStation = useMemo(() => stations.find((s) => s.kind === "status"), [stations]);
   const explore = mode === "explore" && map !== null;
-  const fx = useMemo(() => autoFx(reduced), [reduced]);
+  // Settings menu overrides the device heuristic (story-game presets).
+  const graphics = useExplore((s) => s.settings.graphics);
+  const auto = useMemo(() => autoFx(reduced), [reduced]);
+  const fx = graphics === "ultra" ? true : graphics === "lite" ? false : auto;
 
   return (
     <Canvas
@@ -55,15 +60,27 @@ export default function RoomCanvas({
       <Panels stations={stations} reduced={reduced} />
       {statusStation && <StatusRack station={statusStation} reduced={reduced} />}
       {fx && <PostFX />}
+      <Exposure />
       {explore ? (
         <>
           <PlayerRig map={map} reduced={reduced} />
           <ExploreWorld map={map} reduced={reduced} />
-          <Dust map={map} reduced={reduced} />
+          <StoryLogs reduced={reduced} />
+          {graphics !== "lite" && <Dust map={map} reduced={reduced} />}
         </>
       ) : (
         <RoomCameraRig stations={stations} reduced={reduced} />
       )}
     </Canvas>
   );
+}
+
+/** Applies the settings-menu brightness as tone-mapping exposure. */
+function Exposure() {
+  const brightness = useExplore((s) => s.settings.brightness);
+  const gl = useThree((st) => st.gl);
+  useEffect(() => {
+    gl.toneMappingExposure = brightness;
+  }, [gl, brightness]);
+  return null;
 }

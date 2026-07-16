@@ -15,6 +15,8 @@ import {
 } from "./online";
 import { activeQuestInfo, type NpcId } from "./rpg";
 import { PuzzleModal } from "./PuzzleModal";
+import { SettingsModal } from "./SettingsModal";
+import { StoryLogModal } from "./StoryLogModal";
 import { StudyModal } from "./StudyModal";
 import { TerminalModal } from "./TerminalModal";
 import {
@@ -62,6 +64,12 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const presenceVisible = useExplore((s) => s.presenceVisible);
   const startedAt = useExplore((s) => s.startedAt);
   const rootAt = useExplore((s) => s.rootAt);
+
+  // Persisted master volume applies as soon as the HUD exists.
+  const volume = useExplore((s) => s.settings.volume);
+  useEffect(() => {
+    roomAudio.setVolume(volume);
+  }, [volume]);
 
   // ROOT speedrun: submit once when root is earned this session while
   // logged in. rootAt is session-only, so reloads can't fake a run.
@@ -332,6 +340,21 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
         {user ? `● ${onlineCount + 1} ONLINE · ${user.name}` : "○ LOGIN — TAMPIL ONLINE"}
       </button>
 
+      {/* Settings (story-game options) — stacked in the left column */}
+      <button
+        onClick={() => setModal({ type: "settings" })}
+        className={`fixed left-4 z-30 rounded-md border px-3 py-1.5 ${mono} text-[11px] tracking-[0.2em]`}
+        style={{
+          top: user ? "16rem" : "13rem",
+          borderColor: "rgba(245,158,11,0.5)",
+          background: "rgba(15,23,42,0.7)",
+          color: PALETTE.accentBright,
+        }}
+        aria-label="Buka pengaturan grafis dan audio"
+      >
+        ⚙ SETTINGS
+      </button>
+
       {/* Ghost-mode toggle — only meaningful once logged in */}
       {user && (
         <button
@@ -592,6 +615,8 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       {modal?.type === "login" && <LoginModal />}
       {modal?.type === "npc" && <NpcModal npcId={modal.npcId as NpcId} />}
       {modal?.type === "certificate" && <CertificateModal achievements={achievements} />}
+      {modal?.type === "settings" && <SettingsModal />}
+      {modal?.type === "storylog" && <StoryLogModal logId={modal.logId} />}
     </>
   );
 }

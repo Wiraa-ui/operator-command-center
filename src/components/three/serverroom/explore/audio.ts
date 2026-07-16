@@ -151,7 +151,7 @@ class RoomAudio {
     this.ctx = ctx;
 
     const master = ctx.createGain();
-    master.gain.value = muted ? 0 : 1;
+    master.gain.value = muted ? 0 : this.volume;
     master.connect(ctx.destination);
     this.master = master;
 
@@ -357,10 +357,18 @@ class RoomAudio {
     this.applyMute();
   }
 
+  /** Master volume 0–1 from the settings menu (independent of mute). */
+  setVolume(volume: number) {
+    this.volume = Math.max(0, Math.min(1, volume));
+    this.applyMute();
+  }
+
+  private volume = 1;
+
   private applyMute() {
     const ctx = this.ctx;
     if (!ctx || !this.master) return;
-    this.master.gain.linearRampToValueAtTime(this.muted ? 0 : 1, ctx.currentTime + 0.2);
+    this.master.gain.linearRampToValueAtTime(this.muted ? 0 : this.volume, ctx.currentTime + 0.2);
   }
 
   stop() {
