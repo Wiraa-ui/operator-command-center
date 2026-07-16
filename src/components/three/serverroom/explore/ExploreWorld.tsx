@@ -12,6 +12,7 @@ import { OnlinePlayers } from "./OnlinePlayers";
 import { NPCS, QUEST_NODES } from "./rpg";
 import { ServiceRacks } from "./ServiceRacks";
 import { addToast, useExplore } from "./store";
+import { Wallboard } from "./Wallboard";
 import { FORCE_WITCH, isWitchingHour, WitaClock } from "./WitaClock";
 import {
   ACCESS_CODE,
@@ -341,6 +342,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
           decay={1.8}
         />
       </group>
+      {/* NOC guest board: sticky notes visitors left via the CORE terminal. */}
+      <Wallboard reduced={reduced} />
+
       {/* NOC monitor wall: a bank of dim sky screens above the desk. */}
       <group position={[10, 0, -1.62]}>
         <mesh position={[0, 0.55, 0]}>

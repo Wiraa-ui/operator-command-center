@@ -6,6 +6,8 @@
 //   POST /api/room/login     {name, pass}  → {token, name}
 //   GET  /api/room/me        Bearer token  → {name}
 //   GET  /api/room/services  → {services:[{id,up}], alert}  (digital twin)
+//   GET  /api/room/wall      → {notes:[{author,text,at}]}   (guest board)
+//   POST /api/room/wall      Bearer token, {text} → {ok}
 //   WS   /ws/room?token=…    client {t:"pos",x,z,yaw,night} ≤10 Hz
 //                            server {t:"roster", players:[…]} every 250 ms
 import { Database } from "bun:sqlite";
@@ -30,6 +32,13 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS sessions (
     token TEXT PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id),
+    created_at INTEGER NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS wall_notes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    author TEXT NOT NULL,
+    text TEXT NOT NULL,
     created_at INTEGER NOT NULL
   );
 `);
@@ -170,12 +179,89 @@ export async function twinStatus(): Promise<TwinStatus> {
   return value;
 }
 
+/* ------------------------------ guest wall ----------------------------- */
+
+// Physical guestbook: `wall <pesan>` in the CORE terminal pins a sticky note
+// on the NOC whiteboard for every future visitor. Login required (author =
+// account name), tight charset, no links, per-user cooldown + daily cap,
+// board bounded to the newest 24 notes — abuse surface stays tiny.
+const WALL_MAX_LEN = 64;
+const WALL_CHARSET = /^[a-zA-Z0-9 .,!?'"()@:_+*<>=~^-]+$/;
+const WALL_COOLDOWN_MS = 120_000;
+const WALL_DAILY_CAP = 5;
+const WALL_KEEP = 24;
+const WALL_SHOW = 12;
+
+function postWallNote(userId: number, author: string, raw: unknown): Response {
+  const text = String(raw ?? "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (text.length < 3 || text.length > WALL_MAX_LEN || !WALL_CHARSET.test(text)) {
+    return json(400, { error: `pesan 3–${WALL_MAX_LEN} karakter, huruf/angka/tanda baca dasar` });
+  }
+  if (/https?|:\/\/|www\./i.test(text)) {
+    return json(400, { error: "papan tamu bukan tempat tautan" });
+  }
+  const now = Date.now();
+  const last = db
+    .query<{ t: number }, [number]>("SELECT MAX(created_at) AS t FROM wall_notes WHERE user_id = ?")
+    .get(userId);
+  if (last?.t && now - last.t < WALL_COOLDOWN_MS) {
+    return json(429, { error: "papan butuh napas — coba lagi 2 menit lagi" });
+  }
+  const today = db
+    .query<{ n: number }, [number, number]>(
+      "SELECT COUNT(*) AS n FROM wall_notes WHERE user_id = ? AND created_at > ?",
+    )
+    .get(userId, now - 86_400_000);
+  if ((today?.n ?? 0) >= WALL_DAILY_CAP) {
+    return json(429, { error: "kuota harian papan habis — besok lagi" });
+  }
+  db.query("INSERT INTO wall_notes (user_id, author, text, created_at) VALUES (?, ?, ?, ?)").run(
+    userId,
+    author,
+    text,
+    now,
+  );
+  db.query(
+    `DELETE FROM wall_notes WHERE id NOT IN (SELECT id FROM wall_notes ORDER BY id DESC LIMIT ${WALL_KEEP})`,
+  ).run();
+  return json(200, { ok: true });
+}
+
+function listWallNotes(): Response {
+  const notes = db
+    .query<{ author: string; text: string; created_at: number }, []>(
+      `SELECT author, text, created_at FROM wall_notes ORDER BY id DESC LIMIT ${WALL_SHOW}`,
+    )
+    .all()
+    .map((n) => ({ author: n.author, text: n.text, at: n.created_at }));
+  return json(200, { notes });
+}
+
 /** Handles /api/room/*; returns null for any other path. */
 export async function roomApi(req: Request, url: URL, ip: string): Promise<Response | null> {
   if (!url.pathname.startsWith("/api/room/")) return null;
 
   if (url.pathname === "/api/room/services" && req.method === "GET") {
     return json(200, await twinStatus());
+  }
+
+  if (url.pathname === "/api/room/wall" && req.method === "GET") {
+    return listWallNotes();
+  }
+
+  if (url.pathname === "/api/room/wall" && req.method === "POST") {
+    if (rateLimited(ip)) return json(429, { error: "terlalu cepat — tunggu sebentar" });
+    const u = userByToken(req.headers.get("authorization")?.replace(/^Bearer /, "") ?? null);
+    if (!u) return json(401, { error: "login dulu (tombol LOGIN — TAMPIL ONLINE)" });
+    let body: { text?: unknown };
+    try {
+      body = (await req.json()) as { text?: unknown };
+    } catch {
+      return json(400, { error: "body json {text} dibutuhkan" });
+    }
+    return postWallNote(u.id, u.name, body.text);
   }
 
   if (url.pathname === "/api/room/me" && req.method === "GET") {

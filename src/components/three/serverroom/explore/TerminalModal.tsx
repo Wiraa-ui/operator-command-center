@@ -4,7 +4,8 @@ import { site } from "@/content/site";
 import { getRoomStatus } from "@/lib/api/roomStatus";
 import { PALETTE } from "../types";
 import { roomAudio } from "./audio";
-import { beginNightShift, emitQuestEvent, setModal, useExplore } from "./store";
+import { loadAuth } from "./online";
+import { addToast, beginNightShift, emitQuestEvent, setModal, useExplore } from "./store";
 
 /**
  * TerminalModal — the CORE's interactive shell, styled after a modern
@@ -41,6 +42,7 @@ const HELP: Line[] = [
   out("  ls projects/    daftar proyek"),
   out("  cat cv.txt      curriculum vitae"),
   out("  sudo hire-me    langkah paling logis"),
+  out("  wall <pesan>    tempel pesan di papan tamu NOC (perlu login)"),
   out("  clear · exit"),
 ];
 
@@ -110,6 +112,49 @@ export function TerminalModal() {
         setModal(null);
         beginNightShift();
       }, 1600);
+    } else if (c === "wall" || c.startsWith("wall ")) {
+      // Message must keep the user's casing — parse from `raw`, not `c`.
+      const msg = raw.trim().slice(4).trim();
+      if (!msg) {
+        print([out("pemakaian: wall <pesan>  — pesanmu tertempel di papan NOC")]);
+        return;
+      }
+      const auth = loadAuth();
+      if (!auth) {
+        print([
+          { text: "wall: butuh identitas — siapa yang menempel?", kind: "accent" },
+          out("  login dulu lewat tombol `LOGIN — TAMPIL ONLINE` di kiri atas."),
+        ]);
+        roomAudio.sfx("deny");
+        return;
+      }
+      print([{ text: "  menempel ke papan NOC…", kind: "dim" }]);
+      try {
+        const res = await fetch("/api/room/wall", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${auth.token}`,
+          },
+          body: JSON.stringify({ text: msg }),
+        });
+        const body = (await res.json()) as { ok?: boolean; error?: string };
+        if (res.ok && body.ok) {
+          print([
+            { text: `  tertempel. — @${auth.name}`, kind: "accent" },
+            {
+              text: "  (lihat papan tamu di ruang NOC — pengunjung lain juga melihatnya)",
+              kind: "dim",
+            },
+          ]);
+          addToast("pesanmu tertempel di papan tamu NOC");
+        } else {
+          print([out(`wall: ${body.error ?? "gagal — coba lagi"}`)]);
+          roomAudio.sfx("deny");
+        }
+      } catch {
+        print([out("wall: papan tak terjangkau — coba lagi nanti")]);
+      }
     } else if (c === "rm -rf /" || c.startsWith("rm -rf")) {
       print([
         { text: "PERMISSION DENIED — nice try 🙂", kind: "accent" },
