@@ -5,11 +5,14 @@
 //   POST /api/room/register  {name, pass}  → {token, name}
 //   POST /api/room/login     {name, pass}  → {token, name}
 //   GET  /api/room/me        Bearer token  → {name}
+//   GET  /api/room/services  → {services:[{id,up}], alert}  (digital twin)
 //   WS   /ws/room?token=…    client {t:"pos",x,z,yaw,night} ≤10 Hz
 //                            server {t:"roster", players:[…]} every 250 ms
 import { Database } from "bun:sqlite";
 import { join } from "node:path";
 import { mkdirSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { connect } from "node:net";
 
 /* ------------------------------ storage ------------------------------- */
 
@@ -98,9 +101,82 @@ async function readCreds(req: Request): Promise<{ name: string; pass: string } |
   }
 }
 
+/* ---------------------------- digital twin ----------------------------- */
+
+// CORE "digital twin" racks: each whitelisted local service maps to one rack
+// in the 3D room. A service counts as UP when its loopback port accepts a TCP
+// connect — no child_process, no systemctl, no request input. The response
+// carries display id + boolean only (never ports/pids/versions/errors); the
+// id whitelist extension over the original roomStatus contract is the
+// PROJECT_MASTER backlog-1 mandate.
+const TWIN_SERVICES: ReadonlyArray<{ id: string; port: number | null }> = [
+  { id: "portfolio", port: null }, // self — answering this request proves it
+  { id: "siku-backend", port: 3000 },
+  { id: "siku-frontend", port: 4173 },
+  { id: "postgres", port: 5432 },
+  { id: "n8n", port: 5678 },
+];
+
+/** Low-memory alarm threshold (matches the ops rule "available < 800 MB"). */
+const MEM_ALERT_KB = 800 * 1024;
+const TWIN_TTL_MS = 5_000;
+
+interface TwinStatus {
+  services: { id: string; up: boolean }[];
+  alert: boolean;
+}
+
+let twinCache: { at: number; value: TwinStatus } | null = null;
+
+/** True when 127.0.0.1:port accepts a connection within 600 ms. */
+function probePort(port: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const sock = connect({ host: "127.0.0.1", port });
+    let settled = false;
+    const done = (up: boolean) => {
+      if (settled) return;
+      settled = true;
+      sock.destroy();
+      resolve(up);
+    };
+    sock.setTimeout(600, () => done(false));
+    sock.once("connect", () => done(true));
+    sock.once("error", () => done(false));
+  });
+}
+
+async function twinStatus(): Promise<TwinStatus> {
+  const now = Date.now();
+  if (twinCache && now - twinCache.at < TWIN_TTL_MS) return twinCache.value;
+
+  const services = await Promise.all(
+    TWIN_SERVICES.map(async (s) => ({
+      id: s.id,
+      up: s.port === null ? true : await probePort(s.port),
+    })),
+  );
+
+  let alert = false;
+  try {
+    const meminfo = await readFile("/proc/meminfo", "utf8");
+    const availKb = Number.parseInt(/^MemAvailable:\s+(\d+)/m.exec(meminfo)?.[1] ?? "", 10);
+    alert = Number.isFinite(availKb) && availKb < MEM_ALERT_KB;
+  } catch {
+    /* non-linux dev host — no alarm */
+  }
+
+  const value = { services, alert };
+  twinCache = { at: now, value };
+  return value;
+}
+
 /** Handles /api/room/*; returns null for any other path. */
 export async function roomApi(req: Request, url: URL, ip: string): Promise<Response | null> {
   if (!url.pathname.startsWith("/api/room/")) return null;
+
+  if (url.pathname === "/api/room/services" && req.method === "GET") {
+    return json(200, await twinStatus());
+  }
 
   if (url.pathname === "/api/room/me" && req.method === "GET") {
     const u = userByToken(req.headers.get("authorization")?.replace(/^Bearer /, "") ?? null);

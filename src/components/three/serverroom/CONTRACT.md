@@ -39,6 +39,14 @@ konten asli (drei `Html`). Kabel amber berdenyut mengalir antar rak. Satu rak
 - Cache in-memory 5 dtk (jangan hit /proc tiap request). Gagal baca → nilai `null` per field, jangan lempar detail error ke klien.
 - Berjalan hanya di runtime bun/linux; guard `process.platform === "linux"`, selain itu return null semua (build target Cloudflare tak punya /proc).
 
+### Perluasan digital twin (backlog-1, 2026-07-16 — ServiceRacks/room-server)
+
+- `GET /api/room/services` (room-server.ts, proses serve.ts) boleh mengekspos
+  **nama tampilan service whitelist + boolean up SAJA** (`TWIN_SERVICES`):
+  portfolio, siku-backend, siku-frontend, postgres, n8n — plus `alert:boolean`
+  (RAM available < 800 MB). Tetap dilarang: port, pid, versi, cmdline, detail
+  error. Probe = TCP connect loopback (tanpa child_process), cache 5 dtk.
+
 ## Integrasi (dikerjakan integrator, bukan agent)
 
 Canvas, fog, lights, mode homepage vs subpage, fallback no-WebGL/reduced-motion

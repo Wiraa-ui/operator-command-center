@@ -10,6 +10,7 @@ import { HumanoidFigure } from "./humanoid";
 import { NightShift } from "./nightshift/NightShift";
 import { OnlinePlayers } from "./OnlinePlayers";
 import { NPCS, QUEST_NODES } from "./rpg";
+import { ServiceRacks } from "./ServiceRacks";
 import { useExplore } from "./store";
 import {
   ACCESS_CODE,
@@ -220,6 +221,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
 
       {/* ----------------------------- CORE -------------------------------- */}
       <ServerHeart reduced={reduced} />
+
+      {/* Digital twin: real services as racks along the CORE north wall. */}
+      <ServiceRacks reduced={reduced} />
 
       {/* Big live telemetry cabinet (east wall, facing the heart). */}
       <group position={[STATUS_POS.x, 0, STATUS_POS.z]} rotation-y={-Math.PI / 2}>

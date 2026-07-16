@@ -182,6 +182,8 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
     // CORE terminal rack (west wall) + status cabinet (east wall) footprints.
     { xMin: CORE.xMin, xMax: CORE.xMin + 1.0, zMin: -17.2, zMax: -15.8, hidden: true },
     { xMin: CORE.xMax - 1.0, xMax: CORE.xMax, zMin: -19.2, zMax: -17.8, hidden: true },
+    // CORE digital-twin rack bank along the north wall, east of DOOR-2.
+    { xMin: 16.3, xMax: CORE.xMax, zMin: -14.2, zMax: LAB.zMin - WALL_T, hidden: true },
   ];
 
   const doors: DoorDef[] = [
@@ -314,6 +316,19 @@ export const LAB_PANELS = [0, 1, 2].map((i) => ({
   z: LAB.zMax - 0.6,
   code: `EXPERIMENT-0${i + 1}`,
 }));
+
+/**
+ * Digital-twin rack bank (CORE north wall, east of DOOR-2, facing south).
+ * One rack per whitelisted real service — ids must match what
+ * GET /api/room/services returns (room-server.ts TWIN_SERVICES).
+ */
+export const SERVICE_RACKS = [
+  { id: "siku-backend", label: "SIKU API" },
+  { id: "siku-frontend", label: "SIKU WEB" },
+  { id: "postgres", label: "POSTGRES 16" },
+  { id: "n8n", label: "N8N AUTOMATION" },
+  { id: "portfolio", label: "PORTFOLIO — situs ini" },
+].map((s, i) => ({ ...s, x: 16.9 + i * 1.22, z: -13.85 }));
 
 /** Fixed interactables beyond the two doors. */
 export const TERMINAL_POS = { x: CORE.xMin + 1.05, z: -16.5 }; // faces east
