@@ -88,7 +88,9 @@ export async function asciiRoom(color: boolean): Promise<string> {
     ...bank,
     "",
     "  " + c(S, host),
-    ...(twin.alert ? ["  " + c(R, "!! ALARM: RAM host menipis — beacon merah menyala di CORE")] : []),
+    ...(twin.alert
+      ? ["  " + c(R, "!! ALARM: RAM host menipis — beacon merah menyala di CORE")]
+      : []),
     "",
     c(D, "  ────────────────────────────────────────────────────────────"),
     c(W, "  Ini cuma bayangan ASCII. Ruangan aslinya 3D dan bisa dijelajahi:"),

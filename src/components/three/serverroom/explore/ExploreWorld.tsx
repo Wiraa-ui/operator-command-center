@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Html } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
@@ -11,7 +11,8 @@ import { NightShift } from "./nightshift/NightShift";
 import { OnlinePlayers } from "./OnlinePlayers";
 import { NPCS, QUEST_NODES } from "./rpg";
 import { ServiceRacks } from "./ServiceRacks";
-import { useExplore } from "./store";
+import { addToast, useExplore } from "./store";
+import { FORCE_WITCH, isWitchingHour, WitaClock } from "./WitaClock";
 import {
   ACCESS_CODE,
   BENGKEL,
@@ -38,6 +39,9 @@ import {
  */
 
 const mono = "var(--font-op-mono, monospace)";
+
+/** Base intensities of the three house lights (LAB ×2, CORE ×1). */
+const HOUSE_LIGHT_BASE = [7, 7, 6];
 
 function wallCenter(r: { xMin: number; xMax: number; zMin: number; zMax: number }) {
   return {
@@ -75,7 +79,38 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
   // SHIFT MALAM: house lights drop to a fraction — the headlamp (toggleable,
   // ghost-lockable) becomes the player's main light source.
   const isNight = useExplore((s) => s.night);
-  const lightMul = isNight ? 0.18 : 1;
+
+  // JAM HANTU: the real dead hours in the server's timezone leak into day
+  // mode — dimmer, flickering lights (see WitaClock). Re-checked per minute.
+  const [witchTime, setWitchTime] = useState(() => FORCE_WITCH || isWitchingHour());
+  useEffect(() => {
+    const id = setInterval(() => setWitchTime(FORCE_WITCH || isWitchingHour()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+  const witching = witchTime && !isNight;
+  const warned = useRef(false);
+  useEffect(() => {
+    if (witching && !warned.current) {
+      warned.current = true;
+      addToast("lampu meredup… jam hantu WITA. shift malam menunggu di terminal CORE.");
+    }
+  }, [witching]);
+
+  const lightMul = isNight ? 0.18 : witching ? 0.55 : 1;
+
+  // Hard dropouts on the house lights read as mains flicker; bases restore
+  // whenever the effect is off, so mode changes never strand an intensity.
+  const houseLights = useRef<(THREE.PointLight | null)[]>([]);
+  useFrame(({ clock }) => {
+    if (reduced) return;
+    const t = clock.elapsedTime;
+    houseLights.current.forEach((l, i) => {
+      if (!l) return;
+      const base = HOUSE_LIGHT_BASE[i] * lightMul;
+      const drop = witching && Math.sin(t * 11 + i * 2.3) * Math.sin(t * 4.7 + i * 1.1) > 0.78;
+      l.intensity = drop ? base * 0.3 : base;
+    });
+  });
 
   return (
     <group>
@@ -225,6 +260,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
       {/* Digital twin: real services as racks along the CORE north wall. */}
       <ServiceRacks reduced={reduced} />
 
+      {/* Server-timezone wall clock above the twin bank (WITA, jam hantu). */}
+      <WitaClock witching={witching} />
+
       {/* Big live telemetry cabinet (east wall, facing the heart). */}
       <group position={[STATUS_POS.x, 0, STATUS_POS.z]} rotation-y={-Math.PI / 2}>
         <StatusRack station={STATUS_STATION} reduced={reduced} />
@@ -254,6 +292,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
 
       {/* ---------------------------- lighting ------------------------------ */}
       <pointLight
+        ref={(l) => {
+          houseLights.current[0] = l;
+        }}
         position={[7, ROOM_H - 0.6, -10.5]}
         intensity={7 * lightMul}
         color={PALETTE.accent}
@@ -261,6 +302,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
         decay={1.8}
       />
       <pointLight
+        ref={(l) => {
+          houseLights.current[1] = l;
+        }}
         position={[14.5, ROOM_H - 0.6, -10.5]}
         intensity={7 * lightMul}
         color={PALETTE.accent}
@@ -268,6 +312,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
         decay={1.8}
       />
       <pointLight
+        ref={(l) => {
+          houseLights.current[2] = l;
+        }}
         position={[14, ROOM_H - 0.6, -21]}
         intensity={6 * lightMul}
         color={PALETTE.secondary}
