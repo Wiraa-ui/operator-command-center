@@ -321,6 +321,8 @@ export interface WsData {
   userId: number;
   name: string;
   pos: { x: number; z: number; yaw: number; night: boolean } | null;
+  /** Ghost mode: connected (sees others) but never appears in the roster. */
+  hidden: boolean;
   lastMsgAt: number;
   msgCount: number;
 }
@@ -354,7 +356,7 @@ export function roomUpgrade(
   const u = userByToken(url.searchParams.get("token"));
   if (!u) return false; // no upgrade → caller returns 401
   return server.upgrade(req, {
-    data: { userId: u.id, name: u.name, pos: null, lastMsgAt: 0, msgCount: 0 },
+    data: { userId: u.id, name: u.name, pos: null, hidden: false, lastMsgAt: 0, msgCount: 0 },
   });
 }
 
@@ -390,7 +392,18 @@ export const roomWebsocket = {
         yaw?: number;
         night?: boolean;
       };
-      if (m.t !== "pos") return;
+      // Ghost-mode switches: hidden players drop out of the roster at the
+      // next broadcast (pos null) and their position updates are ignored.
+      if (m.t === "hide") {
+        d.hidden = true;
+        d.pos = null;
+        return;
+      }
+      if (m.t === "show") {
+        d.hidden = false;
+        return;
+      }
+      if (m.t !== "pos" || d.hidden) return;
       const x = Number(m.x);
       const z = Number(m.z);
       const yaw = Number(m.yaw);

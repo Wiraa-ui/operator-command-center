@@ -136,9 +136,12 @@ export function connectPresence() {
     }
   };
   sock.onopen = () => {
+    // Respect ghost mode from the first frame of the connection.
+    if (!getExploreState().presenceVisible) sock.send(JSON.stringify({ t: "hide" }));
     sendTimer = setInterval(() => {
       if (sock.readyState !== WebSocket.OPEN) return;
       const s = getExploreState();
+      if (!s.presenceVisible) return; // ghost: watch others, send nothing
       sock.send(
         JSON.stringify({
           t: "pos",
@@ -163,4 +166,11 @@ export function connectPresence() {
 
 export function disconnectPresence() {
   ws?.close();
+}
+
+/** Flip ghost mode live: tell the relay immediately, pos loop follows. */
+export function sendVisibility(show: boolean) {
+  if (ws?.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({ t: show ? "show" : "hide" }));
+  }
 }

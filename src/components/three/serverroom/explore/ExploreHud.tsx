@@ -5,16 +5,18 @@ import { downloadCertificate } from "./certificate";
 import type { ExploreMap } from "./layout";
 import { LoginModal } from "./LoginModal";
 import { NpcModal } from "./NpcModal";
-import { connectPresence, disconnectPresence, loadAuth, logout } from "./online";
+import { connectPresence, disconnectPresence, loadAuth, logout, sendVisibility } from "./online";
 import { activeQuestInfo, type NpcId } from "./rpg";
 import { PuzzleModal } from "./PuzzleModal";
 import { StudyModal } from "./StudyModal";
 import { TerminalModal } from "./TerminalModal";
 import {
+  addToast,
   endNightShift,
   input,
   setModal,
   setMuted,
+  setPresenceVisible,
   setUser,
   toggleView,
   triggerInteract,
@@ -50,6 +52,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const dialogue = useExplore((s) => s.dialogue);
   const user = useExplore((s) => s.user);
   const onlineCount = useExplore((s) => s.onlinePeers.length);
+  const presenceVisible = useExplore((s) => s.presenceVisible);
   // Select the stable reference, derive outside — a fresh object from the
   // selector would make useSyncExternalStore re-render forever.
   const questProgress = useExplore((s) => s.questProgress);
@@ -304,6 +307,35 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       >
         {user ? `● ${onlineCount + 1} ONLINE · ${user.name}` : "○ LOGIN — TAMPIL ONLINE"}
       </button>
+
+      {/* Ghost-mode toggle — only meaningful once logged in */}
+      {user && (
+        <button
+          onClick={() => {
+            const next = !presenceVisible;
+            setPresenceVisible(next);
+            sendVisibility(next);
+            addToast(
+              next
+                ? "mode tampil: pengunjung lain melihatmu"
+                : "mode hantu: kamu tak terlihat, tetap bisa melihat mereka",
+            );
+          }}
+          className={`fixed left-4 top-52 z-30 rounded-md border px-3 py-1.5 ${mono} text-[11px] tracking-[0.2em]`}
+          style={{
+            borderColor: presenceVisible ? "rgba(56,189,248,0.55)" : "rgba(124,141,176,0.5)",
+            background: "rgba(15,23,42,0.7)",
+            color: presenceVisible ? PALETTE.secondary : "#9fb0cc",
+          }}
+          aria-label={
+            presenceVisible
+              ? "Sembunyikan dirimu dari pengunjung lain"
+              : "Tampilkan dirimu ke pengunjung lain"
+          }
+        >
+          {presenceVisible ? "👁 TERLIHAT" : "🫥 MODE HANTU"}
+        </button>
+      )}
 
       {/* Quest tracker — under the minimap; night mode has its own goals */}
       {quest && !nightOn && (

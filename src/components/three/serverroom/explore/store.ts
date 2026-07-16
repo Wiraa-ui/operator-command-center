@@ -76,6 +76,8 @@ export interface ExploreState {
   onlinePeers: string[];
   /** RPG quest-line progress (persisted). Engine lives in rpg.ts. */
   questProgress: QuestProgress;
+  /** Presence ghost mode: false = other visitors can't see you. */
+  presenceVisible: boolean;
 }
 
 /* ------------------------- mutable fast lane -------------------------- */
@@ -129,6 +131,7 @@ interface Persisted {
   achievements: string[];
   muted: boolean;
   questProgress: QuestProgress;
+  presenceVisible: boolean;
 }
 
 const EMPTY_PERSIST: Persisted = {
@@ -136,6 +139,7 @@ const EMPTY_PERSIST: Persisted = {
   achievements: [],
   muted: false,
   questProgress: { active: {}, completed: [] },
+  presenceVisible: true,
 };
 
 function loadPersisted(): Persisted {
@@ -153,6 +157,7 @@ function loadPersisted(): Persisted {
         qp && typeof qp.active === "object" && Array.isArray(qp.completed)
           ? { active: qp.active, completed: qp.completed }
           : { active: {}, completed: [] },
+      presenceVisible: p.presenceVisible !== false,
     };
   } catch {
     return EMPTY_PERSIST;
@@ -173,6 +178,7 @@ function initialState(): ExploreState {
     visited: [],
     achievements: p.achievements,
     questProgress: p.questProgress,
+    presenceVisible: p.presenceVisible,
     modal: null,
     interact: null,
     toasts: [],
@@ -205,6 +211,7 @@ function persist() {
         achievements: state.achievements,
         muted: state.muted,
         questProgress: state.questProgress,
+        presenceVisible: state.presenceVisible,
       } satisfies Persisted),
     );
   } catch {
@@ -276,6 +283,12 @@ export function setDialogue(dialogue: DialogueLine | null) {
 
 export function setUser(user: { name: string } | null) {
   state = { ...state, user };
+  emit();
+}
+
+export function setPresenceVisible(presenceVisible: boolean) {
+  state = { ...state, presenceVisible };
+  persist();
   emit();
 }
 
