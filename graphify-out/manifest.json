@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784222560.58563,
-    "ast_hash": "d5dc36ec69bb3e596389974690078e21",
+    "mtime": 1784226933.1189692,
+    "ast_hash": "03f5bf963bc04b2186dc1b813a0502c0",
     "semantic_hash": ""
   },
   "README.md": {
@@ -425,8 +425,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreWorld.tsx": {
-    "mtime": 1784218817.9956667,
-    "ast_hash": "59d820386774d44582af4f017b4d4b7c",
+    "mtime": 1784225523.910726,
+    "ast_hash": "67011b2ff4399bc997a9e7afd8b5d4d3",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/LoginModal.tsx": {
@@ -465,8 +465,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/audio.ts": {
-    "mtime": 1784221511.403324,
-    "ast_hash": "56381b33f5d91f2df037dc3f78505681",
+    "mtime": 1784223051.1945958,
+    "ast_hash": "3f6737952c48e1da458872bac801bf7a",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/certificate.ts": {
@@ -485,8 +485,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/layout.ts": {
-    "mtime": 1784218732.2133796,
-    "ast_hash": "aae02d5b2f8926e5aace4b0ca9e9a678",
+    "mtime": 1784225511.9971404,
+    "ast_hash": "560615395f521f6899b1907954e1875d",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/Entities.tsx": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/store.ts": {
-    "mtime": 1784221661.0845382,
-    "ast_hash": "a5a9b1f8029f21b92930ff446d3b9c32",
+    "mtime": 1784223286.5101678,
+    "ast_hash": "04cfee5bddf79799472a9534d402b0e0",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/stations.ts": {
@@ -597,6 +597,11 @@
   "src/components/three/serverroom/explore/Dust.tsx": {
     "mtime": 1784219811.5090044,
     "ast_hash": "8de063109701e0910de63b03911c37fe",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/HallRoom.tsx": {
+    "mtime": 1784224029.2587516,
+    "ast_hash": "03d2cf1512e36e2fdf7fe945eac020da",
     "semantic_hash": ""
   }
 }
