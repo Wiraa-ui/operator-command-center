@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784228583.3474429,
-    "ast_hash": "8d5cb355691cf73ed4c49ecea481d2bd",
+    "mtime": 1784230469.8591468,
+    "ast_hash": "59a8e25a94106a54104318cd3323f5f0",
     "semantic_hash": ""
   },
   "README.md": {
@@ -365,8 +365,8 @@
     "semantic_hash": ""
   },
   "room-server.ts": {
-    "mtime": 1784228775.5255585,
-    "ast_hash": "554d1fdb2107febcbe3938694a218666",
+    "mtime": 1784230039.1080744,
+    "ast_hash": "0b8ab552d1bf255c72fc43757deef0db",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/Cables.tsx": {
@@ -420,13 +420,13 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreHud.tsx": {
-    "mtime": 1784229362.840445,
-    "ast_hash": "684995ecffb3c5f418d9349f940fa487",
+    "mtime": 1784230123.9748702,
+    "ast_hash": "075e20c8167b71d81e82a17a915cce11",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreWorld.tsx": {
-    "mtime": 1784225523.910726,
-    "ast_hash": "67011b2ff4399bc997a9e7afd8b5d4d3",
+    "mtime": 1784230183.9151359,
+    "ast_hash": "ba640f0f5bb118d1c57037c3c2dd52e7",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/LoginModal.tsx": {
@@ -520,13 +520,13 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/online.ts": {
-    "mtime": 1784228825.4258242,
-    "ast_hash": "d0a03945f153e1133001b2bf426c663a",
+    "mtime": 1784230052.866366,
+    "ast_hash": "ac0d87f578614fa39a18e2d63eef3cd5",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/store.ts": {
-    "mtime": 1784228801.9982326,
-    "ast_hash": "e03da56613501dae9c06da902d13dc65",
+    "mtime": 1784230104.710463,
+    "ast_hash": "6f29a24bcb1b12defa598f89f8570e76",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/stations.ts": {
@@ -605,13 +605,18 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/shell/commands.ts": {
-    "mtime": 1784227401.2193618,
-    "ast_hash": "45411ceb432dda7339a97ea7541e5355",
+    "mtime": 1784230139.5992005,
+    "ast_hash": "51402189cd268d8f5c725bec36a65c34",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/shell/vfs.ts": {
     "mtime": 1784227401.2193618,
     "ast_hash": "ff8cc06a92cef6b5bc5449407a72760d",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/RecordBoard.tsx": {
+    "mtime": 1784230160.9926522,
+    "ast_hash": "c0d758cf3482b0cc4c07378cf9bc11b1",
     "semantic_hash": ""
   }
 }

@@ -1,16 +1,16 @@
 # Graph Report - portfolio  (2026-07-17)
 
 ## Corpus Check
-- 115 files · ~101,400 words
+- 116 files · ~102,703 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 782 nodes · 1472 edges · 47 communities (43 shown, 4 thin omitted)
+- 789 nodes · 1488 edges · 44 communities (41 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4dd99167`
+- Built from commit: `e3ce7928`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -53,21 +53,18 @@
 - [[_COMMUNITY_Community 38|Community 38]]
 - [[_COMMUNITY_Community 40|Community 40]]
 - [[_COMMUNITY_Community 41|Community 41]]
-- [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
-- [[_COMMUNITY_Community 45|Community 45]]
-- [[_COMMUNITY_Community 46|Community 46]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `PALETTE` - 27 edges
+1. `PALETTE` - 28 edges
 2. `RoomAudio` - 21 edges
 3. `useExplore()` - 21 edges
 4. `emit()` - 19 edges
 5. `compilerOptions` - 17 edges
 6. `cn()` - 16 edges
 7. `addToast()` - 14 edges
-8. `getExploreState()` - 13 edges
-9. `roomApi()` - 11 edges
+8. `roomApi()` - 13 edges
+9. `getExploreState()` - 13 edges
 10. `NightAudio` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -77,51 +74,51 @@
   serve.ts → room-server.ts
 - `fetch()` --calls--> `roomUpgrade()`  [EXTRACTED]
   serve.ts → room-server.ts
+- `Line` --references--> `Speaker`  [EXTRACTED]
+  src/components/three/serverroom/explore/nightshift/story.ts → src/components/three/serverroom/explore/nightshift/voice.ts
 - `scrollTopFor()` --calls--> `corridorEndZ()`  [EXTRACTED]
   src/components/three/serverroom/Hud.tsx → src/components/three/serverroom/CameraRig.tsx
-- `ExploreHud()` --calls--> `useExplore()`  [EXTRACTED]
-  src/components/three/serverroom/explore/ExploreHud.tsx → src/components/three/serverroom/explore/store.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (47 total, 4 thin omitted)
+## Communities (44 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.03
 Nodes (58): dependencies, class-variance-authority, clsx, cmdk, date-fns, embla-carousel-react, framer-motion, @hookform/resolvers (+50 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.26
-Nodes (7): corridorEndZ(), endMargin(), progressToZ(), RoomCameraRig(), useActiveStation(), RoomHUD(), scrollTopFor()
+Cohesion: 0.23
+Nodes (8): corridorEndZ(), endMargin(), progressToZ(), RoomCameraRig(), useActiveStation(), RoomHUD(), scrollTopFor(), SIDE_X
 
 ### Community 3 - "Community 3"
 Cohesion: 0.05
-Nodes (38): askAssistant, messageSchema, consumeLastCapturedError(), renderErrorPage(), Route, Route, Route, Route (+30 more)
+Nodes (37): askAssistant, messageSchema, consumeLastCapturedError(), renderErrorPage(), Route, Route, Route, Route (+29 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.12
-Nodes (15): SpotlightCard(), SpotlightCardProps, StaggerContainer(), StaggerContainerProps, StaggerItem(), Home(), principles, useRoomCapable() (+7 more)
+Cohesion: 0.15
+Nodes (13): SpotlightCard(), SpotlightCardProps, StaggerContainer(), StaggerContainerProps, StaggerItem(), Home(), principles, useRoomCapable() (+5 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.06
 Nodes (34): devDependencies, eslint, eslint-config-prettier, @eslint/js, eslint-plugin-prettier, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals (+26 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.15
-Nodes (18): HumanoidLook, NpcModal(), Script, scriptFor(), activeQuestInfo(), NpcDef, NpcId, NPCS (+10 more)
+Cohesion: 0.17
+Nodes (17): HumanoidLook, Script, scriptFor(), activeQuestInfo(), NpcDef, NpcId, NPCS, questById() (+9 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.14
-Nodes (23): DialogueLine, setDialogue(), ARWAH_LINES, durationOf(), Line, next(), queue, say() (+15 more)
+Cohesion: 0.24
+Nodes (9): DialogueLine, setDialogue(), next(), storyStop(), PERSONA, pickVoice(), speak(), Speaker (+1 more)
 
 ### Community 9 - "Community 9"
 Cohesion: 0.10
 Nodes (19): compilerOptions, allowImportingTsExtensions, jsx, lib, module, moduleResolution, noEmit, noFallthroughCasesInSwitch (+11 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.12
-Nodes (18): SPAWN, ALL_ZONES, beginNightShift(), DoorId, emitQuestEvent(), EMPTY_PERSIST, ExploreModal, ExploreState (+10 more)
+Cohesion: 0.11
+Nodes (32): questEvent(), addAchievement(), addToast(), ALL_ZONES, beginNightShift(), beginSession(), cancelPurge(), completePurge() (+24 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.11
@@ -144,32 +141,32 @@ Cohesion: 0.10
 Nodes (19): Architecture, Backlog "MOKSA.CLOUD" — konsep mode horor kejar-kejaran (disetujui konsep? MENUNGGU user; draft 2026-07-15), Backlog ROOT ACCESS — fitur keren untuk sesi AI berikutnya (mandat user 2026-07-12), Blockers, Changelog, Chatbot Assistant (2026-06-29) — LIVE, Completed Tasks, Current Status (+11 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.15
-Nodes (13): AudioZone, SCALE, VOICES, ZoneVoice, FirstPersonArms(), Gait, OPERATOR_LOOK, ThirdPersonBody() (+5 more)
+Cohesion: 0.13
+Nodes (15): AudioZone, SCALE, VOICES, ZoneVoice, FirstPersonArms(), Gait, OPERATOR_LOOK, ThirdPersonBody() (+7 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.11
-Nodes (25): HIRE_STATION, HOUSE_LIGHT_BASE, STATUS_STATION, Hologram(), BENGKEL, CORE, ExploreMap, HALL (+17 more)
+Cohesion: 0.13
+Nodes (22): HIRE_STATION, HOUSE_LIGHT_BASE, STATUS_STATION, HallRoom(), ROWS, Hologram(), BENGKEL, CORE (+14 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.15
-Nodes (12): DoorGate(), HallRoom(), ROWS, DoorDef, MASTER_TAPE_POS, OnlinePlayers(), PEER_LOOK, useExplore() (+4 more)
+Cohesion: 0.14
+Nodes (13): DoorGate(), ExploreWorld(), wallCenter(), DoorDef, NpcModal(), peerState, OnlinePlayers(), PEER_LOOK (+5 more)
 
 ### Community 20 - "Community 20"
 Cohesion: 0.16
 Nodes (16): cn(), FadeIn(), FadeInProps, Magnetic(), MagneticProps, ScrambleText(), ScrambleTextProps, TextReveal() (+8 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.29
-Nodes (6): ExploreHud(), buildExploreMap(), beginSession(), resetPlayer(), RoomCanvas, ServerRoomExperience()
+Cohesion: 0.20
+Nodes (7): ExploreHud(), buildExploreMap(), Minimap(), WINDS, resetPlayer(), RoomCanvas, ServerRoomExperience()
 
 ### Community 22 - "Community 22"
 Cohesion: 0.27
 Nodes (5): cents(), clamp01(), NightAudio, PARTIALS, SLENDRO
 
 ### Community 23 - "Community 23"
-Cohesion: 0.28
-Nodes (7): Project, projects, ProjectStatus, ArchDiagram(), config, StatusBadge(), TechPillRow()
+Cohesion: 0.22
+Nodes (10): Project, projectBySlug(), projects, ProjectStatus, h2Style, StudyModal(), ArchDiagram(), config (+2 more)
 
 ### Community 24 - "Community 24"
 Cohesion: 0.40
@@ -177,11 +174,11 @@ Nodes (5): isWitchingHour(), WITA_HOUR, WITA_TIME, WitaClock(), witaHour()
 
 ### Community 25 - "Community 25"
 Cohesion: 0.16
-Nodes (17): downloadCertificate(), LoginModal(), Auth, authRequest(), connectPresence(), disconnectPresence(), handleRoster(), loadAuth() (+9 more)
+Nodes (18): downloadCertificate(), LoginModal(), Auth, authRequest(), connectPresence(), disconnectPresence(), handleRoster(), loadAuth() (+10 more)
 
 ### Community 26 - "Community 26"
-Cohesion: 0.24
-Nodes (7): Dust(), ExploreWorld(), wallCenter(), DOOR_GAPS, autoFx(), PostFX(), World()
+Cohesion: 0.19
+Nodes (8): Dust(), DOOR_GAPS, ExploreMap, autoFx(), PostFX(), Station, WallGap, World()
 
 ### Community 27 - "Community 27"
 Cohesion: 0.22
@@ -192,72 +189,64 @@ Cohesion: 0.33
 Nodes (5): Dokumen, Jalankan (dev), Peta folder `src/`, Portfolio — Mulai dari sini, Stack
 
 ### Community 29 - "Community 29"
-Cohesion: 0.18
-Nodes (9): site, Footer(), Monogram(), Props, links, Nav(), Container(), PageShell() (+1 more)
+Cohesion: 0.19
+Nodes (8): site, Route, Footer(), Container(), PageShell(), Scene, SceneCanvas(), CommandPalette()
 
 ### Community 31 - "Community 31"
 Cohesion: 0.11
-Nodes (27): asciiRoom(), center(), fmtUptime(), hostLine(), RACK_LABEL, rackLines(), attempts, clients (+19 more)
+Nodes (29): asciiRoom(), center(), fmtUptime(), hostLine(), RACK_LABEL, rackLines(), attempts, clients (+21 more)
 
 ### Community 32 - "Community 32"
 Cohesion: 0.27
 Nodes (6): FadeInStagger(), FadeInStaggerItem(), FadeInStaggerProps, FlagshipProject(), ProjectCard(), SectionHeader()
 
 ### Community 33 - "Community 33"
-Cohesion: 0.07
-Nodes (32): finiteOrNull(), getRoomStatus, NULL_STATUS, readProc(), RoomStatus, BANNER, TerminalModal(), formatRam() (+24 more)
+Cohesion: 0.09
+Nodes (25): finiteOrNull(), getRoomStatus, NULL_STATUS, readProc(), RoomStatus, BANNER, TerminalModal(), ALIASES (+17 more)
 
 ### Community 34 - "Community 34"
 Cohesion: 0.25
 Nodes (7): Aturan keras untuk SEMUA modul, Geometri dunia, Integrasi (dikerjakan integrator, bukan agent), Pembagian modul (1 file per agent), Perluasan digital twin (backlog-1, 2026-07-16 — ServiceRacks/room-server), Security (WAJIB — StatusRack/roomStatus), The Server Room — build contract (v1)
 
 ### Community 35 - "Community 35"
-Cohesion: 0.29
-Nodes (14): questEvent(), addAchievement(), addToast(), cancelPurge(), completePurge(), emit(), markVisited(), persist() (+6 more)
+Cohesion: 0.32
+Nodes (7): formatRam(), formatUptime(), labelStyle, NULL_STATUS, rowStyle, StatusRack(), YAW
 
 ### Community 36 - "Community 36"
-Cohesion: 0.16
-Nodes (12): ArsipRack(), GHOST_SLICES, KIRANA_LOOK, KiranaBody(), VhsGhost(), DOOR1, DOOR2, DOORN (+4 more)
+Cohesion: 0.06
+Nodes (39): blocked(), slideMove(), HumanoidFigure(), HumanoidPose, useLookAssets(), SPAWN, WallRect, ArsipRack() (+31 more)
 
 ### Community 38 - "Community 38"
-Cohesion: 0.16
-Nodes (12): buildNetwork(), Cables(), ceilingRun(), floorRun(), makeTube(), TRUNK_X, CORRIDOR, SIDE_X (+4 more)
+Cohesion: 0.27
+Nodes (7): buildNetwork(), Cables(), ceilingRun(), floorRun(), makeTube(), TRUNK_X, CORRIDOR
 
 ### Community 40 - "Community 40"
-Cohesion: 0.60
-Nodes (4): projectBySlug(), setModal(), h2Style, StudyModal()
-
-### Community 43 - "Community 43"
-Cohesion: 0.18
-Nodes (9): Minimap(), WINDS, peerState, ARSIP_RACKS, ArsipDef, GHOST_SPAWN, KIRANA_SPAWN, lampIsOn() (+1 more)
-
-### Community 45 - "Community 45"
 Cohesion: 0.40
-Nodes (3): HumanoidFigure(), HumanoidPose, useLookAssets()
+Nodes (4): Monogram(), Props, links, Nav()
 
-### Community 46 - "Community 46"
-Cohesion: 0.67
-Nodes (3): blocked(), slideMove(), WallRect
+### Community 44 - "Community 44"
+Cohesion: 0.15
+Nodes (11): SERVICE_RACKS, RecordBoard(), Run, ServiceRacks(), TwinPayload, UpMap, Wallboard(), WallNote (+3 more)
 
 ## Knowledge Gaps
-- **295 isolated node(s):** `RACK_LABEL`, `$schema`, `style`, `rsc`, `tsx` (+290 more)
+- **297 isolated node(s):** `RACK_LABEL`, `$schema`, `style`, `rsc`, `tsx` (+292 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `site` connect `Community 29` to `Community 33`, `Community 27`, `Community 4`, `Community 14`?**
   _High betweenness centrality (0.032) - this node is a cross-community bridge._
-- **Why does `RoomAudio` connect `Community 41` to `Community 33`, `Community 10`, `Community 17`, `Community 19`, `Community 21`, `Community 25`?**
+- **Why does `RoomAudio` connect `Community 41` to `Community 33`, `Community 10`, `Community 17`, `Community 21`, `Community 25`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
-- **Why does `PALETTE` connect `Community 19` to `Community 33`, `Community 2`, `Community 36`, `Community 6`, `Community 38`, `Community 40`, `Community 43`, `Community 44`, `Community 17`, `Community 18`, `Community 24`, `Community 25`, `Community 26`, `Community 27`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+- **Why does `PALETTE` connect `Community 44` to `Community 33`, `Community 2`, `Community 35`, `Community 36`, `Community 6`, `Community 38`, `Community 17`, `Community 18`, `Community 19`, `Community 21`, `Community 23`, `Community 24`, `Community 25`, `Community 26`, `Community 27`?**
+  _High betweenness centrality (0.023) - this node is a cross-community bridge._
 - **What connects `RACK_LABEL`, `$schema`, `style` to the rest of the system?**
-  _295 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _297 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.034482758620689655 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.052597402597402594 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0531986531986532 - nodes in this community are weakly interconnected._
 - **Should `Community 4` be split into smaller, more focused modules?**
-  _Cohesion score 0.11956521739130435 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.14736842105263157 - nodes in this community are weakly interconnected._
