@@ -15,7 +15,8 @@ import type { Speaker } from "./nightshift/voice";
  */
 
 export type Privilege = "guest" | "operator" | "root";
-export type DoorId = "door-lab" | "door-core" | "door-bengkel" | "door-noc" | "door-vault";
+export type DoorId =
+  "door-lab" | "door-core" | "door-bengkel" | "door-noc" | "door-vault" | "door-hall";
 
 /** RPG quest state: questId → current step index, plus finished quests. */
 export interface QuestProgress {
@@ -304,11 +305,17 @@ export function toggleView() {
   emit();
 }
 
+/** Every explorable zone; completing the set earns the cartographer badge. */
+const ALL_ZONES = ["aisle", "lab", "core", "bengkel", "noc", "vault", "hall", "tunnel"];
+
 export function markVisited(zone: string) {
   if (state.visited.includes(zone)) return;
   state = { ...state, visited: [...state.visited, zone] };
   emit();
   if (zone === "lab") addAchievement("ARCHIVE FOUND — arsip eksperimen ditemukan");
+  if (ALL_ZONES.every((z) => state.visited.includes(z))) {
+    addAchievement("KARTOGRAF — seluruh peta dijelajahi");
+  }
 }
 
 export function beginSession() {

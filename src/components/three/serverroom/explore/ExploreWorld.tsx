@@ -23,14 +23,18 @@ import {
   HIRE_POS,
   LAB,
   LAB_PANELS,
+  HALL,
   NOC,
   NOTE_POS,
+  PASSAGE,
   ROOM_H,
   STATUS_POS,
   TERMINAL_POS,
+  TUNNEL,
   VAULT,
   type ExploreMap,
 } from "./layout";
+import { HallRoom } from "./HallRoom";
 import { VaultRoom } from "./VaultRoom";
 
 /**
@@ -131,6 +135,14 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
         { c: nocC, y: ROOM_H, rx: Math.PI / 2 },
         { c: vaultC, y: 0, rx: -Math.PI / 2 },
         { c: vaultC, y: ROOM_H, rx: Math.PI / 2 },
+        { c: wallCenter(HALL), y: 0, rx: -Math.PI / 2 },
+        { c: wallCenter(HALL), y: ROOM_H, rx: Math.PI / 2 },
+        { c: wallCenter(PASSAGE), y: 0, rx: -Math.PI / 2 },
+        { c: wallCenter(PASSAGE), y: ROOM_H, rx: Math.PI / 2 },
+        // Tunnel floor sits 1cm proud: it crosses the corridor floor at the
+        // junction and coplanar planes would z-fight. Low 2.2 ceiling = duct.
+        { c: wallCenter(TUNNEL), y: 0.01, rx: -Math.PI / 2 },
+        { c: wallCenter(TUNNEL), y: 2.2, rx: Math.PI / 2 },
       ].map((p, i) => (
         <mesh key={i} rotation={[p.rx, 0, 0]} position={[p.c.x, p.y, p.c.z]}>
           <planeGeometry args={[p.c.w, p.c.d]} />
@@ -160,8 +172,10 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
       })}
 
       {/* ------------------------------ doors ------------------------------ */}
-      {map.doors.map((d) => (
-        <DoorGate key={d.id} door={d} reduced={reduced} />
+      {/* Key carries the index: the vault legitimately has two doors that
+          share one id (solving either opens both). */}
+      {map.doors.map((d, i) => (
+        <DoorGate key={`${d.id}-${i}`} door={d} reduced={reduced} />
       ))}
 
       {/* ----------------------- LAB archive racks ------------------------- */}
@@ -275,6 +289,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
 
       {/* ----------------------------- VAULT -------------------------------- */}
       <VaultRoom reduced={reduced} />
+
+      {/* --------------------------- DATA HALL ------------------------------ */}
+      <HallRoom reduced={reduced} />
 
       {/* Big live telemetry cabinet (east wall, facing the heart). */}
       <group position={[STATUS_POS.x, 0, STATUS_POS.z]} rotation-y={-Math.PI / 2}>

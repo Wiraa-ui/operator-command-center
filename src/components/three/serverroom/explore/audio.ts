@@ -12,7 +12,7 @@
  * fully on exit so walk mode never keeps an AudioContext alive.
  */
 
-export type AudioZone = "aisle" | "lab" | "core" | "bengkel" | "noc" | "vault";
+export type AudioZone = "aisle" | "lab" | "core" | "bengkel" | "noc" | "vault" | "hall" | "tunnel";
 
 interface ZoneVoice {
   /** Base drone frequency (a second osc runs ~1 octave + detune above). */
@@ -92,6 +92,28 @@ const VOICES: Record<AudioZone, ZoneVoice> = {
     blipDelay: [12000, 26000],
     blipNotes: [6, 7],
     shimmer: 1,
+  },
+  hall: {
+    // The cathedral: widest fan wash + deep drone, busy blips everywhere.
+    droneFreq: 46.2,
+    droneGain: 0.06,
+    noiseFreq: 420,
+    noiseQ: 0.35,
+    noiseGain: 0.026,
+    blipDelay: [1800, 5000],
+    blipNotes: [0, 2, 3, 5],
+    shimmer: 0,
+  },
+  tunnel: {
+    // Claustrophobic crawl: narrow resonant hiss, almost no melody.
+    droneFreq: 58.3,
+    droneGain: 0.03,
+    noiseFreq: 700,
+    noiseQ: 4,
+    noiseGain: 0.02,
+    blipDelay: [14000, 30000],
+    blipNotes: [1],
+    shimmer: 0,
   },
 };
 

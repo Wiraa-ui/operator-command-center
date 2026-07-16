@@ -30,7 +30,7 @@ export interface WallRect {
 }
 
 export interface DoorDef {
-  id: "door-lab" | "door-core" | "door-bengkel" | "door-noc" | "door-vault";
+  id: "door-lab" | "door-core" | "door-bengkel" | "door-noc" | "door-vault" | "door-hall";
   /** Collision + render volume while locked. */
   rect: WallRect;
   /** Center of the doorway, for proximity + keypad placement. */
@@ -45,7 +45,7 @@ export interface DoorDef {
 }
 
 export interface ZoneDef {
-  id: "aisle" | "lab" | "core" | "bengkel" | "noc" | "vault";
+  id: "aisle" | "lab" | "core" | "bengkel" | "noc" | "vault" | "hall" | "tunnel";
   rect: WallRect;
   label: string;
 }
@@ -100,6 +100,15 @@ export const VAULT = { xMin: 13, xMax: 21, zMin: -31, zMax: -24.4 } as const;
 const DV_X_MIN = 19.2;
 const DV_X_MAX = 20.6;
 
+/* West-wing expansion (2026-07-17): the big data hall + the cable tunnel. */
+
+/** DATA HALL — the cathedral: a full hot/cold-aisle server hall. */
+export const HALL = { xMin: -34, xMax: -14, zMin: -30, zMax: -14 } as const;
+/** Service passage BENGKEL↔HALL (short link corridor, part of no zone). */
+export const PASSAGE = { xMin: HALL.xMax, xMax: BENGKEL.xMin, zMin: -17, zMax: -15 } as const;
+/** CABLE TUNNEL — long crawl connecting HALL east to the VAULT west hatch. */
+export const TUNNEL = { xMin: HALL.xMax, xMax: VAULT.xMin, zMin: -26.6, zMax: -25.2 } as const;
+
 /* ------------------------------- map --------------------------------- */
 
 /** Readable-on-screen case study spot (project racks in Aisle-A). */
@@ -126,12 +135,15 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
   const zDeep = Math.min(0, ...stations.map((s) => s.z)) - 4;
 
   const walls: WallRect[] = [
-    // Aisle-A left rack band, split by the DOOR-W opening (→ BENGKEL).
+    // Aisle-A left rack band, split by the DOOR-W opening (→ BENGKEL) and
+    // by the cable-tunnel junction (the tunnel crosses the deep corridor).
     { xMin: -3.4, xMax: -AISLE_X, zMin: DW_Z_MAX, zMax: 5, hidden: true },
-    { xMin: -3.4, xMax: -AISLE_X, zMin: zDeep - 1, zMax: DW_Z_MIN, hidden: true },
-    // Aisle-A right rack band, split by the DOOR-1 opening.
+    { xMin: -3.4, xMax: -AISLE_X, zMin: TUNNEL.zMax, zMax: DW_Z_MIN, hidden: true },
+    { xMin: -3.4, xMax: -AISLE_X, zMin: zDeep - 1, zMax: TUNNEL.zMin, hidden: true },
+    // Aisle-A right rack band, split by the DOOR-1 opening + the junction.
     { xMin: AISLE_X, xMax: 3.4, zMin: D1_Z_MAX, zMax: 5, hidden: true },
-    { xMin: AISLE_X, xMax: 3.4, zMin: zDeep - 1, zMax: D1_Z_MIN, hidden: true },
+    { xMin: AISLE_X, xMax: 3.4, zMin: TUNNEL.zMax, zMax: D1_Z_MIN, hidden: true },
+    { xMin: AISLE_X, xMax: 3.4, zMin: zDeep - 1, zMax: TUNNEL.zMin, hidden: true },
     // Aisle-A end caps.
     { xMin: -3.4, xMax: 3.4, zMin: 4.5, zMax: 5, hidden: true },
     { xMin: -3.4, xMax: 3.4, zMin: zDeep - 1, zMax: zDeep - 0.5, hidden: true },
@@ -150,9 +162,37 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
       zMin: BENGKEL.zMin - WALL_T,
       zMax: BENGKEL.zMin,
     },
-    { xMin: BENGKEL.xMin - WALL_T, xMax: BENGKEL.xMin, zMin: BENGKEL.zMin, zMax: BENGKEL.zMax },
+    // BENGKEL west wall — split by the DOOR-H opening (→ DATA HALL).
+    { xMin: BENGKEL.xMin - WALL_T, xMax: BENGKEL.xMin, zMin: BENGKEL.zMin, zMax: PASSAGE.zMin },
+    { xMin: BENGKEL.xMin - WALL_T, xMax: BENGKEL.xMin, zMin: PASSAGE.zMax, zMax: BENGKEL.zMax },
     // BENGKEL workbench (custom mesh visual).
     { xMin: -10.6, xMax: -8.4, zMin: -14.3, zMax: -13.6, hidden: true },
+
+    // Service passage BENGKEL↔HALL: north + south bands.
+    { xMin: HALL.xMax, xMax: BENGKEL.xMin - WALL_T, zMin: PASSAGE.zMax, zMax: PASSAGE.zMax + 0.4 },
+    { xMin: HALL.xMax, xMax: BENGKEL.xMin - WALL_T, zMin: PASSAGE.zMin - 0.4, zMax: PASSAGE.zMin },
+
+    // DATA HALL shell: west, north, south; east band split by the passage
+    // (z −17…−15) and the cable-tunnel mouth (z −26.6…−25.2).
+    { xMin: HALL.xMin - WALL_T, xMax: HALL.xMin, zMin: HALL.zMin, zMax: HALL.zMax },
+    { xMin: HALL.xMin - WALL_T, xMax: HALL.xMax + WALL_T, zMin: HALL.zMax, zMax: HALL.zMax + 0.4 },
+    { xMin: HALL.xMin - WALL_T, xMax: HALL.xMax + WALL_T, zMin: HALL.zMin - 0.4, zMax: HALL.zMin },
+    { xMin: HALL.xMax, xMax: HALL.xMax + WALL_T, zMin: PASSAGE.zMax, zMax: HALL.zMax },
+    { xMin: HALL.xMax, xMax: HALL.xMax + WALL_T, zMin: TUNNEL.zMax, zMax: PASSAGE.zMin },
+    { xMin: HALL.xMax, xMax: HALL.xMax + WALL_T, zMin: HALL.zMin, zMax: TUNNEL.zMin },
+
+    // CABLE TUNNEL bands (narrow crawl, HALL → VAULT hatch) — broken at the
+    // Aisle-A junction (x −3.4…3.4), where the tunnel meets the corridor.
+    { xMin: HALL.xMax + WALL_T, xMax: -3.4, zMin: TUNNEL.zMax, zMax: TUNNEL.zMax + 0.4 },
+    { xMin: HALL.xMax + WALL_T, xMax: -3.4, zMin: TUNNEL.zMin - 0.4, zMax: TUNNEL.zMin },
+    { xMin: 3.4, xMax: VAULT.xMin - WALL_T, zMin: TUNNEL.zMax, zMax: TUNNEL.zMax + 0.4 },
+    { xMin: 3.4, xMax: VAULT.xMin - WALL_T, zMin: TUNNEL.zMin - 0.4, zMax: TUNNEL.zMin },
+
+    // DATA HALL rack rows (instanced meshes) — mid-row gap for circulation.
+    ...[-16.8, -19.2, -21.6, -24, -26.4, -28.8].flatMap((rz) => [
+      { xMin: -32.6, xMax: -24.7, zMin: rz - 0.4, zMax: rz + 0.4, hidden: true },
+      { xMin: -23.3, xMax: -15.4, zMin: rz - 0.4, zMax: rz + 0.4, hidden: true },
+    ]),
 
     // LAB north wall — band deepened to also fence off the archive racks
     // and their Html panels (player stays ≥0.35 from the panel plane);
@@ -179,8 +219,10 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
     { xMin: CORE.xMin - WALL_T, xMax: DV_X_MIN, zMin: CORE.zMin - WALL_T, zMax: CORE.zMin },
     { xMin: DV_X_MAX, xMax: CORE.xMax + WALL_T, zMin: CORE.zMin - WALL_T, zMax: CORE.zMin },
 
-    // VAULT walls (cold storage below CORE): west, east, south.
-    { xMin: VAULT.xMin - WALL_T, xMax: VAULT.xMin, zMin: VAULT.zMin, zMax: VAULT.zMax },
+    // VAULT walls (cold storage below CORE): west (split by the tunnel
+    // hatch), east, south.
+    { xMin: VAULT.xMin - WALL_T, xMax: VAULT.xMin, zMin: VAULT.zMin, zMax: TUNNEL.zMin },
+    { xMin: VAULT.xMin - WALL_T, xMax: VAULT.xMin, zMin: TUNNEL.zMax, zMax: VAULT.zMax },
     { xMin: VAULT.xMax, xMax: VAULT.xMax + WALL_T, zMin: VAULT.zMin, zMax: VAULT.zMax },
     {
       xMin: VAULT.xMin - WALL_T,
@@ -287,6 +329,44 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
       hint: "hint: sebut saja aturannya: X-2-1.",
       answers: ["3", "tiga", "3 salinan"],
     },
+    {
+      id: "door-hall",
+      rect: {
+        xMin: BENGKEL.xMin - WALL_T,
+        xMax: BENGKEL.xMin,
+        zMin: PASSAGE.zMin,
+        zMax: PASSAGE.zMax,
+      },
+      center: { x: BENGKEL.xMin - WALL_T / 2, z: (PASSAGE.zMin + PASSAGE.zMax) / 2 },
+      axis: "x",
+      grants: "operator",
+      label: "PINTU DATA HALL — AULA SERVER",
+      prompt: [
+        "AKSES DATA HALL · fasilitas",
+        "Tinggi rak server full-size standar industri,",
+        "dihitung dalam satuan 'U' — berapa U?",
+      ],
+      hint: "hint: juga jawaban atas segala pertanyaan di semesta.",
+      answers: ["42", "42u"],
+    },
+    {
+      // Second entrance to the VAULT: same id on purpose — solving either
+      // side opens both (unlocked[] is keyed by id).
+      id: "door-vault",
+      rect: { xMin: VAULT.xMin - WALL_T, xMax: VAULT.xMin, zMin: TUNNEL.zMin, zMax: TUNNEL.zMax },
+      center: { x: VAULT.xMin - WALL_T / 2, z: (TUNNEL.zMin + TUNNEL.zMax) / 2 },
+      axis: "x",
+      grants: "operator",
+      label: "HATCH VAULT — UJUNG TEROWONGAN",
+      prompt: [
+        "AKSES VAULT · penjaga arsip",
+        "Aturan emas backup punya nama tiga angka:",
+        "X salinan, 2 media, 1 offsite.",
+        "Berapa X — total salinan datanya?",
+      ],
+      hint: "hint: sebut saja aturannya: X-2-1.",
+      answers: ["3", "tiga", "3 salinan"],
+    },
   ];
 
   const zones: ZoneDef[] = [
@@ -316,6 +396,16 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
       rect: { xMin: VAULT.xMin, xMax: VAULT.xMax, zMin: VAULT.zMin, zMax: VAULT.zMax },
       label: "VAULT",
     },
+    {
+      id: "hall",
+      rect: { xMin: HALL.xMin, xMax: HALL.xMax, zMin: HALL.zMin, zMax: HALL.zMax },
+      label: "DATA HALL",
+    },
+    {
+      id: "tunnel",
+      rect: { xMin: TUNNEL.xMin, xMax: TUNNEL.xMax, zMin: TUNNEL.zMin, zMax: TUNNEL.zMax },
+      label: "TEROWONGAN",
+    },
   ];
 
   // Project racks become in-game readables: walk up, press E, read on screen.
@@ -335,7 +425,7 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
     zones,
     studies,
     zDeep,
-    bounds: { xMin: BENGKEL.xMin - 1, xMax: CORE.xMax + 1, zMin: VAULT.zMin - 1, zMax: 5.5 },
+    bounds: { xMin: HALL.xMin - 1, xMax: CORE.xMax + 1, zMin: VAULT.zMin - 1, zMax: 5.5 },
   };
 }
 
@@ -346,6 +436,9 @@ export const MASTER_TAPE_POS = { x: 17, z: -30.2 };
 export const DOOR_GAPS = [
   { side: "right" as const, zMin: D1_Z_MIN - 0.7, zMax: D1_Z_MAX + 0.7 },
   { side: "left" as const, zMin: DW_Z_MIN - 0.7, zMax: DW_Z_MAX + 0.7 },
+  // Cable-tunnel junction crossing the deep corridor (both rack walls).
+  { side: "right" as const, zMin: TUNNEL.zMin - 0.7, zMax: TUNNEL.zMax + 0.7 },
+  { side: "left" as const, zMin: TUNNEL.zMin - 0.7, zMax: TUNNEL.zMax + 0.7 },
 ];
 
 /* --------------------------- placed content -------------------------- */
