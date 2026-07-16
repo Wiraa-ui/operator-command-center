@@ -121,7 +121,7 @@ const TWIN_SERVICES: ReadonlyArray<{ id: string; port: number | null }> = [
 const MEM_ALERT_KB = 800 * 1024;
 const TWIN_TTL_MS = 5_000;
 
-interface TwinStatus {
+export interface TwinStatus {
   services: { id: string; up: boolean }[];
   alert: boolean;
 }
@@ -145,7 +145,7 @@ function probePort(port: number): Promise<boolean> {
   });
 }
 
-async function twinStatus(): Promise<TwinStatus> {
+export async function twinStatus(): Promise<TwinStatus> {
   const now = Date.now();
   if (twinCache && now - twinCache.at < TWIN_TTL_MS) return twinCache.value;
 

@@ -14,6 +14,7 @@
 import handler from "./.output/server/index.mjs";
 import { join, normalize } from "node:path";
 import { existsSync, statSync } from "node:fs";
+import { asciiRoom } from "./ascii-room";
 import { roomApi, roomUpgrade, roomWebsocket, type WsData } from "./room-server";
 
 const CLIENT = join(import.meta.dir, ".output", "public");
@@ -34,6 +35,15 @@ Bun.serve<WsData>({
     const ip = server.requestIP(req)?.address ?? "?";
     const api = await roomApi(req, url, ip);
     if (api) return api;
+
+    // CLI easter egg: curl/wget on the homepage get the room as ANSI art
+    // (live twin status included). Browsers never match; /ascii works for all.
+    const ua = req.headers.get("user-agent") ?? "";
+    if (url.pathname === "/ascii" || (url.pathname === "/" && /\b(curl|wget|httpie)\b/i.test(ua))) {
+      return new Response(await asciiRoom(!url.searchParams.has("plain")), {
+        headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" },
+      });
+    }
 
     // Aset statis dari .output/public (cegah path traversal di luar CLIENT).
     const p = normalize(join(CLIENT, decodeURIComponent(url.pathname)));
