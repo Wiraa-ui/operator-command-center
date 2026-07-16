@@ -69,7 +69,11 @@ function rateLimited(ip: string): boolean {
 function json(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json" },
+    headers: {
+      "content-type": "application/json",
+      "cache-control": "no-store",
+      "x-content-type-options": "nosniff",
+    },
   });
 }
 
@@ -242,6 +246,15 @@ function listWallNotes(): Response {
 /** Handles /api/room/*; returns null for any other path. */
 export async function roomApi(req: Request, url: URL, ip: string): Promise<Response | null> {
   if (!url.pathname.startsWith("/api/room/")) return null;
+
+  // Body-size hard cap on every room POST: the biggest legit payload is a
+  // login body (<200 B) — anything larger is garbage or a memory probe.
+  if (req.method === "POST") {
+    const len = Number(req.headers.get("content-length") ?? 0);
+    if (!Number.isFinite(len) || len > 4096) {
+      return json(413, { error: "body terlalu besar" });
+    }
+  }
 
   if (url.pathname === "/api/room/services" && req.method === "GET") {
     return json(200, await twinStatus());

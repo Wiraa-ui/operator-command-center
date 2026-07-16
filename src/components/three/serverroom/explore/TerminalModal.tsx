@@ -1,56 +1,99 @@
-import { useEffect, useRef, useState } from "react";
-import { projects } from "@/content/projects";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { site } from "@/content/site";
-import { getRoomStatus } from "@/lib/api/roomStatus";
 import { PALETTE } from "../types";
 import { roomAudio } from "./audio";
 import { loadAuth } from "./online";
+import { completions, runShell, type Line, type ShellCtx } from "./shell/commands";
+import { HOME } from "./shell/vfs";
 import { addToast, beginNightShift, emitQuestEvent, setModal, useExplore } from "./store";
 
 /**
- * TerminalModal — the CORE's interactive shell, styled after a modern
- * agent-CLI session (boxed welcome banner, `❯` prompt, dim meta lines).
- * Strictly a client-side whitelist; `uptime` is the only network call and it
- * only hits the existing getRoomStatus server fn (sanitized /proc fields).
- * Deliberately no version string, no real usernames, no real paths.
+ * TerminalModal — the CORE's interactive shell UI. All command logic lives
+ * in shell/commands.ts (registry dispatch over the vfs sandbox); this file
+ * only owns the DOM: scrollback, prompt, ↑/↓ history and TAB completion.
+ * Still a strict simulation — no user input reaches the real server except
+ * the pre-existing hardened wall POST.
  */
 
 const mono = "var(--font-op-mono, monospace)";
-
-interface Line {
-  text: string;
-  kind: "banner" | "dim" | "cmd" | "out" | "accent";
-}
-
-const out = (text: string): Line => ({ text, kind: "out" });
 
 const BANNER: Line[] = [
   { text: "╭──────────────────────────────────────────╮", kind: "banner" },
   { text: "│   ✳  Welcome to SERVER ROOM CLI!         │", kind: "banner" },
   { text: "╰──────────────────────────────────────────╯", kind: "banner" },
   { text: "", kind: "out" },
-  { text: "  cwd: /home/operator/server-room  (akses terbatas — sandbox)", kind: "dim" },
-  { text: "  tips: ketik `help` untuk daftar perintah", kind: "dim" },
+  { text: "  shell tersimulasi penuh — sandbox, bukan mesin asli", kind: "dim" },
+  { text: "  `help` daftar perintah · TAB lengkapi · ↑/↓ riwayat", kind: "dim" },
   { text: "", kind: "out" },
-];
-
-const HELP: Line[] = [
-  out("perintah tersedia (whitelist):"),
-  out("  help            daftar ini"),
-  out("  whoami          siapa Anda di mesin ini"),
-  out("  uptime          telemetri LIVE server ini"),
-  out("  ls projects/    daftar proyek"),
-  out("  cat cv.txt      curriculum vitae"),
-  out("  sudo hire-me    langkah paling logis"),
-  out("  wall <pesan>    tempel pesan di papan tamu NOC (perlu login)"),
-  out("  clear · exit"),
 ];
 
 export function TerminalModal() {
   const privilege = useExplore((s) => s.privilege);
   const [lines, setLines] = useState<Line[]>(BANNER);
   const [cmd, setCmd] = useState("");
+  const [cwd, setCwd] = useState(HOME);
   const scroller = useRef<HTMLDivElement>(null);
+  const histIdx = useRef(-1);
+
+  // One mutable shell context for the modal's lifetime (cwd/history live
+  // here); created via useMemo so render never touches a ref.
+  const shell = useMemo<ShellCtx>(
+    () => ({
+      cwd: HOME,
+      history: [],
+      user: privilege,
+      contact: { wa: site.whatsapp.display, email: site.email.display },
+      openUrl: (url) => window.open(url, "_blank", "noopener"),
+      nightShift: () => {
+        window.setTimeout(() => {
+          setModal(null);
+          beginNightShift();
+        }, 1600);
+      },
+      wallPost: async (msg) => {
+        const auth = loadAuth();
+        if (!auth) {
+          roomAudio.sfx("deny");
+          return [
+            { text: "wall: butuh identitas — siapa yang menempel?", kind: "accent" as const },
+            { text: "  login dulu lewat tombol `LOGIN — TAMPIL ONLINE`.", kind: "out" as const },
+          ];
+        }
+        try {
+          const res = await fetch("/api/room/wall", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              authorization: `Bearer ${auth.token}`,
+            },
+            body: JSON.stringify({ text: msg }),
+          });
+          const body = (await res.json()) as { ok?: boolean; error?: string };
+          if (res.ok && body.ok) {
+            addToast("pesanmu tertempel di papan tamu NOC");
+            return [
+              { text: `  tertempel. — @${auth.name}`, kind: "accent" as const },
+              { text: "  (lihat papan tamu di ruang NOC)", kind: "dim" as const },
+            ];
+          }
+          roomAudio.sfx("deny");
+          return [{ text: `wall: ${body.error ?? "gagal — coba lagi"}`, kind: "out" as const }];
+        } catch {
+          return [{ text: "wall: papan tak terjangkau — coba lagi nanti", kind: "out" as const }];
+        }
+      },
+      clear: () => setLines([]),
+      close: () => setModal(null),
+      quest: (e) => emitQuestEvent(e),
+      sfx: (k) => roomAudio.sfx(k),
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- one context per modal lifetime
+    [],
+  );
+
+  useEffect(() => {
+    shell.user = privilege;
+  }, [shell, privilege]);
 
   useEffect(() => {
     scroller.current?.scrollTo({ top: scroller.current.scrollHeight });
@@ -59,111 +102,35 @@ export function TerminalModal() {
   const print = (add: Line[]) => setLines((l) => [...l, ...add]);
 
   const run = async (raw: string) => {
-    const c = raw.trim().toLowerCase().replace(/\s+/g, " ");
-    print([{ text: `❯ ${raw}`, kind: "cmd" }]);
-    if (!c) return;
+    print([{ text: `${cwd} ❯ ${raw}`, kind: "cmd" }]);
+    if (!raw.trim()) return;
     roomAudio.sfx("toast");
+    histIdx.current = -1;
+    const result = await runShell(raw, shell);
+    setCwd(shell.cwd);
+    print(result);
+  };
 
-    if (c === "help") print(HELP);
-    else if (c === "whoami") print([out(`${privilege} — pengunjung resmi ikadekwirawibawa.my.id`)]);
-    else if (c === "uptime") {
-      print([{ text: "  query /proc di mesin asli…", kind: "dim" }]);
-      try {
-        const s = await getRoomStatus();
-        const d =
-          s.uptimeSec === null
-            ? "—"
-            : `${Math.floor(s.uptimeSec / 86400)}d ${Math.floor((s.uptimeSec % 86400) / 3600)}h`;
-        print([
-          out(`  uptime : ${d}`),
-          out(`  ram    : ${s.memUsedMb ?? "—"} / ${s.memTotalMb ?? "—"} MB`),
-          out(`  load1m : ${s.load1 ?? "—"}`),
-          { text: "  (ya, ini live — Anda sedang berdiri di dalamnya)", kind: "accent" },
-        ]);
-      } catch {
-        print([out("  telemetry offline — coba lagi")]);
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const hist = shell.history;
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+      e.preventDefault();
+      if (hist.length === 0) return;
+      const dir = e.key === "ArrowUp" ? 1 : -1;
+      const next = Math.min(hist.length - 1, Math.max(-1, histIdx.current + dir));
+      histIdx.current = next;
+      setCmd(next === -1 ? "" : hist[hist.length - 1 - next]);
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      const opts = completions(cmd, shell);
+      if (opts.length === 1) {
+        const tokens = cmd.split(/\s+/);
+        tokens[tokens.length - 1] = opts[0];
+        setCmd(tokens.join(" ") + (opts[0].endsWith("/") ? "" : " "));
+      } else if (opts.length > 1) {
+        print([{ text: "  " + opts.join("   "), kind: "dim" }]);
       }
-    } else if (c === "ls projects/" || c === "ls projects" || c === "ls") {
-      print([
-        ...projects.map((p) => out(`  ${p.slug}/`)),
-        // Breadcrumb to the hidden MOKSA.CLOUD door (command stays out of help).
-        { text: "  arsip/   (7 volume · terkunci · coba: sudo open --night-shift)", kind: "dim" },
-      ]);
-    } else if (c === "cat cv.txt") {
-      print([{ text: "  membuka /cv.pdf …", kind: "dim" }]);
-      window.open("/cv.pdf", "_blank", "noopener");
-    } else if (c === "sudo hire-me" || c === "hire-me") {
-      emitQuestEvent("hire");
-      print([
-        { text: "eskalasi diterima. kontak operator:", kind: "accent" },
-        out(`  whatsapp : ${site.whatsapp.display}`),
-        out(`  email    : ${site.email.display}`),
-        { text: "  (atau tekan tombol sertifikat — bawa buktinya)", kind: "dim" },
-      ]);
-    } else if (c === "sudo open --night-shift" || c === "open --night-shift") {
-      // Hidden on purpose (not in help): the MOKSA.CLOUD door.
-      print([
-        { text: "mounting /dev/arsip … 7 volume ditemukan", kind: "dim" },
-        { text: "PERINGATAN: retensi arsip = kebijakan Ibu Direktur.", kind: "accent" },
-        out("  lampu lorong dialihkan ke mode malam."),
-        { text: "  selamat bertugas, operator shift tiga.", kind: "dim" },
-      ]);
-      window.setTimeout(() => {
-        setModal(null);
-        beginNightShift();
-      }, 1600);
-    } else if (c === "wall" || c.startsWith("wall ")) {
-      // Message must keep the user's casing — parse from `raw`, not `c`.
-      const msg = raw.trim().slice(4).trim();
-      if (!msg) {
-        print([out("pemakaian: wall <pesan>  — pesanmu tertempel di papan NOC")]);
-        return;
-      }
-      const auth = loadAuth();
-      if (!auth) {
-        print([
-          { text: "wall: butuh identitas — siapa yang menempel?", kind: "accent" },
-          out("  login dulu lewat tombol `LOGIN — TAMPIL ONLINE` di kiri atas."),
-        ]);
-        roomAudio.sfx("deny");
-        return;
-      }
-      print([{ text: "  menempel ke papan NOC…", kind: "dim" }]);
-      try {
-        const res = await fetch("/api/room/wall", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            authorization: `Bearer ${auth.token}`,
-          },
-          body: JSON.stringify({ text: msg }),
-        });
-        const body = (await res.json()) as { ok?: boolean; error?: string };
-        if (res.ok && body.ok) {
-          print([
-            { text: `  tertempel. — @${auth.name}`, kind: "accent" },
-            {
-              text: "  (lihat papan tamu di ruang NOC — pengunjung lain juga melihatnya)",
-              kind: "dim",
-            },
-          ]);
-          addToast("pesanmu tertempel di papan tamu NOC");
-        } else {
-          print([out(`wall: ${body.error ?? "gagal — coba lagi"}`)]);
-          roomAudio.sfx("deny");
-        }
-      } catch {
-        print([out("wall: papan tak terjangkau — coba lagi nanti")]);
-      }
-    } else if (c === "rm -rf /" || c.startsWith("rm -rf")) {
-      print([
-        { text: "PERMISSION DENIED — nice try 🙂", kind: "accent" },
-        out("operator mesin ini rajin backup. harian. teruji restore."),
-      ]);
-      roomAudio.sfx("deny");
-    } else if (c === "clear") setLines([]);
-    else if (c === "exit") setModal(null);
-    else print([out(`sh: ${c.split(" ")[0]}: command not found (coba \`help\`)`)]);
+    }
   };
 
   const colorOf = (k: Line["kind"]) =>
@@ -222,7 +189,7 @@ export function TerminalModal() {
         >
           {lines.map((l, i) => (
             <div key={i} style={{ color: colorOf(l.kind), whiteSpace: "pre-wrap" }}>
-              {l.text || " "}
+              {l.text || " "}
             </div>
           ))}
         </div>
@@ -241,13 +208,21 @@ export function TerminalModal() {
             className="flex items-center gap-2 rounded-lg border px-3 py-2.5"
             style={{ borderColor: "rgba(245,158,11,0.45)", background: "rgba(15,23,42,0.6)" }}
           >
+            <span
+              className="max-w-[40%] truncate text-[10px]"
+              style={{ color: "#7c8db0" }}
+              title={cwd}
+            >
+              {cwd}
+            </span>
             <span style={{ color: PALETTE.accentBright, fontWeight: 700 }}>❯</span>
             <input
               autoFocus
               value={cmd}
               onChange={(e) => setCmd(e.target.value)}
+              onKeyDown={onKeyDown}
               aria-label="Perintah terminal"
-              placeholder="ketik perintah…"
+              placeholder="ketik perintah… (help)"
               className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:opacity-40"
               style={{ color: "#e2e8f0", fontFamily: mono }}
               spellCheck={false}
