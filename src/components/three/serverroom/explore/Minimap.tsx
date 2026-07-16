@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PALETTE } from "../types";
 import type { ExploreMap } from "./layout";
 import { ARSIP_RACKS, night } from "./nightshift/state";
@@ -112,12 +112,13 @@ export function Minimap({ map }: { map: ExploreMap }) {
         ctx.fill();
       }
 
-      // Player arrow
+      // Player arrow. Canvas mapping is (x→x, z→−y) — a mirror, not a
+      // rotation — so forward (−sinψ,−cosψ) lands at canvas angle ψ+π.
       const px = X(player.x);
       const pz = Z(player.z);
       ctx.save();
       ctx.translate(px, pz);
-      ctx.rotate(player.yaw); // map z is flipped, so world yaw maps directly
+      ctx.rotate(player.yaw + Math.PI);
       ctx.fillStyle = "#f8fafc";
       ctx.beginPath();
       ctx.moveTo(0, -5);
@@ -126,6 +127,16 @@ export function Minimap({ map }: { map: ExploreMap }) {
       ctx.closePath();
       ctx.fill();
       ctx.restore();
+
+      // Mata angin: U = +z (canvas up; walking that way moves the dot up).
+      ctx.fillStyle = "rgba(56, 189, 248, 0.85)";
+      ctx.font = "700 8px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("U", MAP_W / 2, 7);
+      ctx.fillText("S", MAP_W / 2, mapH - 7);
+      ctx.fillText("T", MAP_W - 6, mapH / 2);
+      ctx.fillText("B", 6, mapH / 2);
 
       raf = requestAnimationFrame(draw);
     };
@@ -144,12 +155,35 @@ export function Minimap({ map }: { map: ExploreMap }) {
       }}
     >
       <div
-        className="px-2 pt-1 font-op-mono text-[9px] uppercase tracking-[0.22em]"
+        className="flex items-center justify-between px-2 pt-1 font-op-mono text-[9px] uppercase tracking-[0.22em]"
         style={{ color: PALETTE.accentBright }}
       >
-        // floor plan
+        <span>// floor plan</span>
+        <CompassReadout />
       </div>
       <canvas ref={canvas} style={{ width: MAP_W, height: mapH, display: "block" }} />
     </div>
+  );
+}
+
+/** 8-wind heading (mata angin) from the player's yaw; U = world +z. */
+const WINDS = ["U", "TL", "T", "TG", "S", "BD", "B", "BL"] as const;
+
+export function headingDeg(yaw: number): number {
+  const deg = (Math.atan2(-Math.sin(yaw), -Math.cos(yaw)) * 180) / Math.PI;
+  return (Math.round(deg) + 360) % 360;
+}
+
+function CompassReadout() {
+  const [deg, setDeg] = useState(() => headingDeg(player.yaw));
+  useEffect(() => {
+    const id = setInterval(() => setDeg(headingDeg(player.yaw)), 150);
+    return () => clearInterval(id);
+  }, []);
+  const wind = WINDS[Math.round(deg / 45) % 8];
+  return (
+    <span style={{ color: PALETTE.secondary }}>
+      {wind} {deg}°
+    </span>
   );
 }

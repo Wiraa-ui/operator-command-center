@@ -6,6 +6,7 @@ import { Panels } from "../Panels";
 import { StatusRack } from "../StatusRack";
 import { PALETTE, type Station } from "../types";
 import { DoorGate } from "./DoorGate";
+import { Hologram } from "./Hologram";
 import { HumanoidFigure } from "./humanoid";
 import { NightShift } from "./nightshift/NightShift";
 import { OnlinePlayers } from "./OnlinePlayers";
@@ -257,6 +258,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
 
       {/* ----------------------------- CORE -------------------------------- */}
       <ServerHeart reduced={reduced} />
+
+      {/* Shader hologram projected above the heart (fresnel + scanlines). */}
+      <Hologram reduced={reduced} />
 
       {/* Digital twin: real services as racks along the CORE north wall. */}
       <ServiceRacks reduced={reduced} />

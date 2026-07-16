@@ -134,9 +134,13 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
         const sin = Math.sin(player.yaw);
         const cos = Math.cos(player.yaw);
         const walls = wallsFor(s.unlocked);
-        const speed =
-          PLAYER_SPEED *
-          (input.keys.has("ShiftLeft") || input.keys.has("ShiftRight") ? SPRINT_MULT : 1);
+        // Sprint: Shift on desktop, or pushing the virtual stick to its rim
+        // on touch (no extra button to reach for mid-chase).
+        const sprint =
+          input.keys.has("ShiftLeft") ||
+          input.keys.has("ShiftRight") ||
+          Math.hypot(input.joy.x, input.joy.y) > 0.92;
+        const speed = PLAYER_SPEED * (sprint ? SPRINT_MULT : 1);
         // Substep integration: low-fps devices keep full walking speed while
         // each collision step stays < wall thickness (no tunneling).
         let remaining = Math.min(dt, 0.3);

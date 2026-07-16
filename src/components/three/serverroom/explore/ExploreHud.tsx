@@ -502,6 +502,9 @@ function Joystick() {
     input.joy.y = dy / JOY_RADIUS;
   };
 
+  // Rim push = sprint (PlayerRig reads the same 0.92 threshold).
+  const sprinting = Math.hypot(nub.x, nub.y) > JOY_RADIUS * 0.92;
+
   const release = () => {
     active.current = null;
     setNub({ x: 0, y: 0 });
@@ -535,10 +538,17 @@ function Joystick() {
       <div
         className="absolute left-1/2 top-1/2 h-12 w-12 rounded-full"
         style={{
-          background: "rgba(245,158,11,0.55)",
+          background: sprinting ? "rgba(251,191,36,0.95)" : "rgba(245,158,11,0.55)",
+          boxShadow: sprinting ? "0 0 18px rgba(251,191,36,0.8)" : "none",
           transform: `translate(calc(-50% + ${nub.x}px), calc(-50% + ${nub.y}px))`,
         }}
       />
+      <div
+        className="absolute -top-5 left-1/2 -translate-x-1/2 font-op-mono text-[9px] uppercase tracking-[0.2em]"
+        style={{ color: sprinting ? "#fbbf24" : "rgba(124,141,176,0.8)" }}
+      >
+        {sprinting ? "lari!" : "dorong penuh = lari"}
+      </div>
     </div>
   );
 }
