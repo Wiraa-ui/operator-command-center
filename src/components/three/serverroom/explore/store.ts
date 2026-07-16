@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import { roomAudio } from "./audio";
 import { SPAWN } from "./layout";
 import { ARSIP_RACKS, night, resetNight, RITUAL_MS } from "./nightshift/state";
 import type { Speaker } from "./nightshift/voice";
@@ -100,6 +101,7 @@ if (typeof window !== "undefined") {
     // E2E hooks for the hidden night mode (all state is client-side anyway).
     night,
     beginNightShift: () => beginNightShift(),
+    audio: () => roomAudio.debugState(),
   };
 }
 
@@ -245,6 +247,7 @@ export function addAchievement(text: string) {
   state = { ...state, achievements: [...state.achievements, text] };
   persist();
   addToast(`🏆 ${text}`);
+  roomAudio.sfx("achievement");
 }
 
 export function setInteract(interact: ExploreState["interact"]) {

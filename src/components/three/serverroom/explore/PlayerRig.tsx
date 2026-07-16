@@ -1,10 +1,12 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { roomAudio, type AudioZone } from "./audio";
 import { FirstPersonArms, ThirdPersonBody } from "./Avatar";
 import { slideMove } from "./collide";
 import {
   EYE_Y,
+  HEART_POS,
   INTERACT_RANGE,
   MASTER_TAPE_POS,
   PLAYER_SPEED,
@@ -67,6 +69,10 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
   // Only the avatar mount reacts to the toggle; the frame loop keeps reading
   // getExploreState() so no per-frame React work is introduced.
   const view = useExplore((s) => s.view);
+
+  // Audio couplers: accumulated stride distance + last ambience zone.
+  const stride = useRef(0);
+  const audioZone = useRef<AudioZone>("aisle");
 
   // Locked doors participate in collision; solved ones stop existing.
   const wallsFor = useMemo(
@@ -144,6 +150,8 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
         const speed = PLAYER_SPEED * (sprint ? SPRINT_MULT : 1);
         // Substep integration: low-fps devices keep full walking speed while
         // each collision step stays < wall thickness (no tunneling).
+        const fromX = player.x;
+        const fromZ = player.z;
         let remaining = Math.min(dt, 0.3);
         while (remaining > 0) {
           const stepDt = Math.min(remaining, 0.05);
@@ -155,6 +163,14 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
           const next = slideMove(player.x, player.z, dx, dz, walls);
           player.x = next.x;
           player.z = next.z;
+        }
+        // Footsteps: distance-driven so pace tracks real velocity.
+        if (player.y === 0) {
+          stride.current += Math.hypot(player.x - fromX, player.z - fromZ);
+          if (stride.current > (sprint ? 2.6 : 2.0)) {
+            stride.current = 0;
+            roomAudio.footstep(sprint);
+          }
         }
       }
     }
@@ -281,9 +297,18 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
       const r = zone.rect;
       if (player.x > r.xMin && player.x < r.xMax && player.z > r.zMin && player.z < r.zMax) {
         markVisited(zone.id);
+        if (zone.id !== audioZone.current) {
+          // The room re-tunes itself as you cross the doorway.
+          audioZone.current = zone.id;
+          roomAudio.setZone(zone.id);
+        }
         break;
       }
     }
+
+    // Server-heart thumps swell as you approach the CORE centerpiece.
+    const heartD = Math.hypot(HEART_POS.x - player.x, HEART_POS.z - player.z);
+    roomAudio.setHeartLevel(1 - Math.min(1, heartD / 13));
   });
 
   /* Headlamp: a soft cone that follows the camera — the corridor stays
