@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784226933.1189692,
-    "ast_hash": "03f5bf963bc04b2186dc1b813a0502c0",
+    "mtime": 1784228583.3474429,
+    "ast_hash": "8d5cb355691cf73ed4c49ecea481d2bd",
     "semantic_hash": ""
   },
   "README.md": {
@@ -365,8 +365,8 @@
     "semantic_hash": ""
   },
   "room-server.ts": {
-    "mtime": 1784216438.4381878,
-    "ast_hash": "c8bf00ea68623d5dba377a1ce0f2281d",
+    "mtime": 1784227329.670457,
+    "ast_hash": "1cbd754ea4f49a6ca47aab88b925ece1",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/Cables.tsx": {
@@ -460,8 +460,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/TerminalModal.tsx": {
-    "mtime": 1784216438.439188,
-    "ast_hash": "a2a5f1648c7a4190df7745dbf40e9197",
+    "mtime": 1784227560.9453607,
+    "ast_hash": "d38bcdf3d1b902175d241a72a344093f",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/audio.ts": {
@@ -602,6 +602,16 @@
   "src/components/three/serverroom/explore/HallRoom.tsx": {
     "mtime": 1784224029.2587516,
     "ast_hash": "03d2cf1512e36e2fdf7fe945eac020da",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/shell/commands.ts": {
+    "mtime": 1784227401.2193618,
+    "ast_hash": "45411ceb432dda7339a97ea7541e5355",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/shell/vfs.ts": {
+    "mtime": 1784227401.2193618,
+    "ast_hash": "ff8cc06a92cef6b5bc5449407a72760d",
     "semantic_hash": ""
   }
 }
