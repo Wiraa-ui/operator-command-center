@@ -6,9 +6,11 @@ import { Cables } from "./Cables";
 import { Panels } from "./Panels";
 import { StatusRack } from "./StatusRack";
 import { RoomCameraRig } from "./CameraRig";
+import { Dust } from "./explore/Dust";
 import { ExploreWorld } from "./explore/ExploreWorld";
 import { DOOR_GAPS, type ExploreMap } from "./explore/layout";
 import { PlayerRig } from "./explore/PlayerRig";
+import { autoFx, PostFX } from "./PostFX";
 
 /**
  * RoomCanvas — assembles The Server Room (single WebGLRenderer for the page,
@@ -35,6 +37,7 @@ export default function RoomCanvas({
 }) {
   const statusStation = useMemo(() => stations.find((s) => s.kind === "status"), [stations]);
   const explore = mode === "explore" && map !== null;
+  const fx = useMemo(() => autoFx(reduced), [reduced]);
 
   return (
     <Canvas
@@ -51,10 +54,12 @@ export default function RoomCanvas({
       <Cables stations={stations} reduced={reduced} />
       <Panels stations={stations} reduced={reduced} />
       {statusStation && <StatusRack station={statusStation} reduced={reduced} />}
+      {fx && <PostFX />}
       {explore ? (
         <>
           <PlayerRig map={map} reduced={reduced} />
           <ExploreWorld map={map} reduced={reduced} />
+          <Dust map={map} reduced={reduced} />
         </>
       ) : (
         <RoomCameraRig stations={stations} reduced={reduced} />

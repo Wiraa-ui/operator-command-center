@@ -56,6 +56,22 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const quest = useMemo(() => activeQuestInfo(questProgress), [questProgress]);
 
   const [locked, setLocked] = useState(false);
+
+  // Cinematic letterbox entry — state-driven transitions (never keyframe
+  // opacity: on slow devices those stall at the from-frame, see story.ts).
+  const reducedIntro =
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const [intro, setIntro] = useState<"in" | "out" | "done">(reducedIntro ? "done" : "in");
+  useEffect(() => {
+    if (intro === "done") return;
+    const t1 = setTimeout(() => setIntro("out"), 2700);
+    const t2 = setTimeout(() => setIntro("done"), 3800);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount
+  }, []);
   const lockpad = useRef<HTMLDivElement>(null);
   const isTouch = useMemo(
     () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
@@ -145,6 +161,51 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
 
   return (
     <>
+      {/* Cinematic letterbox entry (unmounts fully when done). */}
+      {intro !== "done" && (
+        <div className="pointer-events-none fixed inset-0 z-50" aria-hidden="true">
+          <div
+            className="absolute left-0 right-0 top-0 bg-black"
+            style={{
+              height: "14vh",
+              transform: intro === "in" ? "translateY(0)" : "translateY(-100%)",
+              transition: "transform 900ms cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          />
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-black"
+            style={{
+              height: "14vh",
+              transform: intro === "in" ? "translateY(0)" : "translateY(100%)",
+              transition: "transform 900ms cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          />
+          <div
+            className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center ${mono}`}
+            style={{
+              opacity: intro === "in" ? 1 : 0,
+              transition: "opacity 700ms ease",
+            }}
+          >
+            <div
+              className="text-[10px] uppercase tracking-[0.5em]"
+              style={{ color: PALETTE.secondary }}
+            >
+              ikadekwirawibawa.my.id presents
+            </div>
+            <div
+              className="mt-3 text-3xl font-bold uppercase tracking-[0.3em] sm:text-4xl"
+              style={{ color: PALETTE.accentBright, textShadow: "0 0 32px rgba(245,158,11,0.8)" }}
+            >
+              Root Access
+            </div>
+            <div className="mt-3 text-[11px] tracking-[0.28em]" style={{ color: "#9fb0cc" }}>
+              THE SERVER ROOM — live dari mesin asli
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Input pad: full-screen, sits above the canvas but below the HUD chrome. */}
       <div
         ref={lockpad}
