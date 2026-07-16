@@ -28,8 +28,10 @@ import {
   ROOM_H,
   STATUS_POS,
   TERMINAL_POS,
+  VAULT,
   type ExploreMap,
 } from "./layout";
+import { VaultRoom } from "./VaultRoom";
 
 /**
  * ExploreWorld — the LAB and CORE extensions that only exist in EXPLORE
@@ -76,6 +78,7 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
   const coreC = wallCenter({ ...CORE, zMax: LAB.zMin });
   const bengkelC = wallCenter(BENGKEL);
   const nocC = wallCenter(NOC);
+  const vaultC = wallCenter(VAULT);
 
   const visibleWalls = useMemo(() => map.walls.filter((w) => !w.hidden), [map]);
   // SHIFT MALAM: house lights drop to a fraction — the headlamp (toggleable,
@@ -126,6 +129,8 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
         { c: bengkelC, y: ROOM_H, rx: Math.PI / 2 },
         { c: nocC, y: 0, rx: -Math.PI / 2 },
         { c: nocC, y: ROOM_H, rx: Math.PI / 2 },
+        { c: vaultC, y: 0, rx: -Math.PI / 2 },
+        { c: vaultC, y: ROOM_H, rx: Math.PI / 2 },
       ].map((p, i) => (
         <mesh key={i} rotation={[p.rx, 0, 0]} position={[p.c.x, p.y, p.c.z]}>
           <planeGeometry args={[p.c.w, p.c.d]} />
@@ -267,6 +272,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
 
       {/* Server-timezone wall clock above the twin bank (WITA, jam hantu). */}
       <WitaClock witching={witching} />
+
+      {/* ----------------------------- VAULT -------------------------------- */}
+      <VaultRoom reduced={reduced} />
 
       {/* Big live telemetry cabinet (east wall, facing the heart). */}
       <group position={[STATUS_POS.x, 0, STATUS_POS.z]} rotation-y={-Math.PI / 2}>

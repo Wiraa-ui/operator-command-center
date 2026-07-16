@@ -30,7 +30,7 @@ export interface WallRect {
 }
 
 export interface DoorDef {
-  id: "door-lab" | "door-core" | "door-bengkel" | "door-noc";
+  id: "door-lab" | "door-core" | "door-bengkel" | "door-noc" | "door-vault";
   /** Collision + render volume while locked. */
   rect: WallRect;
   /** Center of the doorway, for proximity + keypad placement. */
@@ -45,7 +45,7 @@ export interface DoorDef {
 }
 
 export interface ZoneDef {
-  id: "aisle" | "lab" | "core" | "bengkel" | "noc";
+  id: "aisle" | "lab" | "core" | "bengkel" | "noc" | "vault";
   rect: WallRect;
   label: string;
 }
@@ -91,6 +91,14 @@ export const NOC = { xMin: 6, xMax: 14, zMin: -7.6, zMax: -1.2 } as const;
 /** Door-N opening in the LAB's north wall band. */
 const DN_X_MIN = 9;
 const DN_X_MAX = 11;
+
+/* Map expansion (2026-07-17): the cold backup vault below CORE. */
+
+/** VAULT (cold storage) — south of CORE; the tape library. */
+export const VAULT = { xMin: 13, xMax: 21, zMin: -31, zMax: -24.4 } as const;
+/** Door-V opening in the CORE south wall band. */
+const DV_X_MIN = 19.2;
+const DV_X_MAX = 20.6;
 
 /* ------------------------------- map --------------------------------- */
 
@@ -165,15 +173,28 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
     // LAB east wall (above CORE).
     { xMin: LAB.xMax, xMax: LAB.xMax + WALL_T, zMin: LAB.zMin, zMax: LAB.zMax },
 
-    // CORE west / east / south walls.
+    // CORE west / east walls; south wall band split by DOOR-V (→ VAULT).
     { xMin: CORE.xMin - WALL_T, xMax: CORE.xMin, zMin: CORE.zMin, zMax: LAB.zMin },
     { xMin: CORE.xMax, xMax: CORE.xMax + WALL_T, zMin: CORE.zMin, zMax: LAB.zMin },
+    { xMin: CORE.xMin - WALL_T, xMax: DV_X_MIN, zMin: CORE.zMin - WALL_T, zMax: CORE.zMin },
+    { xMin: DV_X_MAX, xMax: CORE.xMax + WALL_T, zMin: CORE.zMin - WALL_T, zMax: CORE.zMin },
+
+    // VAULT walls (cold storage below CORE): west, east, south.
+    { xMin: VAULT.xMin - WALL_T, xMax: VAULT.xMin, zMin: VAULT.zMin, zMax: VAULT.zMax },
+    { xMin: VAULT.xMax, xMax: VAULT.xMax + WALL_T, zMin: VAULT.zMin, zMax: VAULT.zMax },
     {
-      xMin: CORE.xMin - WALL_T,
-      xMax: CORE.xMax + WALL_T,
-      zMin: CORE.zMin - WALL_T,
-      zMax: CORE.zMin,
+      xMin: VAULT.xMin - WALL_T,
+      xMax: VAULT.xMax + WALL_T,
+      zMin: VAULT.zMin - WALL_T,
+      zMax: VAULT.zMin,
     },
+    // VAULT tape-library rows (custom meshes) with a center aisle gap.
+    { xMin: 13.9, xMax: 16.4, zMin: -26.9, zMax: -26.1, hidden: true },
+    { xMin: 17.6, xMax: 20.1, zMin: -26.9, zMax: -26.1, hidden: true },
+    { xMin: 13.9, xMax: 16.4, zMin: -29.2, zMax: -28.4, hidden: true },
+    { xMin: 17.6, xMax: 20.1, zMin: -29.2, zMax: -28.4, hidden: true },
+    // Master-tape display case at the vault's south end.
+    { xMin: 16.5, xMax: 17.5, zMin: -30.6, zMax: -29.8, hidden: true },
     // CORE north-west shelf (west of DOOR-2, below the LAB east wall).
     { xMin: CORE.xMin, xMax: D2_X_MIN, zMin: LAB.zMin - WALL_T, zMax: LAB.zMin },
 
@@ -250,6 +271,22 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
       hint: "hint: tiga digit, https://",
       answers: ["443", "port 443"],
     },
+    {
+      id: "door-vault",
+      rect: { xMin: DV_X_MIN, xMax: DV_X_MAX, zMin: CORE.zMin - WALL_T, zMax: CORE.zMin },
+      center: { x: (DV_X_MIN + DV_X_MAX) / 2, z: CORE.zMin - WALL_T / 2 },
+      axis: "z",
+      grants: "operator",
+      label: "PINTU VAULT — COLD STORAGE",
+      prompt: [
+        "AKSES VAULT · penjaga arsip",
+        "Aturan emas backup punya nama tiga angka:",
+        "X salinan, 2 media, 1 offsite.",
+        "Berapa X — total salinan datanya?",
+      ],
+      hint: "hint: sebut saja aturannya: X-2-1.",
+      answers: ["3", "tiga", "3 salinan"],
+    },
   ];
 
   const zones: ZoneDef[] = [
@@ -274,6 +311,11 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
       rect: { xMin: NOC.xMin, xMax: NOC.xMax, zMin: NOC.zMin, zMax: NOC.zMax },
       label: "NOC",
     },
+    {
+      id: "vault",
+      rect: { xMin: VAULT.xMin, xMax: VAULT.xMax, zMin: VAULT.zMin, zMax: VAULT.zMax },
+      label: "VAULT",
+    },
   ];
 
   // Project racks become in-game readables: walk up, press E, read on screen.
@@ -293,9 +335,12 @@ export function buildExploreMap(stations: Station[]): ExploreMap {
     zones,
     studies,
     zDeep,
-    bounds: { xMin: BENGKEL.xMin - 1, xMax: CORE.xMax + 1, zMin: CORE.zMin - 1, zMax: 5.5 },
+    bounds: { xMin: BENGKEL.xMin - 1, xMax: CORE.xMax + 1, zMin: VAULT.zMin - 1, zMax: 5.5 },
   };
 }
+
+/** Master-backup display case (vault south end); the collectible artifact. */
+export const MASTER_TAPE_POS = { x: 17, z: -30.2 };
 
 /** Decor-rack gaps World.tsx must leave open in EXPLORE mode. */
 export const DOOR_GAPS = [

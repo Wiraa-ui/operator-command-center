@@ -14,7 +14,7 @@ import type { Speaker } from "./nightshift/voice";
  */
 
 export type Privilege = "guest" | "operator" | "root";
-export type DoorId = "door-lab" | "door-core" | "door-bengkel" | "door-noc";
+export type DoorId = "door-lab" | "door-core" | "door-bengkel" | "door-noc" | "door-vault";
 
 /** RPG quest state: questId → current step index, plus finished quests. */
 export interface QuestProgress {
@@ -418,6 +418,12 @@ export function triggerInteract() {
   if (id.startsWith("node:")) {
     // Quest patch panel: instant check, stay in pointer lock.
     emitQuestEvent(id);
+    return;
+  }
+  if (id === "vault:master") {
+    // Collectible, not a modal: inspecting the golden master tape.
+    addAchievement("PENJAGA ARSIP — master tape ditemukan");
+    addToast("MASTER BACKUP · harian 02:00 WITA · uji-restore: LULUS");
     return;
   }
   if (id === "terminal") {

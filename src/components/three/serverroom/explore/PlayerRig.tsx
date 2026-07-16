@@ -6,6 +6,7 @@ import { slideMove } from "./collide";
 import {
   EYE_Y,
   INTERACT_RANGE,
+  MASTER_TAPE_POS,
   PLAYER_SPEED,
   ROOM_H,
   TERMINAL_POS,
@@ -234,7 +235,15 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
       }
     }
     const tDist = Math.hypot(TERMINAL_POS.x - player.x, TERMINAL_POS.z - player.z);
-    if (tDist < bestD) nearest = { id: "terminal", label: "TERMINAL CORE" };
+    if (tDist < bestD) {
+      bestD = tDist;
+      nearest = { id: "terminal", label: "TERMINAL CORE" };
+    }
+    const mDist = Math.hypot(MASTER_TAPE_POS.x - player.x, MASTER_TAPE_POS.z - player.z);
+    if (mDist < bestD) {
+      bestD = mDist;
+      nearest = { id: "vault:master", label: "PERIKSA — MASTER BACKUP TAPE" };
+    }
     // Day-shift RPG: NPCs to talk to (they go home at night) + Q2 panels.
     if (!s.night) {
       for (const n of NPCS) {
