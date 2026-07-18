@@ -11,6 +11,7 @@ import {
   MASTER_TAPE_POS,
   PLAYER_SPEED,
   ROOM_H,
+  RACK_HUM_SEGMENTS,
   SERVICE_RACKS,
   TERMINAL_POS,
   type ExploreMap,
@@ -333,6 +334,36 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
     // Server-heart thumps swell as you approach the CORE centerpiece.
     const heartD = Math.hypot(HEART_POS.x - player.x, HEART_POS.z - player.z);
     roomAudio.setHeartLevel(1 - Math.min(1, heartD / 13));
+
+    // Spatial rack hum: distance + direction to the nearest rack face.
+    let bestD2 = Infinity;
+    let humX = 0;
+    let humZ = 0;
+    for (const seg of RACK_HUM_SEGMENTS) {
+      const vx = seg.x2 - seg.x1;
+      const vz = seg.z2 - seg.z1;
+      const len2 = vx * vx + vz * vz;
+      const u =
+        len2 === 0
+          ? 0
+          : Math.max(0, Math.min(1, ((player.x - seg.x1) * vx + (player.z - seg.z1) * vz) / len2));
+      const px = seg.x1 + vx * u;
+      const pz = seg.z1 + vz * u;
+      const d2 = (px - player.x) ** 2 + (pz - player.z) ** 2;
+      if (d2 < bestD2) {
+        bestD2 = d2;
+        humX = px;
+        humZ = pz;
+      }
+    }
+    const rackD = Math.sqrt(bestD2);
+    // right = (cos yaw, −sin yaw): pan follows where the rack sits in view.
+    const pan =
+      rackD > 0.01
+        ? ((humX - player.x) * Math.cos(player.yaw) - (humZ - player.z) * Math.sin(player.yaw)) /
+          rackD
+        : 0;
+    roomAudio.setRackHum(1 - Math.min(1, rackD / 5.5), pan);
   });
 
   /* Headlamp: a soft cone that follows the camera — the corridor stays

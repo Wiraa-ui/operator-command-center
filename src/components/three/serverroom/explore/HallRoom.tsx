@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { PALETTE } from "../types";
-import { HALL, TUNNEL } from "./layout";
+import { HALL, HALL_RACK_HALVES, HALL_RACK_W, HALL_ROWS, TUNNEL } from "./layout";
 import { useExplore } from "./store";
 import { useNearby } from "./useNearby";
 
@@ -15,15 +15,14 @@ import { useNearby } from "./useNearby";
  * the hidden colliders in layout.ts.
  */
 
-const ROWS = [-16.8, -19.2, -21.6, -24, -26.4, -28.8];
-const RACK_W = 1.24;
 const mono = "var(--font-op-mono, monospace)";
 
-/** Rack x slots per row half (gap −24.7…−23.3 stays walkable). */
+/** Rack x slots per row half (grid constants live in layout.ts). */
 function slots(): number[] {
   const xs: number[] = [];
-  for (let x = -32; x <= -25.3; x += RACK_W) xs.push(x);
-  for (let x = -22.7; x <= -16; x += RACK_W) xs.push(x);
+  for (const [xa, xb] of HALL_RACK_HALVES) {
+    for (let x = xa; x <= xb; x += HALL_RACK_W) xs.push(x);
+  }
   return xs;
 }
 
@@ -40,7 +39,7 @@ export function HallRoom({ reduced }: { reduced: boolean }) {
     const xs = slots();
     const out: { x: number; z: number; c: THREE.Color }[] = [];
     let i = 0;
-    for (const z of ROWS) {
+    for (const z of HALL_ROWS) {
       for (const x of xs) {
         // Deterministic pseudo-random LED state per slot: mostly amber,
         // some sky, a few dead-dark — a hall that has lived a little.
@@ -51,7 +50,7 @@ export function HallRoom({ reduced }: { reduced: boolean }) {
             : h < 0.86
               ? new THREE.Color(PALETTE.secondary)
               : new THREE.Color("#1a2340");
-        out.push({ x: x + RACK_W / 2, z, c });
+        out.push({ x: x + HALL_RACK_W / 2, z, c });
         i++;
       }
     }

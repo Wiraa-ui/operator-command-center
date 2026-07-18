@@ -135,6 +135,14 @@ class RoomAudio {
   private noiseGain: GainNode | null = null;
   private shimmerGain: GainNode | null = null;
 
+  // Proximity rack hum (spatial): swells + stereo-pans toward the nearest
+  // rack face; PlayerRig feeds targets, a slow scheduler applies the ramps.
+  private humGain: GainNode | null = null;
+  private humPanner: StereoPannerNode | null = null;
+  private humTimer: ReturnType<typeof setTimeout> | null = null;
+  private rackLevel = 0;
+  private rackPan = 0;
+
   /** Idempotent; must be called from a user-gesture call stack. */
   start(muted: boolean) {
     this.muted = muted;
@@ -210,8 +218,40 @@ class RoomAudio {
       osc.start();
     }
 
+    // Rack hum: fan-coil voice (mains triangle + narrow noise band) behind
+    // a gain/panner pair the proximity coupler drives. Starts silent.
+    const humGain = ctx.createGain();
+    humGain.gain.value = 0;
+    if (typeof ctx.createStereoPanner === "function") {
+      const panner = ctx.createStereoPanner();
+      humGain.connect(panner).connect(master);
+      this.humPanner = panner;
+    } else {
+      humGain.connect(master); // old Safari: hum without panning
+    }
+    this.humGain = humGain;
+    const humOsc = ctx.createOscillator();
+    humOsc.type = "triangle";
+    humOsc.frequency.value = 118;
+    const humOscG = ctx.createGain();
+    humOscG.gain.value = 0.5;
+    humOsc.connect(humOscG).connect(humGain);
+    humOsc.start();
+    const humNoise = ctx.createBufferSource();
+    humNoise.buffer = this.noiseBuffer(1.7);
+    humNoise.loop = true;
+    const humBp = ctx.createBiquadFilter();
+    humBp.type = "bandpass";
+    humBp.frequency.value = 640;
+    humBp.Q.value = 1.6;
+    const humNoiseG = ctx.createGain();
+    humNoiseG.gain.value = 0.55;
+    humNoise.connect(humBp).connect(humNoiseG).connect(humGain);
+    humNoise.start();
+
     this.scheduleBlip();
     this.scheduleHeart();
+    this.scheduleHumFollow();
   }
 
   private noiseBuffer(seconds: number): AudioBuffer {
@@ -247,6 +287,8 @@ class RoomAudio {
       running: this.ctx?.state === "running",
       zone: this.zone,
       heartLevel: this.heartLevel,
+      rackLevel: this.rackLevel,
+      rackPan: this.rackPan,
     };
   }
 
@@ -281,6 +323,27 @@ class RoomAudio {
   /** 0..1 — how close the player is to the CORE heart. */
   setHeartLevel(level: number) {
     this.heartLevel = Math.max(0, Math.min(1, level));
+  }
+
+  /** Nearest-rack proximity: level 0..1, pan −1 (left) .. 1 (right). */
+  setRackHum(level: number, pan: number) {
+    this.rackLevel = Math.max(0, Math.min(1, level));
+    this.rackPan = Math.max(-1, Math.min(1, pan));
+  }
+
+  /** Applies the proximity targets with short ramps — called per frame from
+      PlayerRig would spam automation events; 160 ms is inaudible lag. */
+  private scheduleHumFollow() {
+    this.humTimer = setTimeout(() => {
+      const ctx = this.ctx;
+      if (ctx && this.humGain) {
+        const t = ctx.currentTime + 0.18;
+        // Squared curve: the hum only really blooms right at the rack face.
+        this.humGain.gain.linearRampToValueAtTime(this.rackLevel * this.rackLevel * 0.055, t);
+        this.humPanner?.pan.linearRampToValueAtTime(this.rackPan * 0.85, t);
+      }
+      this.scheduleHumFollow();
+    }, 160);
   }
 
   /* ---------------------------- one-shots ---------------------------- */
@@ -380,8 +443,14 @@ class RoomAudio {
   stop() {
     if (this.blipTimer) clearTimeout(this.blipTimer);
     if (this.heartTimer) clearTimeout(this.heartTimer);
+    if (this.humTimer) clearTimeout(this.humTimer);
     this.blipTimer = null;
     this.heartTimer = null;
+    this.humTimer = null;
+    this.humGain = null;
+    this.humPanner = null;
+    this.rackLevel = 0;
+    this.rackPan = 0;
     if (this.ctx) void this.ctx.close();
     this.ctx = null;
     this.master = null;

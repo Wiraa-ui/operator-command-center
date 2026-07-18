@@ -468,6 +468,64 @@ export const SERVICE_RACKS = [
   { id: "portfolio", label: "PORTFOLIO — situs ini" },
 ].map((s, i) => ({ ...s, x: 16.9 + i * 1.22, z: -13.85 }));
 
+/**
+ * DATA HALL rack grid — single source shared by the HallRoom renderer and
+ * the rack-hum audio emitters. Rows must shadow the hidden colliders above;
+ * the center gap −24.7…−23.3 stays walkable.
+ */
+export const HALL_ROWS = [-16.8, -19.2, -21.6, -24, -26.4, -28.8] as const;
+export const HALL_RACK_W = 1.24;
+export const HALL_RACK_HALVES = [
+  [-32, -25.3],
+  [-22.7, -16],
+] as const;
+
+/** VAULT tape-library cabinets — single source for VaultRoom + rack hum. */
+export const VAULT_TAPE_ROWS = [
+  { x: 15.15, z: -26.5 },
+  { x: 18.85, z: -26.5 },
+  { x: 15.15, z: -28.8 },
+  { x: 18.85, z: -28.8 },
+];
+
+/**
+ * Rack-hum emitters (spatial audio): line segments the PlayerRig coupler
+ * measures distance/direction against — the fan hum swells and stereo-pans
+ * toward the nearest rack face. Derived from the placed content above so
+ * the sound stays glued to the visible racks.
+ */
+export interface HumSegment {
+  x1: number;
+  z1: number;
+  x2: number;
+  z2: number;
+}
+export const RACK_HUM_SEGMENTS: HumSegment[] = [
+  // AISLE-A corridor rack walls (walk-mode stations at ±SIDE_X).
+  { x1: SIDE_X.left, z1: 2.5, x2: SIDE_X.left, z2: LAB.zMax + 0.5 },
+  { x1: SIDE_X.right, z1: 2.5, x2: SIDE_X.right, z2: LAB.zMax + 0.5 },
+  // LAB teaser slots along the north wall.
+  {
+    x1: LAB_PANELS[0].x,
+    z1: LAB_PANELS[0].z,
+    x2: LAB_PANELS[LAB_PANELS.length - 1].x,
+    z2: LAB_PANELS[0].z,
+  },
+  // CORE digital-twin bank.
+  {
+    x1: SERVICE_RACKS[0].x,
+    z1: SERVICE_RACKS[0].z,
+    x2: SERVICE_RACKS[SERVICE_RACKS.length - 1].x,
+    z2: SERVICE_RACKS[0].z,
+  },
+  // VAULT tape rows (point emitters).
+  ...VAULT_TAPE_ROWS.map((r) => ({ x1: r.x, z1: r.z, x2: r.x, z2: r.z })),
+  // DATA HALL rows (two walkable halves per row).
+  ...HALL_ROWS.flatMap((z) =>
+    HALL_RACK_HALVES.map(([xa, xb]) => ({ x1: xa, z1: z, x2: xb, z2: z })),
+  ),
+];
+
 /** Fixed interactables beyond the two doors. */
 export const TERMINAL_POS = { x: CORE.xMin + 1.05, z: -16.5 }; // faces east
 export const NOTE_POS = { x: LAB.xMax - 0.45, z: -10.5 }; // east wall, faces west

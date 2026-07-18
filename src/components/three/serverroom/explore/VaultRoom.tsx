@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import { PALETTE } from "../types";
-import { MASTER_TAPE_POS, VAULT } from "./layout";
+import { MASTER_TAPE_POS, VAULT, VAULT_TAPE_ROWS } from "./layout";
 import { useExplore } from "./store";
 import { useNearby } from "./useNearby";
 
@@ -15,14 +15,6 @@ import { useNearby } from "./useNearby";
  */
 
 const mono = "var(--font-op-mono, monospace)";
-
-/** Tape rack rows — must shadow the hidden colliders in layout.ts. */
-const ROWS = [
-  { x: 15.15, z: -26.5 },
-  { x: 18.85, z: -26.5 },
-  { x: 15.15, z: -28.8 },
-  { x: 18.85, z: -28.8 },
-];
 
 export function VaultRoom({ reduced }: { reduced: boolean }) {
   const isNight = useExplore((s) => s.night);
@@ -40,7 +32,7 @@ export function VaultRoom({ reduced }: { reduced: boolean }) {
   return (
     <group>
       {/* Tape-library rows: cold cabinets with sky LED slits. */}
-      {ROWS.map((r, i) => (
+      {VAULT_TAPE_ROWS.map((r, i) => (
         <group key={i} position={[r.x, 0, r.z]}>
           <mesh position={[0, 1.35, 0]}>
             <boxGeometry args={[2.5, 2.7, 0.8]} />
