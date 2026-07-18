@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784232496.4437804,
-    "ast_hash": "b28929302edd996c0538f2259c7201e7",
+    "mtime": 1784397904.4479933,
+    "ast_hash": "86b350b1ea88ac1813fd3e7f68352c62",
     "semantic_hash": ""
   },
   "README.md": {
@@ -380,8 +380,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/Experience.tsx": {
-    "mtime": 1784119499.642752,
-    "ast_hash": "f4e6215e1117f00d2b737e33851f7deb",
+    "mtime": 1784389874.6392047,
+    "ast_hash": "61b906fa24a661860431cd3a62793001",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/Hud.tsx": {
@@ -395,8 +395,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/RoomCanvas.tsx": {
-    "mtime": 1784230934.9078672,
-    "ast_hash": "232d5ab2bd9d6bbdbe86362adf3367ef",
+    "mtime": 1784397216.2685173,
+    "ast_hash": "7fdae399c20b6ebb9b6b1850265f05aa",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/StatusRack.tsx": {
@@ -405,8 +405,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/World.tsx": {
-    "mtime": 1783854542.8853865,
-    "ast_hash": "84a3500e82b985fc7621d23a7a40ce66",
+    "mtime": 1784389850.7142205,
+    "ast_hash": "83825ca4be40d9ae0f2fd306784e31c3",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/Avatar.tsx": {
@@ -420,13 +420,13 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreHud.tsx": {
-    "mtime": 1784231935.5591838,
-    "ast_hash": "53b5520eb8bcfbb7181de81a3ebb523c",
+    "mtime": 1784397222.9307241,
+    "ast_hash": "8618820378b4984c60141daa63df4fea",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreWorld.tsx": {
-    "mtime": 1784231945.3043172,
-    "ast_hash": "e4107f9f6bcb30e7a8cbbd1c899ec048",
+    "mtime": 1784389473.724505,
+    "ast_hash": "63446a0140ea3ba9ca6accfd0d84f2b6",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/LoginModal.tsx": {
@@ -445,8 +445,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/PlayerRig.tsx": {
-    "mtime": 1784230994.9671197,
-    "ast_hash": "482441ef9d0ef67669962caa0a95baad",
+    "mtime": 1784389807.0314198,
+    "ast_hash": "a0f3e7b54e2564a0e876ade7d4af20ad",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/PuzzleModal.tsx": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/store.ts": {
-    "mtime": 1784231799.2538333,
-    "ast_hash": "4f208bde91d0b97169b432736e33c908",
+    "mtime": 1784397224.8707843,
+    "ast_hash": "215e181011ead7e436ff94deb7bb6ab5",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/stations.ts": {
@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ServiceRacks.tsx": {
-    "mtime": 1784212827.3026273,
-    "ast_hash": "b6c5b1f1707fec836f8f80ab3deac231",
+    "mtime": 1784389835.8626087,
+    "ast_hash": "0459e6b64369ee5554146f6132a9388c",
     "semantic_hash": ""
   },
   "ascii-room.ts": {
@@ -570,8 +570,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/WitaClock.tsx": {
-    "mtime": 1784215299.584198,
-    "ast_hash": "e9fd73cc64845b6ead5fdf8134a9e9cb",
+    "mtime": 1784232977.78481,
+    "ast_hash": "6e121df670385fb0027379fd6dd7bb55",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/Hologram.tsx": {
@@ -580,13 +580,13 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/Wallboard.tsx": {
-    "mtime": 1784216347.1745937,
-    "ast_hash": "2d836ff1dd4aeb744802b7df9d45c6a3",
+    "mtime": 1784389473.724505,
+    "ast_hash": "35af91b77e556fa545499a5a8c20e850",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/VaultRoom.tsx": {
-    "mtime": 1784218779.592537,
-    "ast_hash": "559e829a687808c4af55720ce88d5eae",
+    "mtime": 1784389473.724505,
+    "ast_hash": "0c210b70c0069929e05e8271627bc9be",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/PostFX.tsx": {
@@ -600,8 +600,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/HallRoom.tsx": {
-    "mtime": 1784224029.2587516,
-    "ast_hash": "03d2cf1512e36e2fdf7fe945eac020da",
+    "mtime": 1784389473.724505,
+    "ast_hash": "006e4be6c07d28eebb869ecd7e8b971e",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/shell/commands.ts": {
@@ -615,8 +615,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/RecordBoard.tsx": {
-    "mtime": 1784230160.9926522,
-    "ast_hash": "c0d758cf3482b0cc4c07378cf9bc11b1",
+    "mtime": 1784389473.724505,
+    "ast_hash": "0d8538da06163de77e265943ee38d455",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/SettingsModal.tsx": {
@@ -642,6 +642,11 @@
   "src/components/three/serverroom/explore/EndingOverlay.tsx": {
     "mtime": 1784232002.0065265,
     "ast_hash": "568107b0b0e4306f8cb8dd1ae613fe1f",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/useNearby.ts": {
+    "mtime": 1784232699.251185,
+    "ast_hash": "a4a1ab03e184b5357d27914ff16fe362",
     "semantic_hash": ""
   }
 }

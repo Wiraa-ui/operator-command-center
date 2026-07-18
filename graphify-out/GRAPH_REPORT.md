@@ -1,16 +1,16 @@
-# Graph Report - portfolio  (2026-07-17)
+# Graph Report - portfolio  (2026-07-19)
 
 ## Corpus Check
-- 121 files · ~105,530 words
+- 122 files · ~107,289 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 811 nodes · 1568 edges · 47 communities (42 shown, 5 thin omitted)
+- 826 nodes · 1625 edges · 46 communities (43 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `68fb309b`
+- Built from commit: `3d9feb32`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -55,20 +55,19 @@
 - [[_COMMUNITY_Community 41|Community 41]]
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
-- [[_COMMUNITY_Community 45|Community 45]]
 - [[_COMMUNITY_Community 47|Community 47]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `useExplore()` - 32 edges
+1. `useExplore()` - 34 edges
 2. `PALETTE` - 32 edges
-3. `emit()` - 23 edges
+3. `emit()` - 25 edges
 4. `RoomAudio` - 22 edges
 5. `compilerOptions` - 17 edges
-6. `cn()` - 16 edges
-7. `addToast()` - 14 edges
-8. `setModal()` - 14 edges
-9. `roomApi()` - 13 edges
-10. `getExploreState()` - 13 edges
+6. `addToast()` - 16 edges
+7. `cn()` - 16 edges
+8. `getExploreState()` - 15 edges
+9. `useNearby()` - 15 edges
+10. `setModal()` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `fetch()` --calls--> `asciiRoom()`  [EXTRACTED]
@@ -85,19 +84,19 @@
 ## Import Cycles
 - None detected.
 
-## Communities (47 total, 5 thin omitted)
+## Communities (46 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.03
 Nodes (58): dependencies, class-variance-authority, clsx, cmdk, date-fns, embla-carousel-react, framer-motion, @hookform/resolvers (+50 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.26
-Nodes (7): corridorEndZ(), endMargin(), progressToZ(), RoomCameraRig(), useActiveStation(), RoomHUD(), scrollTopFor()
+Cohesion: 0.12
+Nodes (16): ExploreHud(), buildExploreMap(), Minimap(), resetPlayer(), corridorEndZ(), endMargin(), progressToZ(), RoomCameraRig() (+8 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.05
-Nodes (37): askAssistant, messageSchema, consumeLastCapturedError(), renderErrorPage(), Route, Route, Route, Route (+29 more)
+Nodes (38): askAssistant, messageSchema, consumeLastCapturedError(), renderErrorPage(), Route, Route, Route, Route (+30 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.15
@@ -108,20 +107,20 @@ Cohesion: 0.06
 Nodes (34): devDependencies, eslint, eslint-config-prettier, @eslint/js, eslint-plugin-prettier, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals (+26 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.17
-Nodes (18): NpcModal(), Script, scriptFor(), activeQuestInfo(), NpcId, NPCS, QUEST_NODES, questById() (+10 more)
+Cohesion: 0.15
+Nodes (20): HumanoidLook, NpcModal(), Script, scriptFor(), activeQuestInfo(), NpcDef, NpcId, NPCS (+12 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.07
-Nodes (38): blocked(), slideMove(), WallRect, DialogueLine, setDialogue(), ArsipRack(), GHOST_SLICES, KIRANA_LOOK (+30 more)
+Cohesion: 0.14
+Nodes (23): DialogueLine, setDialogue(), ARWAH_LINES, durationOf(), Line, next(), queue, say() (+15 more)
 
 ### Community 9 - "Community 9"
 Cohesion: 0.10
 Nodes (19): compilerOptions, allowImportingTsExtensions, jsx, lib, module, moduleResolution, noEmit, noFallthroughCasesInSwitch (+11 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.11
-Nodes (18): SPAWN, ALL_ZONES, clampNum(), DEFAULT_SETTINGS, DoorId, emitQuestEvent(), EMPTY_PERSIST, ExploreModal (+10 more)
+Cohesion: 0.10
+Nodes (20): PRESETS, SettingsModal(), ALL_ZONES, clampNum(), DEFAULT_SETTINGS, DoorId, emitQuestEvent(), EMPTY_PERSIST (+12 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.11
@@ -148,20 +147,20 @@ Cohesion: 0.21
 Nodes (9): secondaryProjects, Skill, SkillGroup, skillGroups, SkillSource, sourceLabel, cls, SourceBadge() (+1 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.09
-Nodes (30): HIRE_STATION, HOUSE_LIGHT_BASE, STATUS_STATION, HallRoom(), ROWS, Hologram(), BENGKEL, CORE (+22 more)
+Cohesion: 0.12
+Nodes (24): ExploreWorld(), HIRE_STATION, HOUSE_LIGHT_BASE, STATUS_STATION, wallCenter(), HallRoom(), ROWS, Hologram() (+16 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.14
-Nodes (12): FirstPersonArms(), Gait, OPERATOR_LOOK, ThirdPersonBody(), HumanoidFigure(), HumanoidLook, HumanoidPose, useLookAssets() (+4 more)
+Cohesion: 0.22
+Nodes (7): FirstPersonArms(), Gait, OPERATOR_LOOK, ThirdPersonBody(), HumanoidFigure(), HumanoidPose, useLookAssets()
 
 ### Community 20 - "Community 20"
 Cohesion: 0.16
 Nodes (16): cn(), FadeIn(), FadeInProps, Magnetic(), MagneticProps, ScrambleText(), ScrambleTextProps, TextReveal() (+8 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.15
-Nodes (11): AudioZone, SCALE, VOICES, ZoneVoice, ExploreHud(), buildExploreMap(), Minimap(), beginSession() (+3 more)
+Cohesion: 0.19
+Nodes (11): blocked(), slideMove(), SPAWN, WallRect, DOOR1, DOOR2, DOORN, DOORW (+3 more)
 
 ### Community 22 - "Community 22"
 Cohesion: 0.27
@@ -176,12 +175,12 @@ Cohesion: 0.40
 Nodes (5): isWitchingHour(), WITA_HOUR, WITA_TIME, WitaClock(), witaHour()
 
 ### Community 25 - "Community 25"
-Cohesion: 0.14
-Nodes (20): downloadCertificate(), LoginModal(), Auth, authRequest(), connectPresence(), disconnectPresence(), handleRoster(), loadAuth() (+12 more)
+Cohesion: 0.11
+Nodes (25): downloadCertificate(), EndingOverlay, SettingsModal, StoryLogModal, StudyModal, TerminalModal, LoginModal(), Auth (+17 more)
 
 ### Community 26 - "Community 26"
-Cohesion: 0.16
-Nodes (15): Dust(), EndingOverlay(), ExploreWorld(), wallCenter(), DOOR_GAPS, PlayerRig(), useExplore(), StoryLogModal() (+7 more)
+Cohesion: 0.11
+Nodes (20): DoorGate(), Dust(), EndingOverlay(), DOOR_GAPS, DoorDef, ExploreMap, OnlinePlayers(), PEER_LOOK (+12 more)
 
 ### Community 27 - "Community 27"
 Cohesion: 0.22
@@ -192,8 +191,8 @@ Cohesion: 0.33
 Nodes (5): Dokumen, Jalankan (dev), Peta folder `src/`, Portfolio — Mulai dari sini, Stack
 
 ### Community 29 - "Community 29"
-Cohesion: 0.19
-Nodes (8): site, Route, Footer(), Container(), PageShell(), Scene, SceneCanvas(), CommandPalette()
+Cohesion: 0.21
+Nodes (7): site, Footer(), Container(), PageShell(), Scene, SceneCanvas(), CommandPalette()
 
 ### Community 31 - "Community 31"
 Cohesion: 0.11
@@ -204,56 +203,60 @@ Cohesion: 0.24
 Nodes (7): FadeInStagger(), FadeInStaggerItem(), FadeInStaggerProps, horizons, FlagshipProject(), ProjectCard(), SectionHeader()
 
 ### Community 33 - "Community 33"
-Cohesion: 0.10
-Nodes (23): finiteOrNull(), getRoomStatus, NULL_STATUS, readProc(), BANNER, ALIASES, Cmd, completions() (+15 more)
+Cohesion: 0.07
+Nodes (32): finiteOrNull(), getRoomStatus, NULL_STATUS, readProc(), RoomStatus, BANNER, TerminalModal(), formatRam() (+24 more)
 
 ### Community 34 - "Community 34"
 Cohesion: 0.25
 Nodes (7): Aturan keras untuk SEMUA modul, Geometri dunia, Integrasi (dikerjakan integrator, bukan agent), Pembagian modul (1 file per agent), Perluasan digital twin (backlog-1, 2026-07-16 — ServiceRacks/room-server), Security (WAJIB — StatusRack/roomStatus), The Server Room — build contract (v1)
 
 ### Community 35 - "Community 35"
-Cohesion: 0.13
-Nodes (14): WINDS, HELD_KEYS, MOVE_KEYS, input, player, setInteract(), toggleView(), ARSIP_RACKS (+6 more)
+Cohesion: 0.12
+Nodes (15): AudioZone, SCALE, VOICES, ZoneVoice, WINDS, HELD_KEYS, MOVE_KEYS, input (+7 more)
 
 ### Community 36 - "Community 36"
-Cohesion: 0.28
-Nodes (8): RoomStatus, formatRam(), formatUptime(), labelStyle, NULL_STATUS, rowStyle, StatusRack(), YAW
+Cohesion: 0.25
+Nodes (5): ArsipRack(), GHOST_SLICES, KIRANA_LOOK, KiranaBody(), VhsGhost()
 
 ### Community 38 - "Community 38"
-Cohesion: 0.16
-Nodes (12): buildNetwork(), Cables(), ceilingRun(), floorRun(), makeTube(), TRUNK_X, CORRIDOR, SIDE_X (+4 more)
+Cohesion: 0.14
+Nodes (14): fxBus, buildNetwork(), Cables(), ceilingRun(), floorRun(), makeTube(), TRUNK_X, CORRIDOR (+6 more)
 
 ### Community 40 - "Community 40"
-Cohesion: 0.25
-Nodes (18): addAchievement(), addToast(), beginNightShift(), cancelPurge(), closeStoryLog(), collectLog(), completePurge(), dismissEnding() (+10 more)
+Cohesion: 0.20
+Nodes (18): addAchievement(), addToast(), beginNightShift(), beginSession(), cancelPurge(), clearDrill(), completePurge(), dismissEnding() (+10 more)
 
 ### Community 43 - "Community 43"
 Cohesion: 0.40
 Nodes (4): Monogram(), Props, links, Nav()
 
+### Community 44 - "Community 44"
+Cohesion: 0.16
+Nodes (12): MASTER_TAPE_POS, SERVICE_RACKS, RecordBoard(), Run, ServiceRacks(), TwinPayload, UpMap, useNearby() (+4 more)
+
 ### Community 47 - "Community 47"
-Cohesion: 0.22
-Nodes (7): RecordBoard(), Run, PRESETS, replayEnding(), STORY_LOGS, StoryLog, PALETTE
+Cohesion: 0.38
+Nodes (6): closeStoryLog(), collectLog(), replayEnding(), setModal(), triggerInteract(), StoryLogModal()
 
 ## Knowledge Gaps
-- **300 isolated node(s):** `RACK_LABEL`, `$schema`, `style`, `rsc`, `tsx` (+295 more)
+- **308 isolated node(s):** `RACK_LABEL`, `$schema`, `style`, `rsc`, `tsx` (+303 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `site` connect `Community 29` to `Community 32`, `Community 33`, `Community 4`, `Community 14`, `Community 47`, `Community 17`, `Community 27`?**
-  _High betweenness centrality (0.034) - this node is a cross-community bridge._
-- **Why does `RoomAudio` connect `Community 41` to `Community 33`, `Community 35`, `Community 10`, `Community 45`, `Community 21`, `Community 25`?**
+- **Why does `site` connect `Community 29` to `Community 32`, `Community 33`, `Community 4`, `Community 14`, `Community 17`, `Community 26`, `Community 27`?**
+  _High betweenness centrality (0.033) - this node is a cross-community bridge._
+- **Why does `RoomAudio` connect `Community 41` to `Community 33`, `Community 2`, `Community 35`, `Community 10`, `Community 25`, `Community 26`?**
   _High betweenness centrality (0.026) - this node is a cross-community bridge._
-- **Why does `PALETTE` connect `Community 47` to `Community 33`, `Community 2`, `Community 35`, `Community 36`, `Community 6`, `Community 38`, `Community 8`, `Community 44`, `Community 45`, `Community 18`, `Community 19`, `Community 23`, `Community 24`, `Community 25`, `Community 26`, `Community 27`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+- **Why does `PALETTE` connect `Community 26` to `Community 33`, `Community 2`, `Community 35`, `Community 36`, `Community 6`, `Community 38`, `Community 10`, `Community 44`, `Community 47`, `Community 18`, `Community 19`, `Community 23`, `Community 24`, `Community 25`, `Community 27`?**
+  _High betweenness centrality (0.021) - this node is a cross-community bridge._
 - **What connects `RACK_LABEL`, `$schema`, `style` to the rest of the system?**
-  _300 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _308 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.034482758620689655 - nodes in this community are weakly interconnected._
+- **Should `Community 2` be split into smaller, more focused modules?**
+  _Cohesion score 0.12121212121212122 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.0531986531986532 - nodes in this community are weakly interconnected._
-- **Should `Community 4` be split into smaller, more focused modules?**
-  _Cohesion score 0.14736842105263157 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.052597402597402594 - nodes in this community are weakly interconnected._
