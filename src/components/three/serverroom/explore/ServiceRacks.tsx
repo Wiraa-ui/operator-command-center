@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type * as THREE from "three";
 import { PALETTE } from "../types";
 import { SERVICE_RACKS } from "./layout";
+import { useNearby } from "./useNearby";
 
 /**
  * ServiceRacks — the CORE "digital twin" bank: one physical rack per real
@@ -30,6 +31,8 @@ interface TwinPayload {
 export function ServiceRacks({ reduced }: { reduced: boolean }) {
   const [up, setUp] = useState<UpMap>({});
   const [alert, setAlert] = useState(false);
+  // Labels are the DOM-heavy part; LEDs/meshes stay visible from anywhere.
+  const labelsNear = useNearby(19.3, -13.85, 18);
   // POST deadlines per service id — state (not a ref) so panels re-render.
   const [postMap, setPostMap] = useState<Record<string, number>>({});
   const prevUp = useRef<UpMap>({});
@@ -174,63 +177,65 @@ export function ServiceRacks({ reduced }: { reduced: boolean }) {
               />
             </mesh>
             {/* Nameplate + live status readout. */}
-            <Html
-              transform
-              position={[0.02, 1.95, 0.22]}
-              distanceFactor={1.6}
-              style={{ pointerEvents: "none", userSelect: "none" }}
-            >
-              <div
-                style={{
-                  width: 168,
-                  boxSizing: "border-box",
-                  padding: "9px 10px",
-                  background: PALETTE.bg,
-                  border: `1px solid ${statusColor}55`,
-                  borderRadius: 4,
-                  fontFamily: mono,
-                  textAlign: "left",
-                }}
+            {labelsNear && (
+              <Html
+                transform
+                position={[0.02, 1.95, 0.22]}
+                distanceFactor={1.6}
+                style={{ pointerEvents: "none", userSelect: "none" }}
               >
-                <div style={{ fontSize: 9, letterSpacing: "0.2em", color: PALETTE.slate }}>
-                  UNIT {String(i + 1).padStart(2, "0")} · LIVE
-                </div>
                 <div
                   style={{
-                    marginTop: 6,
-                    fontSize: 12,
-                    fontWeight: 700,
-                    letterSpacing: "0.06em",
-                    color: "#e2e8f0",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
+                    width: 168,
+                    boxSizing: "border-box",
+                    padding: "9px 10px",
+                    background: PALETTE.bg,
+                    border: `1px solid ${statusColor}55`,
+                    borderRadius: 4,
+                    fontFamily: mono,
+                    textAlign: "left",
                   }}
                 >
-                  {s.label}
-                </div>
-                <div
-                  style={{
-                    marginTop: 7,
-                    fontSize: 12,
-                    fontWeight: 700,
-                    letterSpacing: "0.1em",
-                    color: statusColor,
-                  }}
-                >
-                  {statusText}
-                </div>
-                {posting && (
-                  <div style={{ marginTop: 5, fontSize: 8.5, color: PALETTE.secondary }}>
-                    mem ok · net ok · svc start
+                  <div style={{ fontSize: 9, letterSpacing: "0.2em", color: PALETTE.slate }}>
+                    UNIT {String(i + 1).padStart(2, "0")} · LIVE
                   </div>
-                )}
-                {s.id === "portfolio" && !posting && (
-                  <div style={{ marginTop: 5, fontSize: 8.5, color: PALETTE.slate }}>
-                    ← unit ini melayani halamanmu
+                  <div
+                    style={{
+                      marginTop: 6,
+                      fontSize: 12,
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                      color: "#e2e8f0",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {s.label}
                   </div>
-                )}
-              </div>
-            </Html>
+                  <div
+                    style={{
+                      marginTop: 7,
+                      fontSize: 12,
+                      fontWeight: 700,
+                      letterSpacing: "0.1em",
+                      color: statusColor,
+                    }}
+                  >
+                    {statusText}
+                  </div>
+                  {posting && (
+                    <div style={{ marginTop: 5, fontSize: 8.5, color: PALETTE.secondary }}>
+                      mem ok · net ok · svc start
+                    </div>
+                  )}
+                  {s.id === "portfolio" && !posting && (
+                    <div style={{ marginTop: 5, fontSize: 8.5, color: PALETTE.slate }}>
+                      ← unit ini melayani halamanmu
+                    </div>
+                  )}
+                </div>
+              </Html>
+            )}
           </group>
         );
       })}

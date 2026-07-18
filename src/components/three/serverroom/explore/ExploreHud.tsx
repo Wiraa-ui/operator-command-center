@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { PALETTE } from "../types";
 import { roomAudio } from "./audio";
 import { downloadCertificate } from "./certificate";
@@ -14,12 +14,7 @@ import {
   submitSpeedrun,
 } from "./online";
 import { activeQuestInfo, type NpcId } from "./rpg";
-import { EndingOverlay } from "./EndingOverlay";
 import { PuzzleModal } from "./PuzzleModal";
-import { SettingsModal } from "./SettingsModal";
-import { StoryLogModal } from "./StoryLogModal";
-import { StudyModal } from "./StudyModal";
-import { TerminalModal } from "./TerminalModal";
 import {
   addToast,
   endNightShift,
@@ -46,6 +41,22 @@ import { stopSpeaking } from "./nightshift/voice";
 const mono = "font-op-mono";
 const TOUCH_LOOK_GAIN = 2.2;
 const JOY_RADIUS = 48;
+
+// Heavy, rarely-open modals load on demand: the terminal drags the whole
+// simulated shell + VFS text, the story/ending cards their prose.
+const TerminalModal = lazy(() =>
+  import("./TerminalModal").then((m) => ({ default: m.TerminalModal })),
+);
+const SettingsModal = lazy(() =>
+  import("./SettingsModal").then((m) => ({ default: m.SettingsModal })),
+);
+const StoryLogModal = lazy(() =>
+  import("./StoryLogModal").then((m) => ({ default: m.StoryLogModal })),
+);
+const EndingOverlay = lazy(() =>
+  import("./EndingOverlay").then((m) => ({ default: m.EndingOverlay })),
+);
+const StudyModal = lazy(() => import("./StudyModal").then((m) => ({ default: m.StudyModal })));
 
 export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => void }) {
   const modal = useExplore((s) => s.modal);
@@ -612,14 +623,16 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       {modal?.type === "puzzle" && (
         <PuzzleModal door={map.doors.find((d) => d.id === modal.doorId)!} />
       )}
-      {modal?.type === "terminal" && <TerminalModal />}
-      {modal?.type === "study" && <StudyModal slug={modal.slug} />}
+      <Suspense fallback={null}>
+        {modal?.type === "terminal" && <TerminalModal />}
+        {modal?.type === "study" && <StudyModal slug={modal.slug} />}
+        {modal?.type === "settings" && <SettingsModal />}
+        {modal?.type === "storylog" && <StoryLogModal logId={modal.logId} />}
+        {endingActive && <EndingOverlay />}
+      </Suspense>
       {modal?.type === "login" && <LoginModal />}
       {modal?.type === "npc" && <NpcModal npcId={modal.npcId as NpcId} />}
       {modal?.type === "certificate" && <CertificateModal achievements={achievements} />}
-      {modal?.type === "settings" && <SettingsModal />}
-      {modal?.type === "storylog" && <StoryLogModal logId={modal.logId} />}
-      {endingActive && <EndingOverlay />}
     </>
   );
 }

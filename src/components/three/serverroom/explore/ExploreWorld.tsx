@@ -14,6 +14,7 @@ import { RecordBoard } from "./RecordBoard";
 import { NPCS, QUEST_NODES } from "./rpg";
 import { ServiceRacks } from "./ServiceRacks";
 import { addToast, useExplore } from "./store";
+import { useNearby } from "./useNearby";
 import { Wallboard } from "./Wallboard";
 import { FORCE_WITCH, isWitchingHour, WitaClock } from "./WitaClock";
 import {
@@ -86,6 +87,9 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
   const vaultC = wallCenter(VAULT);
 
   const visibleWalls = useMemo(() => map.walls.filter((w) => !w.hidden), [map]);
+  // Distance culling for the LAB's DOM-heavy teaser cards + sticky note.
+  const labNear = useNearby(10, -8.6, 17);
+  const noteNear = useNearby(NOTE_POS.x, NOTE_POS.z, 13);
   // SHIFT MALAM: house lights drop to a fraction — the headlamp (toggleable,
   // ghost-lockable) becomes the player's main light source.
   const isNight = useExplore((s) => s.night);
@@ -190,91 +194,95 @@ export function ExploreWorld({ map, reduced }: { map: ExploreMap; reduced: boole
             <meshStandardMaterial color={PALETTE.metal} metalness={0.85} roughness={0.32} />
           </mesh>
           {/* Teaser card: experiments stay classified until launch. */}
-          <Html
-            transform
-            position={[0, 1.9, 0.05]}
-            distanceFactor={2}
-            style={{ pointerEvents: "none", userSelect: "none" }}
-          >
-            <div
-              style={{
-                width: 250,
-                padding: "22px 20px",
-                boxSizing: "border-box",
-                background: "rgba(15,23,42,0.88)",
-                border: "1px dashed rgba(245,158,11,0.5)",
-                borderRadius: 12,
-                fontFamily: mono,
-                textAlign: "center",
-              }}
+          {labNear && (
+            <Html
+              transform
+              position={[0, 1.9, 0.05]}
+              distanceFactor={2}
+              style={{ pointerEvents: "none", userSelect: "none" }}
             >
-              <div style={{ fontSize: 10, letterSpacing: "0.24em", color: "#9fb0cc" }}>
-                // {p.code} · CLASSIFIED
-              </div>
               <div
                 style={{
-                  marginTop: 12,
-                  fontSize: 44,
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
-                  color: PALETTE.accentBright,
-                  textShadow: "0 0 24px rgba(245,158,11,0.55)",
+                  width: 250,
+                  padding: "22px 20px",
+                  boxSizing: "border-box",
+                  background: "rgba(15,23,42,0.88)",
+                  border: "1px dashed rgba(245,158,11,0.5)",
+                  borderRadius: 12,
+                  fontFamily: mono,
+                  textAlign: "center",
                 }}
               >
-                ???
+                <div style={{ fontSize: 10, letterSpacing: "0.24em", color: "#9fb0cc" }}>
+                  // {p.code} · CLASSIFIED
+                </div>
+                <div
+                  style={{
+                    marginTop: 12,
+                    fontSize: 44,
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    color: PALETTE.accentBright,
+                    textShadow: "0 0 24px rgba(245,158,11,0.55)",
+                  }}
+                >
+                  ???
+                </div>
+                <div
+                  style={{
+                    marginTop: 12,
+                    fontSize: 12,
+                    letterSpacing: "0.3em",
+                    color: PALETTE.secondary,
+                  }}
+                >
+                  COMING SOON
+                </div>
+                <div style={{ marginTop: 12, fontSize: 9.5, color: "#7c8db0" }}>
+                  ▓▓▓▓▓░░░░░ deployment in progress
+                </div>
               </div>
-              <div
-                style={{
-                  marginTop: 12,
-                  fontSize: 12,
-                  letterSpacing: "0.3em",
-                  color: PALETTE.secondary,
-                }}
-              >
-                COMING SOON
-              </div>
-              <div style={{ marginTop: 12, fontSize: 9.5, color: "#7c8db0" }}>
-                ▓▓▓▓▓░░░░░ deployment in progress
-              </div>
-            </div>
-          </Html>
+            </Html>
+          )}
         </group>
       ))}
 
       {/* NOTE panel with the CORE access code — the LAB treasure. */}
       <group position={[NOTE_POS.x, 0, NOTE_POS.z]} rotation-y={-Math.PI / 2}>
-        <Html
-          transform
-          position={[0, 1.75, 0.05]}
-          distanceFactor={2}
-          style={{ pointerEvents: "none", userSelect: "none" }}
-        >
-          <div
-            style={{
-              width: 230,
-              padding: "16px 18px",
-              boxSizing: "border-box",
-              background: "rgba(245, 158, 11, 0.14)",
-              border: `1px solid ${PALETTE.accentBright}`,
-              borderRadius: 8,
-              boxShadow: `0 0 34px rgba(245,158,11,0.35)`,
-              fontFamily: mono,
-              color: PALETTE.accentBright,
-              textAlign: "center",
-            }}
+        {noteNear && (
+          <Html
+            transform
+            position={[0, 1.75, 0.05]}
+            distanceFactor={2}
+            style={{ pointerEvents: "none", userSelect: "none" }}
           >
-            <div style={{ fontSize: 10, letterSpacing: "0.2em" }}>// STICKY NOTE · OPS</div>
-            <div style={{ fontSize: 11, marginTop: 8, color: "#e2e8f0" }}>
-              jangan lupa kode pintu CORE:
+            <div
+              style={{
+                width: 230,
+                padding: "16px 18px",
+                boxSizing: "border-box",
+                background: "rgba(245, 158, 11, 0.14)",
+                border: `1px solid ${PALETTE.accentBright}`,
+                borderRadius: 8,
+                boxShadow: `0 0 34px rgba(245,158,11,0.35)`,
+                fontFamily: mono,
+                color: PALETTE.accentBright,
+                textAlign: "center",
+              }}
+            >
+              <div style={{ fontSize: 10, letterSpacing: "0.2em" }}>// STICKY NOTE · OPS</div>
+              <div style={{ fontSize: 11, marginTop: 8, color: "#e2e8f0" }}>
+                jangan lupa kode pintu CORE:
+              </div>
+              <div style={{ fontSize: 24, fontWeight: 700, marginTop: 8, letterSpacing: "0.1em" }}>
+                {ACCESS_CODE}
+              </div>
+              <div style={{ fontSize: 9.5, marginTop: 8, color: "#9fb0cc" }}>
+                (tolong hapus note ini — ops · 2026)
+              </div>
             </div>
-            <div style={{ fontSize: 24, fontWeight: 700, marginTop: 8, letterSpacing: "0.1em" }}>
-              {ACCESS_CODE}
-            </div>
-            <div style={{ fontSize: 9.5, marginTop: 8, color: "#9fb0cc" }}>
-              (tolong hapus note ini — ops · 2026)
-            </div>
-          </div>
-        </Html>
+          </Html>
+        )}
         <pointLight position={[0, 1.9, 0.7]} intensity={3} color={PALETTE.accent} distance={4} />
       </group>
 

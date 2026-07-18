@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { PALETTE } from "../types";
 import { HALL, TUNNEL } from "./layout";
 import { useExplore } from "./store";
+import { useNearby } from "./useNearby";
 
 /**
  * HallRoom — the DATA HALL cathedral: six hot/cold rack rows rendered as two
@@ -28,6 +29,8 @@ function slots(): number[] {
 
 export function HallRoom({ reduced }: { reduced: boolean }) {
   const isNight = useExplore((s) => s.night);
+  // Signage is DOM; only exists while the player is in/near the hall.
+  const signsNear = useNearby(-24, -21, 22);
   const lightMul = isNight ? 0.15 : 1;
   const cabinets = useRef<THREE.InstancedMesh>(null);
   const leds = useRef<THREE.InstancedMesh>(null);
@@ -103,35 +106,36 @@ export function HallRoom({ reduced }: { reduced: boolean }) {
       </instancedMesh>
 
       {/* Aisle signage hung from the ceiling. */}
-      {[
-        { z: -18, text: "HOT AISLE ▸", color: PALETTE.accentBright },
-        { z: -22.8, text: "◂ COLD AISLE", color: PALETTE.secondary },
-      ].map((s) => (
-        <Html
-          key={s.z}
-          transform
-          position={[-24, 3.3, s.z]}
-          distanceFactor={3}
-          style={{ pointerEvents: "none", userSelect: "none" }}
-        >
-          <div
-            style={{
-              fontFamily: mono,
-              fontSize: 16,
-              fontWeight: 700,
-              letterSpacing: "0.3em",
-              color: s.color,
-              background: "rgba(11,17,32,0.85)",
-              border: `1px solid ${s.color}55`,
-              borderRadius: 6,
-              padding: "6px 14px",
-              whiteSpace: "nowrap",
-            }}
+      {signsNear &&
+        [
+          { z: -18, text: "HOT AISLE ▸", color: PALETTE.accentBright },
+          { z: -22.8, text: "◂ COLD AISLE", color: PALETTE.secondary },
+        ].map((s) => (
+          <Html
+            key={s.z}
+            transform
+            position={[-24, 3.3, s.z]}
+            distanceFactor={3}
+            style={{ pointerEvents: "none", userSelect: "none" }}
           >
-            {s.text}
-          </div>
-        </Html>
-      ))}
+            <div
+              style={{
+                fontFamily: mono,
+                fontSize: 16,
+                fontWeight: 700,
+                letterSpacing: "0.3em",
+                color: s.color,
+                background: "rgba(11,17,32,0.85)",
+                border: `1px solid ${s.color}55`,
+                borderRadius: 6,
+                padding: "6px 14px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {s.text}
+            </div>
+          </Html>
+        ))}
 
       {/* House lights: two amber bays + the dying corner fluorescent. */}
       <pointLight
@@ -165,29 +169,31 @@ export function HallRoom({ reduced }: { reduced: boolean }) {
         distance={6}
         decay={1.8}
       />
-      <Html
-        transform
-        position={[HALL.xMax - 0.1, 2.55, (TUNNEL.zMin + TUNNEL.zMax) / 2]}
-        rotation-y={-Math.PI / 2}
-        distanceFactor={2.4}
-        style={{ pointerEvents: "none", userSelect: "none" }}
-      >
-        <div
-          style={{
-            fontFamily: mono,
-            fontSize: 11,
-            letterSpacing: "0.22em",
-            color: PALETTE.secondary,
-            background: "rgba(11,17,32,0.85)",
-            border: `1px solid ${PALETTE.secondary}55`,
-            borderRadius: 6,
-            padding: "5px 10px",
-            whiteSpace: "nowrap",
-          }}
+      {signsNear && (
+        <Html
+          transform
+          position={[HALL.xMax - 0.1, 2.55, (TUNNEL.zMin + TUNNEL.zMax) / 2]}
+          rotation-y={-Math.PI / 2}
+          distanceFactor={2.4}
+          style={{ pointerEvents: "none", userSelect: "none" }}
         >
-          ⚠ TEROWONGAN KABEL → VAULT
-        </div>
-      </Html>
+          <div
+            style={{
+              fontFamily: mono,
+              fontSize: 11,
+              letterSpacing: "0.22em",
+              color: PALETTE.secondary,
+              background: "rgba(11,17,32,0.85)",
+              border: `1px solid ${PALETTE.secondary}55`,
+              borderRadius: 6,
+              padding: "5px 10px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            ⚠ TEROWONGAN KABEL → VAULT
+          </div>
+        </Html>
+      )}
     </group>
   );
 }

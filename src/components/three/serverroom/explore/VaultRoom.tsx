@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { PALETTE } from "../types";
 import { MASTER_TAPE_POS, VAULT } from "./layout";
 import { useExplore } from "./store";
+import { useNearby } from "./useNearby";
 
 /**
  * VaultRoom — the cold-storage tape library south of CORE. Sky-tinted and
@@ -25,6 +26,7 @@ const ROWS = [
 
 export function VaultRoom({ reduced }: { reduced: boolean }) {
   const isNight = useExplore((s) => s.night);
+  const logNear = useNearby(VAULT.xMin + 0.15, -27.6, 14);
   const lightMul = isNight ? 0.25 : 1;
   const tape = useRef<THREE.Mesh>(null);
 
@@ -60,44 +62,46 @@ export function VaultRoom({ reduced }: { reduced: boolean }) {
 
       {/* BACKUP LOG panel on the vault's west wall. */}
       <group position={[VAULT.xMin + 0.15, 0, -27.6]} rotation-y={Math.PI / 2}>
-        <Html
-          transform
-          position={[0, 1.9, 0.05]}
-          distanceFactor={2}
-          style={{ pointerEvents: "none", userSelect: "none" }}
-        >
-          <div
-            style={{
-              width: 250,
-              boxSizing: "border-box",
-              padding: "12px 14px",
-              background: PALETTE.bg,
-              border: `1px solid ${PALETTE.secondary}55`,
-              borderRadius: 6,
-              fontFamily: mono,
-              color: "#cbd5e1",
-              fontSize: 11,
-              lineHeight: 1.5,
-            }}
+        {logNear && (
+          <Html
+            transform
+            position={[0, 1.9, 0.05]}
+            distanceFactor={2}
+            style={{ pointerEvents: "none", userSelect: "none" }}
           >
-            <div style={{ fontSize: 9, letterSpacing: "0.22em", color: PALETTE.secondary }}>
-              // BACKUP LOG — COLD STORAGE
+            <div
+              style={{
+                width: 250,
+                boxSizing: "border-box",
+                padding: "12px 14px",
+                background: PALETTE.bg,
+                border: `1px solid ${PALETTE.secondary}55`,
+                borderRadius: 6,
+                fontFamily: mono,
+                color: "#cbd5e1",
+                fontSize: 11,
+                lineHeight: 1.5,
+              }}
+            >
+              <div style={{ fontSize: 9, letterSpacing: "0.22em", color: PALETTE.secondary }}>
+                // BACKUP LOG — COLD STORAGE
+              </div>
+              <div style={{ marginTop: 8 }}>
+                jadwal &nbsp;: harian, dini hari
+                <br />
+                retensi &nbsp;: 30 hari
+                <br />
+                uji-restore : <span style={{ color: PALETTE.accentBright }}>LULUS</span>
+                <br />
+                aturan &nbsp;&nbsp;: 3-2-1
+              </div>
+              <div style={{ marginTop: 8, fontSize: 9.5, color: "#7c8db0" }}>
+                mesin ini mem-backup dirinya sendiri setiap malam — termasuk ruangan yang sedang
+                kamu jelajahi.
+              </div>
             </div>
-            <div style={{ marginTop: 8 }}>
-              jadwal &nbsp;: harian, dini hari
-              <br />
-              retensi &nbsp;: 30 hari
-              <br />
-              uji-restore : <span style={{ color: PALETTE.accentBright }}>LULUS</span>
-              <br />
-              aturan &nbsp;&nbsp;: 3-2-1
-            </div>
-            <div style={{ marginTop: 8, fontSize: 9.5, color: "#7c8db0" }}>
-              mesin ini mem-backup dirinya sendiri setiap malam — termasuk ruangan yang sedang kamu
-              jelajahi.
-            </div>
-          </div>
-        </Html>
+          </Html>
+        )}
       </group>
 
       {/* Master-tape display case + the golden relic. */}

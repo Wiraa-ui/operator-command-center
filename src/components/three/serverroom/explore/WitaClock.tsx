@@ -1,6 +1,7 @@
 import { Html } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import { PALETTE } from "../types";
+import { useNearby } from "./useNearby";
 
 /**
  * WitaClock — wall clock above the CORE twin rack bank, ticking in the
@@ -39,13 +40,16 @@ export const FORCE_WITCH =
 const mono = "var(--font-op-mono, monospace)";
 
 export function WitaClock({ witching }: { witching: boolean }) {
+  const near = useNearby(19.34, -13.75, 18);
   const [time, setTime] = useState(() => WITA_TIME.format(new Date()));
 
   useEffect(() => {
+    if (!near) return; // far clocks don't tick the DOM
     const id = setInterval(() => setTime(WITA_TIME.format(new Date())), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [near]);
 
+  if (!near) return null;
   return (
     <group position={[19.34, 0, -13.75]} rotation-y={Math.PI}>
       <Html

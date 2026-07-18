@@ -2,9 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { getStations } from "./stations";
 import { RoomHUD } from "./Hud";
 import { roomAudio } from "./explore/audio";
-import { ExploreHud } from "./explore/ExploreHud";
 import { buildExploreMap } from "./explore/layout";
-import { Minimap } from "./explore/Minimap";
 import { beginSession, resetPlayer } from "./explore/store";
 
 /**
@@ -19,6 +17,12 @@ import { beginSession, resetPlayer } from "./explore/store";
  * and the procedural ambience starts on the first control gesture.
  */
 const RoomCanvas = lazy(() => import("./RoomCanvas"));
+// Explore-only DOM (HUD, minimap, every modal, the shell + story text) stays
+// out of the first-paint bundle; it loads when EXPLORE actually starts.
+const ExploreHud = lazy(() =>
+  import("./explore/ExploreHud").then((m) => ({ default: m.ExploreHud })),
+);
+const Minimap = lazy(() => import("./explore/Minimap").then((m) => ({ default: m.Minimap })));
 
 /** vh of scroll per station — enough dwell to read each rack on the walk. */
 const VH_PER_STATION = 85;
@@ -78,10 +82,10 @@ export function ServerRoomExperience({
           <RoomHUD stations={stations} onExit={onExit} onExplore={() => setMode("explore")} />
         </>
       ) : (
-        <>
+        <Suspense fallback={null}>
           <ExploreHud map={map} onExit={() => setMode("walk")} />
           <Minimap map={map} />
-        </>
+        </Suspense>
       )}
     </>
   );
