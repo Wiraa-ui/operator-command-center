@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { PALETTE } from "../types";
 import { roomAudio } from "./audio";
 import { downloadCertificate } from "./certificate";
-import type { ExploreMap } from "./layout";
+import { SERVICE_RACKS, type ExploreMap } from "./layout";
 import { LoginModal } from "./LoginModal";
 import { NpcModal } from "./NpcModal";
 import {
@@ -16,13 +16,18 @@ import {
 import { activeQuestInfo, type NpcId } from "./rpg";
 import { PuzzleModal } from "./PuzzleModal";
 import {
+  addAchievement,
   addToast,
+  clearDrill,
   endNightShift,
+  getExploreState,
   input,
+  photoBus,
   setModal,
   setMuted,
   setPresenceVisible,
   setUser,
+  startDrill,
   toggleView,
   triggerInteract,
   useExplore,
@@ -125,6 +130,29 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
     () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
     [],
   );
+
+  // Operator drill: once per session, 75–150s in, a random CORE twin rack
+  // alarms (day shift only). Ignored drills auto-reset after two minutes.
+  useEffect(() => {
+    let fireT: ReturnType<typeof setTimeout>;
+    let expireT: ReturnType<typeof setTimeout>;
+    const fire = () => {
+      const s = getExploreState();
+      if (s.night || s.modal || s.drill) {
+        fireT = setTimeout(fire, 45_000); // bad moment — try again later
+        return;
+      }
+      const rack = SERVICE_RACKS[Math.floor(Math.random() * SERVICE_RACKS.length)];
+      startDrill(rack.id, rack.label);
+      expireT = setTimeout(() => clearDrill("// drill berakhir — alarm direset otomatis"), 120_000);
+    };
+    fireT = setTimeout(fire, 75_000 + Math.random() * 75_000);
+    return () => {
+      clearTimeout(fireT);
+      clearTimeout(expireT);
+      clearDrill();
+    };
+  }, []);
 
   // Restore the badge session and keep presence alive for the whole EXPLORE
   // session (login via the modal reuses the same socket lifecycle).
@@ -587,6 +615,30 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
             🏆 sertifikat
           </button>
         )}
+        <button
+          onClick={() => {
+            if (!photoBus.capture) {
+              addToast("📷 kamera belum siap — coba lagi sebentar");
+              return;
+            }
+            try {
+              photoBus.capture();
+              addToast("📸 foto tersimpan — cek unduhan");
+              addAchievement("FOTOGRAFER — ruang server diabadikan");
+            } catch {
+              addToast("📷 gagal mengambil foto di perangkat ini");
+            }
+          }}
+          className={`rounded-full border px-3 py-2 ${mono} text-[13px]`}
+          style={{
+            borderColor: "rgba(124,141,176,0.4)",
+            background: "rgba(15,23,42,0.7)",
+            color: "#e2e8f0",
+          }}
+          aria-label="Ambil foto — unduh tangkapan layar PNG"
+        >
+          📷
+        </button>
         <button
           onClick={() => {
             setMuted(!muted);

@@ -91,6 +91,8 @@ export interface ExploreState {
   endingActive: boolean;
   /** Epilogue has been seen before (persisted; replay via LOG 07). */
   endingSeen: boolean;
+  /** Active "operator drill" incident on a CORE twin rack (session-only). */
+  drill: { rackId: string; label: string } | null;
 }
 
 export interface GameSettings {
@@ -119,6 +121,14 @@ export const input = {
 /** y/vy: jump arc — y is height above the floor, 0 = grounded. */
 export const player = { x: SPAWN.x, z: SPAWN.z, y: 0, vy: 0, yaw: SPAWN.yaw, pitch: 0 };
 
+/** Konami easter egg: while now < raveUntil every corridor LED strobes
+    (World.tsx reads this per-frame; amber/sky/white only — palette mandate). */
+export const fxBus = { raveUntil: 0 };
+
+/** Photo mode: RoomCanvas registers a capture fn (render → PNG download);
+    the HUD button calls it. Null outside the canvas lifecycle. */
+export const photoBus = { capture: null as (() => void) | null };
+
 // Read-only debug/E2E hook (console: __ra.player) — cheap, and the state is
 // all client-side game progress anyway.
 if (typeof window !== "undefined") {
@@ -128,6 +138,8 @@ if (typeof window !== "undefined") {
     // E2E hooks for the hidden night mode (all state is client-side anyway).
     night,
     beginNightShift: () => beginNightShift(),
+    startDrill: (id: string, label: string) => startDrill(id, label),
+    photoReady: () => photoBus.capture !== null,
     audio: () => roomAudio.debugState(),
   };
 }
@@ -227,6 +239,7 @@ function initialState(): ExploreState {
     collectedLogs: p.collectedLogs,
     endingSeen: p.endingSeen,
     endingActive: false,
+    drill: null,
     modal: null,
     interact: null,
     toasts: [],
@@ -442,8 +455,30 @@ export function beginSession() {
     purged: [],
     purging: null,
     moksa: false,
+    drill: null,
   };
   emit();
+}
+
+/* ------------------------- operator drill ----------------------------- */
+
+/** Random cosmetic incident: one CORE twin rack alarms until E-restarted.
+    Scheduled by ExploreHud; day shift only, at most one at a time. */
+export function startDrill(rackId: string, label: string) {
+  if (state.drill || state.night) return;
+  state = { ...state, drill: { rackId, label } };
+  emit();
+  roomAudio.sfx("deny");
+  addToast(`⚠ OPERATOR DRILL — alarm di rak ${label} (bank CORE)`);
+  addToast("Datangi rak yang berkedip · [E] restart service");
+}
+
+/** Clears an unresolved drill (timeout / session teardown). */
+export function clearDrill(reason?: string) {
+  if (!state.drill) return;
+  state = { ...state, drill: null };
+  emit();
+  if (reason) addToast(reason);
 }
 
 export function unlockDoor(id: DoorId) {
@@ -492,6 +527,7 @@ export function beginNightShift() {
     purging: null,
     moksa: false,
     modal: null,
+    drill: null, // the night crew has bigger problems than a drill
   };
   persist();
   emit();
@@ -547,6 +583,16 @@ export function triggerInteract() {
   if (id.startsWith("node:")) {
     // Quest patch panel: instant check, stay in pointer lock.
     emitQuestEvent(id);
+    return;
+  }
+  if (id.startsWith("drill:")) {
+    // Cosmetic restart: the alarm dies, the operator gets their badge.
+    const label = state.drill?.label ?? "SERVICE";
+    state = { ...state, drill: null };
+    emit();
+    roomAudio.sfx("unlock");
+    addToast(`✔ ${label} direstart — layanan pulih · drill selesai`);
+    addAchievement("FIRST RESPONDER — alarm drill ditangani");
     return;
   }
   if (id === "vault:master") {

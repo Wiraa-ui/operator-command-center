@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type * as THREE from "three";
 import { PALETTE } from "../types";
 import { SERVICE_RACKS } from "./layout";
+import { getExploreState, useExplore } from "./store";
 import { useNearby } from "./useNearby";
 
 /**
@@ -31,6 +32,8 @@ interface TwinPayload {
 export function ServiceRacks({ reduced }: { reduced: boolean }) {
   const [up, setUp] = useState<UpMap>({});
   const [alert, setAlert] = useState(false);
+  // Operator drill: the chosen rack strobes amber until E-restarted.
+  const drill = useExplore((s) => s.drill);
   // Labels are the DOM-heavy part; LEDs/meshes stay visible from anywhere.
   const labelsNear = useNearby(19.3, -13.85, 18);
   // POST deadlines per service id — state (not a ref) so panels re-render.
@@ -95,13 +98,18 @@ export function ServiceRacks({ reduced }: { reduced: boolean }) {
     if (reduced) return;
     const t = clock.elapsedTime;
     const now = Date.now();
+    const drillId = getExploreState().drill?.rackId ?? null;
     SERVICE_RACKS.forEach((s, i) => {
       const strip = stripMats.current[i];
       const fault = faultMats.current[i];
       const state = up[s.id] ?? null;
       const posting = (postMap[s.id] ?? 0) > now;
       if (strip) {
-        if (posting) {
+        if (s.id === drillId) {
+          // Drill alarm: hard amber strobe — clearly distinct from the slow
+          // breathing (alive) and from red (a real outage).
+          strip.color.set(Math.sin(t * 16 + i) > 0 ? PALETTE.accentBright : PALETTE.metal);
+        } else if (posting) {
           // POST: fast bright flicker while the machine "reboots".
           strip.color.set(Math.sin(t * 26 + i) > -0.2 ? PALETTE.accentBright : PALETTE.metal);
         } else if (state === true) {
@@ -113,8 +121,12 @@ export function ServiceRacks({ reduced }: { reduced: boolean }) {
         }
       }
       if (fault) {
-        const blink = state === false && Math.sin(t * 4 + i) > 0;
-        fault.color.set(blink ? FAULT_RED : PALETTE.metal);
+        if (s.id === drillId) {
+          fault.color.set(Math.sin(t * 16 + i) > 0 ? PALETTE.accentBright : PALETTE.metal);
+        } else {
+          const blink = state === false && Math.sin(t * 4 + i) > 0;
+          fault.color.set(blink ? FAULT_RED : PALETTE.metal);
+        }
       }
     });
     if (alarm.current) {
@@ -130,20 +142,25 @@ export function ServiceRacks({ reduced }: { reduced: boolean }) {
       {SERVICE_RACKS.map((s, i) => {
         const state = up[s.id] ?? null;
         const posting = (postMap[s.id] ?? 0) > now;
-        const statusColor = posting
-          ? PALETTE.secondary
-          : state === true
-            ? PALETTE.accentBright
-            : state === false
-              ? FAULT_RED
-              : PALETTE.slate;
-        const statusText = posting
-          ? "⟳ POST · BOOTING"
-          : state === true
-            ? "● ONLINE"
-            : state === false
-              ? "✕ OFFLINE"
-              : "… NO LINK";
+        const drilling = drill?.rackId === s.id;
+        const statusColor = drilling
+          ? PALETTE.accentBright
+          : posting
+            ? PALETTE.secondary
+            : state === true
+              ? PALETTE.accentBright
+              : state === false
+                ? FAULT_RED
+                : PALETTE.slate;
+        const statusText = drilling
+          ? "⚠ DRILL · [E] RESTART"
+          : posting
+            ? "⟳ POST · BOOTING"
+            : state === true
+              ? "● ONLINE"
+              : state === false
+                ? "✕ OFFLINE"
+                : "… NO LINK";
         return (
           <group key={s.id} position={[s.x, 0, s.z]} rotation-y={Math.PI}>
             {/* Cabinet body against the CORE north wall. */}

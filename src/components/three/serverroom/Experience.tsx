@@ -3,7 +3,7 @@ import { getStations } from "./stations";
 import { RoomHUD } from "./Hud";
 import { roomAudio } from "./explore/audio";
 import { buildExploreMap } from "./explore/layout";
-import { beginSession, resetPlayer } from "./explore/store";
+import { addAchievement, beginSession, fxBus, resetPlayer } from "./explore/store";
 
 /**
  * ServerRoomExperience — the homepage in room mode: a fixed full-screen
@@ -27,6 +27,20 @@ const Minimap = lazy(() => import("./explore/Minimap").then((m) => ({ default: m
 /** vh of scroll per station — enough dwell to read each rack on the walk. */
 const VH_PER_STATION = 85;
 
+/** ↑↑↓↓←→←→BA — every LED in the room raves for a couple of seconds. */
+const KONAMI = [
+  "ArrowUp",
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowLeft",
+  "ArrowRight",
+  "KeyB",
+  "KeyA",
+];
+
 export function ServerRoomExperience({
   reduced,
   onExit,
@@ -41,6 +55,22 @@ export function ServerRoomExperience({
     () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
     [],
   );
+
+  // Konami easter egg — listens in both walk and explore modes; the LED
+  // strobe itself is drawn by World.tsx reading fxBus per frame.
+  useEffect(() => {
+    let idx = 0;
+    const onKey = (e: KeyboardEvent) => {
+      idx = e.code === KONAMI[idx] ? idx + 1 : e.code === KONAMI[0] ? 1 : 0;
+      if (idx === KONAMI.length) {
+        idx = 0;
+        fxBus.raveUntil = Date.now() + 2600;
+        addAchievement("OLD SCHOOL — kode Konami masih dihafal");
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   // Explore session lifecycle: reset the body, lock page scroll, stop audio on exit.
   useEffect(() => {

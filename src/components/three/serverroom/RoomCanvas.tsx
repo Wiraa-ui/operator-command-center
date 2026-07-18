@@ -11,7 +11,7 @@ import { ExploreWorld } from "./explore/ExploreWorld";
 import { DOOR_GAPS, type ExploreMap } from "./explore/layout";
 import { PlayerRig } from "./explore/PlayerRig";
 import { StoryLogs } from "./explore/StoryLogs";
-import { useExplore } from "./explore/store";
+import { photoBus, useExplore } from "./explore/store";
 import { autoFx, PostFX } from "./PostFX";
 
 /**
@@ -61,6 +61,7 @@ export default function RoomCanvas({
       {statusStation && <StatusRack station={statusStation} reduced={reduced} />}
       {fx && <PostFX />}
       <Exposure />
+      <PhotoShot />
       {explore ? (
         <>
           <PlayerRig map={map} reduced={reduced} />
@@ -73,6 +74,36 @@ export default function RoomCanvas({
       )}
     </Canvas>
   );
+}
+
+/**
+ * Photo mode: registers the capture fn the HUD 📷 button calls. A fresh
+ * gl.render + synchronous toBlob works without preserveDrawingBuffer (the
+ * buffer is only cleared after the task ends). The post-fx pass is skipped —
+ * the photo is the raw scene, which also keeps it deterministic across GPUs.
+ */
+function PhotoShot() {
+  // get() reads the live three state at click time — the default camera is
+  // swapped by PlayerRig in explore mode, so a captured selector would be stale.
+  const get = useThree((st) => st.get);
+  useEffect(() => {
+    photoBus.capture = () => {
+      const { gl, scene, camera } = get();
+      gl.render(scene, camera);
+      gl.domElement.toBlob((blob) => {
+        if (!blob) return;
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `server-room-${new Date().toISOString().slice(0, 19).replace(/[T:]/g, "-")}.png`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      });
+    };
+    return () => {
+      photoBus.capture = null;
+    };
+  }, [get]);
+  return null;
 }
 
 /** Applies the settings-menu brightness as tone-mapping exposure. */

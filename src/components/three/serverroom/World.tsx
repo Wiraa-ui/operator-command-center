@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { CORRIDOR, PALETTE, SIDE_X, type Station } from "./types";
+import { fxBus } from "./explore/store";
 
 /**
  * World — static corridor geometry for The Server Room.
@@ -183,10 +184,33 @@ export function World({
     const led = ledRef.current;
     if (!led) return;
     const t = clock.elapsedTime;
-    for (let i = 0; i < detail.leds.length; i++) {
-      // Hard on/off threshold reads as status blink, not a smooth pulse.
-      const on = Math.sin(t * detail.ledSpeed[i] + detail.ledPhase[i]) > 0.25;
-      led.setColorAt(i, tmpColor.copy(detail.ledBase[i]).multiplyScalar(on ? 1 : 0.12));
+    if (Date.now() < fxBus.raveUntil) {
+      // Konami rave: every LED strobes through amber/sky/white steps
+      // (~12 Hz, per-instance offset). Palette mandate: no green, no purple.
+      const step = Math.floor(t * 12);
+      for (let i = 0; i < detail.leds.length; i++) {
+        const k = (step + i * 7) % 4;
+        led.setColorAt(
+          i,
+          tmpColor
+            .set(
+              k === 0
+                ? PALETTE.accentBright
+                : k === 1
+                  ? PALETTE.secondary
+                  : k === 2
+                    ? "#ffffff"
+                    : PALETTE.accent,
+            )
+            .multiplyScalar(1.5),
+        );
+      }
+    } else {
+      for (let i = 0; i < detail.leds.length; i++) {
+        // Hard on/off threshold reads as status blink, not a smooth pulse.
+        const on = Math.sin(t * detail.ledSpeed[i] + detail.ledPhase[i]) > 0.25;
+        led.setColorAt(i, tmpColor.copy(detail.ledBase[i]).multiplyScalar(on ? 1 : 0.12));
+      }
     }
     if (led.instanceColor) led.instanceColor.needsUpdate = true;
   });

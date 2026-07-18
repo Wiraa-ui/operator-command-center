@@ -11,6 +11,7 @@ import {
   MASTER_TAPE_POS,
   PLAYER_SPEED,
   ROOM_H,
+  SERVICE_RACKS,
   TERMINAL_POS,
   type ExploreMap,
 } from "./layout";
@@ -270,6 +271,17 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
           id: log.id,
           label: read ? `BACA LAGI — ${log.chapter}` : `AMBIL — ${log.chapter}`,
         };
+      }
+    }
+    // Operator drill: the alarming twin rack becomes E-restartable.
+    if (s.drill && !s.night) {
+      const rack = SERVICE_RACKS.find((r) => r.id === s.drill!.rackId);
+      if (rack) {
+        const dist = Math.hypot(rack.x - player.x, rack.z - player.z);
+        if (dist < bestD) {
+          bestD = dist;
+          nearest = { id: `drill:${rack.id}`, label: `RESTART SERVICE — ${s.drill.label}` };
+        }
       }
     }
     // Day-shift RPG: NPCs to talk to (they go home at night) + Q2 panels.
