@@ -1,4 +1,5 @@
 import type { HumanoidLook } from "./humanoid";
+import { TERMINAL_POS } from "./layout";
 import {
   addAchievement,
   addToast,
@@ -240,3 +241,45 @@ export function activeQuestInfo(p: QuestProgress): { title: string; step: string
   }
   return null;
 }
+
+/* ----------------------------- waypoint -------------------------------- */
+
+export interface QuestWaypoint {
+  /** World position of the current objective. */
+  x: number;
+  z: number;
+  /** Short zone/NPC label for the HUD distance readout. */
+  label: string;
+}
+
+/**
+ * Resolve the active quest's current step to a world waypoint so the minimap
+ * and HUD can draw a navigation marker. Returns null when no quest is active
+ * or the step has no mappable location.
+ */
+export function questWaypoint(p: QuestProgress): QuestWaypoint | null {
+  for (const [qid, stepIdx] of Object.entries(p.active)) {
+    const q = questById(qid);
+    const step = q?.steps[stepIdx];
+    if (!q || !step) continue;
+    const wp = EVENT_TO_WAYPOINT[step.event];
+    if (wp) return wp;
+  }
+  return null;
+}
+
+/** Static mapping from quest-step event tags to world positions.
+ *  Coordinates match the NPC/node/object definitions already in the codebase. */
+const EVENT_TO_WAYPOINT: Record<string, QuestWaypoint> = {
+  // Q-ORIENTASI
+  study: { x: 0, z: -5, label: "RAK AISLE" },
+  "talk:npc:gede": { x: -8.2, z: -16.4, label: "BENGKEL" },
+  // Q-SINYAL
+  "node:aisle": { x: -1.8, z: -22, label: "AISLE" },
+  "node:lab": { x: 7, z: -12.55, label: "LAB" },
+  "node:core": { x: 19.2, z: -23.3, label: "CORE" },
+  "talk:npc:putu": { x: 10, z: -3.1, label: "NOC" },
+  // Q-KANDIDAT
+  terminal: { x: TERMINAL_POS.x, z: TERMINAL_POS.z, label: "TERMINAL" },
+  hire: { x: TERMINAL_POS.x, z: TERMINAL_POS.z, label: "TERMINAL" },
+};

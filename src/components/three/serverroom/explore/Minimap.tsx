@@ -3,6 +3,7 @@ import { PALETTE } from "../types";
 import type { ExploreMap } from "./layout";
 import { ARSIP_RACKS, night } from "./nightshift/state";
 import { peerState } from "./online";
+import { questWaypoint } from "./rpg";
 import { getExploreState, player } from "./store";
 
 /**
@@ -127,6 +128,40 @@ export function Minimap({ map }: { map: ExploreMap }) {
       ctx.closePath();
       ctx.fill();
       ctx.restore();
+
+      // Quest waypoint marker (pulsing diamond + guide line).
+      if (!s.night) {
+        const wp = questWaypoint(s.questProgress);
+        if (wp) {
+          const t = performance.now() / 1000;
+          const wpx = X(wp.x);
+          const wpz = Z(wp.z);
+
+          // Faint dashed guide line player → waypoint.
+          ctx.save();
+          ctx.strokeStyle = "rgba(245, 158, 11, 0.25)";
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 4]);
+          ctx.beginPath();
+          ctx.moveTo(px, pz);
+          ctx.lineTo(wpx, wpz);
+          ctx.stroke();
+          ctx.restore();
+
+          // Pulsing diamond.
+          const pulse = 0.55 + Math.sin(t * 3.6) * 0.45;
+          const sz2 = 3.6;
+          ctx.save();
+          ctx.translate(wpx, wpz);
+          ctx.rotate(Math.PI / 4);
+          ctx.fillStyle = `rgba(245, 158, 11, ${pulse})`;
+          ctx.fillRect(-sz2, -sz2, sz2 * 2, sz2 * 2);
+          // Bright core.
+          ctx.fillStyle = `rgba(245, 158, 11, ${Math.min(1, pulse + 0.3)})`;
+          ctx.fillRect(-sz2 * 0.45, -sz2 * 0.45, sz2 * 0.9, sz2 * 0.9);
+          ctx.restore();
+        }
+      }
 
       // Mata angin: U = +z (canvas up; walking that way moves the dot up).
       ctx.fillStyle = "rgba(56, 189, 248, 0.85)";

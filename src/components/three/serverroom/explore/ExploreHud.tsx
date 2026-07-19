@@ -13,7 +13,7 @@ import {
   sendVisibility,
   submitSpeedrun,
 } from "./online";
-import { activeQuestInfo, type NpcId } from "./rpg";
+import { activeQuestInfo, QUESTS, questWaypoint, type NpcId } from "./rpg";
 import { PuzzleModal } from "./PuzzleModal";
 import {
   addAchievement,
@@ -23,6 +23,7 @@ import {
   getExploreState,
   input,
   photoBus,
+  player,
   setModal,
   setMuted,
   setPresenceVisible,
@@ -31,6 +32,7 @@ import {
   toggleView,
   triggerInteract,
   useExplore,
+  type QuestProgress,
 } from "./store";
 import { ARSIP_RACKS } from "./nightshift/state";
 import { stopSpeaking } from "./nightshift/voice";
@@ -467,6 +469,9 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
         </div>
       )}
 
+      {/* Quest compass — screen-edge arrow pointing toward the objective */}
+      {!nightOn && !modal && <QuestCompass questProgress={questProgress} />}
+
       {/* ------------------------- SHIFT MALAM ------------------------- */}
       {nightOn && (
         <div
@@ -693,7 +698,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       {/* Chrome: exit, mute, certificate */}
       {/* bottom-20 clears the ChatWidget FAB that lives at the corner */}
       <div className="fixed right-4 bottom-20 z-30 flex items-center gap-2">
-        {privilege === "root" && (
+        {QUESTS.every((q) => questProgress.completed.includes(q.id)) && (
           <button
             onClick={() => setModal({ type: "certificate" })}
             className={`rounded-full border px-4 py-2 ${mono} text-[11px] uppercase tracking-[0.16em]`}
@@ -924,6 +929,139 @@ function CertificateModal({ achievements }: { achievements: string[] }) {
         >
           tutup
         </button>
+      </div>
+    </div>
+  );
+}
+/* ----------------------------- quest compass ----------------------------- */
+
+/**
+ * QuestCompass — a HUD arrow that sticks to the screen edge, always pointing
+ * toward the active quest's waypoint. Uses rAF to track the direction from the
+ * player to the target smoothly. The arrow hides when the target is very close
+ * (< 2.5 u) because at that range the interact prompt takes over.
+ */
+function QuestCompass({ questProgress }: { questProgress: QuestProgress }) {
+  const el = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let raf = 0;
+    const MARGIN = 52; // px inset from viewport edge
+    const HIDE_DIST = 2.5; // world units — interact prompt takes over
+
+    const tick = () => {
+      const wp = questWaypoint(questProgress);
+      const d = el.current;
+      if (!d) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      if (!wp) {
+        d.style.display = "none";
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+
+      const dx = wp.x - player.x;
+      const dz = wp.z - player.z;
+      const dist = Math.hypot(dx, dz);
+
+      if (dist < HIDE_DIST) {
+        d.style.display = "none";
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+
+      // Angle from player facing direction to the waypoint.
+      // Player forward = (-sinψ, -cosψ) in world XZ.
+      const angleToTarget = Math.atan2(dx, dz); // world angle of target
+      const rel = angleToTarget - player.yaw; // relative to player yaw
+      // Normalize to [-π, π].
+      const norm = Math.atan2(Math.sin(rel), Math.cos(rel));
+
+      // Map the angle to a screen-edge position (ellipse on the viewport).
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const cx = vw / 2;
+      const cy = vh / 2;
+      const rx = cx - MARGIN;
+      const ry = cy - MARGIN;
+
+      // Direction on screen: horizontal = sin(norm), vertical = -cos(norm)
+      // (negative cos because screen Y is inverted).
+      const sx = Math.sin(norm);
+      const sy = -Math.cos(norm);
+
+      // Intersect the line from center in direction (sx, sy) with the
+      // viewport-inset ellipse.
+      const t = Math.min(
+        Math.abs(sx) > 0.001 ? rx / Math.abs(sx) : Infinity,
+        Math.abs(sy) > 0.001 ? ry / Math.abs(sy) : Infinity,
+      );
+      const px2 = cx + sx * t;
+      const py2 = cy + sy * t;
+
+      d.style.display = "flex";
+      d.style.left = `${px2}px`;
+      d.style.top = `${py2}px`;
+      // Rotate the chevron to point outward from center.
+      const arrowAngle = (Math.atan2(sy, sx) * 180) / Math.PI + 90;
+      d.style.transform = `translate(-50%, -50%) rotate(${arrowAngle}deg)`;
+
+      // Update distance text (child spans).
+      const distSpan = d.querySelector("[data-dist]") as HTMLElement | null;
+      const labelSpan = d.querySelector("[data-label]") as HTMLElement | null;
+      if (distSpan) distSpan.textContent = `${Math.round(dist)}m`;
+      if (labelSpan) labelSpan.textContent = wp.label;
+
+      // Pulse opacity based on distance (closer = brighter).
+      const alpha = dist < 8 ? 1 : 0.85;
+      d.style.opacity = String(alpha);
+
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [questProgress]);
+
+  return (
+    <div
+      ref={el}
+      className={`pointer-events-none fixed z-30 flex-col items-center gap-0.5 ${mono}`}
+      style={{ display: "none" }}
+      aria-hidden="true"
+    >
+      {/* Chevron arrow */}
+      <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
+        <path
+          d="M11 0 L21 14 L11 10 L1 14 Z"
+          fill="rgba(245,158,11,0.85)"
+          stroke="rgba(245,158,11,1)"
+          strokeWidth="1"
+        />
+      </svg>
+      {/* Distance + label */}
+      <div
+        className="mt-0.5 whitespace-nowrap rounded-md border px-2 py-0.5 text-center"
+        style={{
+          borderColor: "rgba(245,158,11,0.45)",
+          background: "rgba(15,23,42,0.82)",
+          backdropFilter: "blur(4px)",
+        }}
+      >
+        <span
+          data-dist
+          className="text-[10px] font-bold tracking-[0.18em]"
+          style={{ color: PALETTE.accentBright }}
+        >
+          --
+        </span>
+        <span className="mx-1 text-[10px]" style={{ color: "rgba(124,141,176,0.7)" }}>
+          ▸
+        </span>
+        <span data-label className="text-[9px] tracking-[0.16em]" style={{ color: "#cbd5e1" }}>
+          --
+        </span>
       </div>
     </div>
   );
