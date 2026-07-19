@@ -164,8 +164,15 @@ senjata = mengusir/memperlambat/mengungkap, dengan sumber daya terbatas ala surv
 
 ### JANGAN (out of scope)
 - Jangan ubah mode siang, RPG quest, speedrun, Epilog LOG OPERATOR, presence/login, digital twin.
-- Jangan tambah dependency npm, service systemd, endpoint server baru (kecuali ekstensi kecil
-  data di `room-server.ts` benar-benar perlu — default: semua client-side + persist lokal).
+- Default tetap: semua client-side + persist lokal; kebutuhan server ditampung ekstensi kecil
+  di `room-server.ts` (proses bun yang sama). **User sudah memberi izin service baru bila
+  benar-benar perlu (2026-07-19)** — pakai hanya sebagai jalan terakhir, dengan rel wajib:
+  systemd unit + `MemoryMax` ≤ 250M, bind 127.0.0.1/loopback saja (publik hanya via
+  cloudflared), cek `free -h` dulu (available < 800 MB = batal), dan catat cara cabutnya
+  di PROJECT_MASTER. Seluruh scope di prompt ini seharusnya TIDAK butuh service baru —
+  kalau kamu merasa butuh, tulis dulu alasannya di laporan sebelum membangun.
+- Dependency npm baru: boleh kalau benar-benar perlu, tapi sadar ukuran bundle (lazy chunk)
+  — default tetap prosedural/nol aset.
 - Jangan jumpscare audio kencang mendadak tanpa build-up (horor psikologis, bukan screamer)
   dan jangan langgar mandat palet: aksen AMBER `#f59e0b`, TANPA hijau & ungu (merah fault
   `#f87171` boleh, sudah dipakai).
