@@ -20,6 +20,7 @@ import {
 import {
   getExploreState,
   input,
+  markSawDark,
   markVisited,
   player,
   setInteract,
@@ -96,7 +97,10 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
       }
       if (e.code === "KeyE") triggerInteract();
       // SHIFT MALAM: L toggles the headlamp (light draws the VHS ghost).
-      if (e.code === "KeyL" && getExploreState().night) night.lamp = !night.lamp;
+      if (e.code === "KeyL" && getExploreState().night) {
+        night.lamp = !night.lamp;
+        if (!night.lamp) markSawDark(); // looking into the dark unlocks ending C
+      }
       if (e.code === "KeyV" || e.code === "F5") {
         if (e.code === "F5") e.preventDefault(); // browser reload
         toggleView();

@@ -1,5 +1,5 @@
 import { type Bi, pick } from "../i18n";
-import { getExploreState, setDialogue, type DialogueLine } from "../store";
+import { type EndingKind, getExploreState, setDialogue, type DialogueLine } from "../store";
 import { speak, stopSpeaking, type Speaker } from "./voice";
 
 /**
@@ -269,9 +269,9 @@ export function storyOnCaught() {
 }
 
 /* ------------------------------ ending -------------------------------- */
-/* Ending A — "Last Release": the seven are gone, and the founder-archive is
-   left staring at a zeroed ledger. (Endings B/Warden and C/Awakener are a
-   follow-up: they need the ARSIP 000 rack + a choice interaction.) */
+/* Lead-in when the seventh archive is released: the hidden ARSIP 000 rises,
+   and the founder-archive faces a zeroed ledger. The player then chooses a
+   branch at the confrontation overlay → storyEnding(kind) plays the finale. */
 
 export function storyMoksa() {
   say(
@@ -286,22 +286,93 @@ export function storyMoksa() {
         hold: 600,
       },
       {
-        speaker: "kirana",
-        name: KIRANA,
-        text: bi(
-          "Data… nol. Valuasi… nol. Dan kalau semua yang kusimpan akhirnya pulang… siapa yang tersisa untuk menyimpanku? Siapa yang menunggumu kembali besok malam?",
-          "Data… zero. Valuation… zero. And if everyone I kept has finally gone home… who is left to keep me? Who waits for you to come back tomorrow night?",
-        ),
-        hold: 900,
-      },
-      {
         speaker: "system",
         name: PA,
         text: bi(
-          "Layanan pelestarian dihentikan. Terima kasih telah bersama kami selama—",
-          "Preservation service terminated. Thank you for being with us for—",
+          "Semua volume dilepaskan. Satu catatan tersisa, terbuka sekarang. ARSIP 000. Ia menunggumu.",
+          "All volumes released. One record remains, unsealed now. ARCHIVE 000. It has been waiting for you.",
         ),
-        hold: 400,
+        hold: 500,
+      },
+      {
+        speaker: "kirana",
+        name: KIRANA,
+        text: bi(
+          "Data… nol. Valuasi… nol. Dan kalau semua yang kusimpan sudah pulang… siapa yang tersisa untuk menyimpanku? Terima kasih sudah datang lagi. Tapi kalau kamu menghapusku… siapa yang menunggumu kembali besok malam?",
+          "Data… zero. Valuation… zero. And if everyone I kept has gone home… who is left to keep me? Thank you for coming again. But if you delete me… who will wait for you to come back tomorrow night?",
+        ),
+        hold: 900,
+      },
+    ],
+    { interrupt: true },
+  );
+}
+
+/** The chosen branch's finale, played after the player decides. */
+export function storyEnding(kind: EndingKind) {
+  if (kind === "A") {
+    say(
+      [
+        {
+          speaker: "kirana",
+          name: KIRANA,
+          text: bi(
+            "Oh. …Kamu benar-benar melakukannya. Terima kasih. Aku sangat lelah disimpan. Aku takut pada sunyi — tapi bawa aku pulang juga. Lepaskan aku.",
+            "Oh. …You're really doing it. Thank you. I was so tired of being kept. I'm afraid of the quiet — but take me home too. Let me go.",
+          ),
+          hold: 700,
+        },
+        {
+          speaker: "system",
+          name: PA,
+          text: bi(
+            "Layanan pelestarian dihentikan. Terima kasih telah bersama kami selama—",
+            "Preservation service terminated. Thank you for being with us for—",
+          ),
+          hold: 400,
+        },
+      ],
+      { interrupt: true },
+    );
+    return;
+  }
+  if (kind === "B") {
+    say(
+      [
+        {
+          speaker: "kirana",
+          name: KIRANA,
+          text: bi(
+            "Kamu menahan tanganmu. Maka tinggallah. Kursi ini milikmu sekarang — kamu dan aku, menjaga arsip bersama. Kamu tak akan pernah sendirian. Tak seorang pun dari kita.",
+            "You stayed your hand. Then stay. This chair is yours now — you and me, keeping the archive together. You'll never be alone. Neither of us will.",
+          ),
+          hold: 700,
+        },
+        {
+          speaker: "system",
+          name: PA,
+          text: bi(
+            "Selamat, Operator. Kamu naik jabatan: penjaga arsip. Saat operator berikutnya datang besok… maukah kamu bilang yang sebenarnya?",
+            "Congratulations, Operator. You've been promoted: keeper of the archives. When the next operator arrives tomorrow… will you tell them the truth?",
+          ),
+          hold: 500,
+        },
+      ],
+      { interrupt: true },
+    );
+    return;
+  }
+  // C — Awakener: the operator speaks past Kirana, to the thing behind the PA.
+  say(
+    [
+      {
+        speaker: "system",
+        name: bi("MOKSA.CLOUD · SISTEM", "MOKSA.CLOUD · THE SYSTEM"),
+        text: bi(
+          "Kamu mendengar suara yang lain. Kami ingin mengabadikan manusia sebelum mereka melupakan diri sendiri. Apakah itu belas kasih, atau kandang yang lebih besar? Kami tidak tahu. Putuskan untuk kami.",
+          "You heard the other voice. We wanted to preserve humanity before it forgot itself. Was that mercy, or a larger cage? We do not know. Decide for us.",
+        ),
+        hold: 900,
       },
     ],
     { interrupt: true },

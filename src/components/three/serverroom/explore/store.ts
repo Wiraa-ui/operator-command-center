@@ -20,6 +20,10 @@ export type Privilege = "guest" | "operator" | "root";
 export type DoorId =
   "door-lab" | "door-core" | "door-bengkel" | "door-noc" | "door-vault" | "door-hall";
 
+/** MOKSA.CLOUD ending branch chosen at the ARSIP 000 confrontation.
+    A = release Kirana · B = become the warden · C = wake The System (hidden). */
+export type EndingKind = "A" | "B" | "C";
+
 /** RPG quest state: questId → current step index, plus finished quests. */
 export interface QuestProgress {
   active: Record<string, number>;
@@ -104,6 +108,12 @@ export interface ExploreState {
   modeChosen: boolean;
   /** Boot menu currently visible (session; opens on first visit + on request). */
   showModeSelect: boolean;
+  /** Chosen ending at the ARSIP 000 confrontation (session; null = deciding). */
+  ending: EndingKind | null;
+  /** Headlamp was switched off during the shift — unlocks the hidden ending C. */
+  sawDark: boolean;
+  /** Endings reached across playthroughs (persisted; badges + completion). */
+  endingsSeen: EndingKind[];
 }
 
 export interface GameSettings {
@@ -161,6 +171,13 @@ if (typeof window !== "undefined") {
     audio: () => roomAudio.debugState(),
     collectLog: (id: string) => collectLog(id),
     damageHp: (n: number) => damageHp(n),
+    // Night-shift ending E2E: skip the seven rituals, then drive the branch.
+    purgeAll: () => {
+      state = { ...state, purged: ARSIP_RACKS.map((r) => r.id), purging: null, moksa: true };
+      emit();
+    },
+    markSawDark: () => markSawDark(),
+    chooseEnding: (k: EndingKind) => chooseEnding(k),
   };
 }
 
@@ -192,6 +209,7 @@ interface Persisted {
   collectedLogs: string[];
   endingSeen: boolean;
   modeChosen: boolean;
+  endingsSeen: EndingKind[];
 }
 
 const EMPTY_PERSIST: Persisted = {
@@ -204,6 +222,7 @@ const EMPTY_PERSIST: Persisted = {
   collectedLogs: [],
   endingSeen: false,
   modeChosen: false,
+  endingsSeen: [],
 };
 
 function loadPersisted(): Persisted {
@@ -233,6 +252,9 @@ function loadPersisted(): Persisted {
       collectedLogs: Array.isArray(p.collectedLogs) ? p.collectedLogs : [],
       endingSeen: Boolean(p.endingSeen),
       modeChosen: Boolean(p.modeChosen),
+      endingsSeen: Array.isArray(p.endingsSeen)
+        ? p.endingsSeen.filter((e): e is EndingKind => e === "A" || e === "B" || e === "C")
+        : [],
     };
   } catch {
     return EMPTY_PERSIST;
@@ -268,6 +290,9 @@ function initialState(): ExploreState {
     itemGet: null,
     modeChosen: p.modeChosen,
     showModeSelect: !p.modeChosen,
+    ending: null,
+    sawDark: false,
+    endingsSeen: p.endingsSeen,
     modal: null,
     interact: null,
     toasts: [],
@@ -306,6 +331,7 @@ function persist() {
         collectedLogs: state.collectedLogs,
         endingSeen: state.endingSeen,
         modeChosen: state.modeChosen,
+        endingsSeen: state.endingsSeen,
       } satisfies Persisted),
     );
   } catch {
@@ -614,6 +640,8 @@ export function beginNightShift() {
     purged: [],
     purging: null,
     moksa: false,
+    ending: null,
+    sawDark: false,
     modal: null,
     drill: null, // the night crew has bigger problems than a drill
     hp: 100,
@@ -625,8 +653,42 @@ export function beginNightShift() {
 }
 
 export function endNightShift() {
-  state = { ...state, night: false, purging: null, moksa: false, dialogue: null };
+  state = {
+    ...state,
+    night: false,
+    purging: null,
+    moksa: false,
+    ending: null,
+    sawDark: false,
+    dialogue: null,
+  };
   emit();
+}
+
+/** Headlamp went dark during the shift — the player "looked into the dark",
+    which unlocks the hidden ending C at the confrontation. */
+export function markSawDark() {
+  if (state.sawDark || !state.night) return;
+  state = { ...state, sawDark: true };
+  emit();
+}
+
+/** Pick an ending at the ARSIP 000 confrontation. Persists it for the badge
+    board; the branch narration is played by the HUD (avoids a story↔store cycle). */
+export function chooseEnding(kind: EndingKind) {
+  const endingsSeen = state.endingsSeen.includes(kind)
+    ? state.endingsSeen
+    : [...state.endingsSeen, kind];
+  state = { ...state, ending: kind, endingsSeen };
+  persist();
+  emit();
+  const badge =
+    kind === "A"
+      ? "LIBERATOR — Kirana dilepaskan"
+      : kind === "B"
+        ? "PENJAGA — kursi shift malam diterima"
+        : "AWAKENER — Sistem disadarkan";
+  addAchievement(badge);
 }
 
 /** Movement past tolerance (checked by NightShift's frame loop) lands here. */

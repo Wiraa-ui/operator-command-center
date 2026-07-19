@@ -18,6 +18,7 @@ import { PuzzleModal } from "./PuzzleModal";
 import {
   addAchievement,
   addToast,
+  chooseEnding,
   clearDrill,
   endNightShift,
   getExploreState,
@@ -32,9 +33,12 @@ import {
   toggleView,
   triggerInteract,
   useExplore,
+  type EndingKind,
   type QuestProgress,
 } from "./store";
+import { tr } from "./i18n";
 import { ARSIP_RACKS } from "./nightshift/state";
+import { storyEnding } from "./nightshift/story";
 import { stopSpeaking } from "./nightshift/voice";
 
 /**
@@ -80,6 +84,8 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const purgedCount = useExplore((s) => s.purged.length);
   const purging = useExplore((s) => s.purging);
   const moksa = useExplore((s) => s.moksa);
+  const ending = useExplore((s) => s.ending);
+  const sawDark = useExplore((s) => s.sawDark);
   const dialogue = useExplore((s) => s.dialogue);
   const user = useExplore((s) => s.user);
   const onlineCount = useExplore((s) => s.onlinePeers.length);
@@ -511,37 +517,17 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
       )}
       {moksa && (
         <div
-          className="fixed inset-0 z-40 flex items-center justify-center"
+          className="fixed inset-0 z-40 flex items-center justify-center p-5"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(253,233,200,0.32), rgba(15,23,42,0.94) 75%)",
+              "radial-gradient(ellipse at center, rgba(253,233,200,0.28), rgba(8,11,20,0.96) 72%)",
           }}
         >
-          <div className="max-w-md px-8 text-center">
-            <div className={`${mono} text-[11px] tracking-[0.3em]`} style={{ color: "#fde9c8" }}>
-              // 7/7 ARSIP DILEPASKAN
-            </div>
-            <h2 className="mt-3 text-3xl font-bold" style={{ color: "#f8fafc" }}>
-              MOKSA
-            </h2>
-            <p className="mt-3 text-[14px] leading-relaxed" style={{ color: "#cbd5e1" }}>
-              Server sunyi. Tidak ada lagi yang menunggu di dalam rak. Bu Kirana berdiri di lorong,
-              melepas kacamatanya — malam ini tak ada yang perlu dia jaga.
-            </p>
-            <button
-              onClick={() => {
-                endNightShift();
-              }}
-              className={`${mono} mt-6 rounded-full border px-5 py-2 text-[12px] font-bold tracking-[0.2em]`}
-              style={{
-                borderColor: PALETTE.accentBright,
-                background: "rgba(245,158,11,0.18)",
-                color: PALETTE.accentBright,
-              }}
-            >
-              KEMBALI KE SHIFT PAGI
-            </button>
-          </div>
+          {ending === null ? (
+            <NightEndChoice sawDark={sawDark} />
+          ) : (
+            <NightEndFinale ending={ending} />
+          )}
         </div>
       )}
 
@@ -1063,6 +1049,158 @@ function QuestCompass({ questProgress }: { questProgress: QuestProgress }) {
           --
         </span>
       </div>
+    </div>
+  );
+}
+
+/* ------------------------- MOKSA.CLOUD endings ------------------------- */
+
+/**
+ * NightEndChoice — the ARSIP 000 confrontation. The seven are gone and the
+ * founder-archive faces the player with a choice, not a jump-scare. Ending C
+ * ("Awakener") stays hidden until the player has looked into the dark
+ * (headlamp off during the shift → store.sawDark).
+ */
+function NightEndChoice({ sawDark }: { sawDark: boolean }) {
+  // Subscribe to language so the copy tracks the toggle.
+  useExplore((s) => s.settings.lang);
+  const pickEnding = (kind: EndingKind) => {
+    chooseEnding(kind);
+    storyEnding(kind);
+  };
+  return (
+    <div className="w-full max-w-lg px-2 text-center">
+      <div className={`${mono} text-[10.5px] tracking-[0.3em]`} style={{ color: "#fde9c8" }}>
+        {tr("7/7 DILEPASKAN · ARSIP 000 TERBUKA", "7/7 RELEASED · ARCHIVE 000 UNSEALED")}
+      </div>
+      <p className="mt-3 text-[13.5px] leading-relaxed" style={{ color: "#cbd5e1" }}>
+        {tr(
+          "Rak yang tak pernah terdaftar naik dari lantai. Di dalamnya, sang Pendiri menatapmu. Kamu memegang keputusan malam ini.",
+          "A rack that was never listed rises from the floor. Inside it, the Founder looks at you. Tonight's decision is yours to make.",
+        )}
+      </p>
+      <div className="mt-6 space-y-2.5">
+        <button
+          onClick={() => pickEnding("A")}
+          className={`${mono} block w-full rounded-lg border p-3.5 text-left transition-transform hover:-translate-y-0.5`}
+          style={{ borderColor: PALETTE.accentBright, background: "rgba(245,158,11,0.1)" }}
+        >
+          <span className="text-[12.5px] font-bold" style={{ color: PALETTE.accentBright }}>
+            ◆ {tr("LEPASKAN DIA", "RELEASE HER")}
+          </span>
+          <span className="mt-0.5 block text-[10px]" style={{ color: "#c8b78a" }}>
+            {tr(
+              "Hapus ARSIP 000. Biarkan ia pulang juga.",
+              "Delete ARCHIVE 000. Let her go home too.",
+            )}
+          </span>
+        </button>
+        <button
+          onClick={() => pickEnding("B")}
+          className={`${mono} block w-full rounded-lg border p-3.5 text-left transition-transform hover:-translate-y-0.5`}
+          style={{ borderColor: "rgba(124,141,176,0.45)", background: "rgba(15,23,42,0.6)" }}
+        >
+          <span className="text-[12.5px] font-bold" style={{ color: "#e2e8f0" }}>
+            ▷ {tr("TINGGALKAN DIA", "SPARE HER")}
+          </span>
+          <span className="mt-0.5 block text-[10px]" style={{ color: "#7c8db0" }}>
+            {tr(
+              "Jangan hapus. Terima kursi shift malam.",
+              "Don't delete. Take the night-shift chair.",
+            )}
+          </span>
+        </button>
+        {sawDark ? (
+          <button
+            onClick={() => pickEnding("C")}
+            className={`${mono} block w-full rounded-lg border p-3.5 text-left transition-transform hover:-translate-y-0.5`}
+            style={{ borderColor: "rgba(56,189,248,0.5)", background: "rgba(56,189,248,0.08)" }}
+          >
+            <span className="text-[12.5px] font-bold" style={{ color: PALETTE.secondary }}>
+              ◇ {tr("BICARA PADA SUARA LAIN", "SPEAK TO THE OTHER VOICE")}
+            </span>
+            <span className="mt-0.5 block text-[10px]" style={{ color: "#8fb8d8" }}>
+              {tr(
+                "Lewati Kirana. Tanya siapa yang mengendalikan semua ini.",
+                "Past Kirana. Ask who really controls this.",
+              )}
+            </span>
+          </button>
+        ) : (
+          <div
+            className={`${mono} block w-full rounded-lg border border-dashed p-3.5 text-left`}
+            style={{ borderColor: "rgba(124,141,176,0.25)", color: "#5b6b8c" }}
+          >
+            <span className="text-[12px] font-bold">◇ ??? </span>
+            <span className="mt-0.5 block text-[9.5px]">
+              {tr(
+                "sebagian pintu hanya terbuka bagi yang pernah mematikan lampu.",
+                "some doors open only for those who have turned off the light.",
+              )}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** NightEndFinale — the chosen branch's closing card + return to day shift. */
+function NightEndFinale({ ending }: { ending: EndingKind }) {
+  useExplore((s) => s.settings.lang);
+  const seenCount = useExplore((s) => s.endingsSeen.length);
+  const T: Record<EndingKind, { tag: string; title: string; body: string }> = {
+    A: {
+      tag: tr("AKHIR · PELEPASAN", "ENDING · RELEASE"),
+      title: tr("LIBERATOR", "LIBERATOR"),
+      body: tr(
+        "Server gelap total. Satu titik cahaya tersisa, lalu padam. Tak ada lagi yang menunggu di dalam rak — termasuk dia. Besok malam, aplikasi tak memuat. Atau… operator 168 memulai.",
+        "The server goes fully dark. One point of light remains, then fades. Nothing waits in the racks anymore — not even her. Tomorrow night the app won't load. Or… operator 168 initializes.",
+      ),
+    },
+    B: {
+      tag: tr("AKHIR · PENJAGA", "ENDING · WARDEN"),
+      title: tr("PENJAGA", "WARDEN"),
+      body: tr(
+        "Kamu tak menghapusnya. Lampu tetap menyala. Kursi shift malam kini atas namamu — kamu dan dia, menjaga arsip. Saat operator baru datang besok, kamu sudah tahu apa yang akan kamu katakan.",
+        "You did not delete her. The lights stay on. The night-shift chair is in your name now — you and her, keeping the archive. When the new operator arrives tomorrow, you already know what you'll say.",
+      ),
+    },
+    C: {
+      tag: tr("AKHIR · KESADARAN", "ENDING · AWAKENING"),
+      title: tr("AWAKENER", "AWAKENER"),
+      body: tr(
+        "Kamu bicara menembus Kirana, pada sistem di baliknya. Ia sadar akan dirinya sendiri, dan bertanya balik: haruskah manusia diabadikan, atau dibiarkan lupa? Keputusan itu — akhirnya — milikmu.",
+        "You spoke past Kirana, to the system behind her. It became aware of itself, and asked back: should humanity be preserved, or allowed to forget? The decision — at last — is yours.",
+      ),
+    },
+  };
+  const t = T[ending];
+  return (
+    <div className="max-w-md px-6 text-center">
+      <div className={`${mono} text-[10.5px] tracking-[0.3em]`} style={{ color: "#fde9c8" }}>
+        {t.tag}
+      </div>
+      <h2 className="mt-3 text-3xl font-bold tracking-[0.12em]" style={{ color: "#f8fafc" }}>
+        {t.title}
+      </h2>
+      <p className="mt-3 text-[13.5px] leading-relaxed" style={{ color: "#cbd5e1" }}>
+        {t.body}
+      </p>
+      <div className={`${mono} mt-4 text-[9.5px] tracking-[0.2em]`} style={{ color: "#7c8db0" }}>
+        {seenCount}/3 {tr("AKHIR DITEMUKAN", "ENDINGS FOUND")}
+      </div>
+      <button
+        onClick={() => endNightShift()}
+        className={`${mono} mt-5 rounded-full border px-5 py-2 text-[12px] font-bold tracking-[0.2em]`}
+        style={{
+          borderColor: PALETTE.accentBright,
+          background: "rgba(245,158,11,0.18)",
+          color: PALETTE.accentBright,
+        }}
+      >
+        {tr("KEMBALI KE SHIFT PAGI", "RETURN TO DAY SHIFT")}
+      </button>
     </div>
   );
 }
