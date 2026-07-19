@@ -1,5 +1,5 @@
 import { getRoomStatus } from "@/lib/api/roomStatus";
-import { HOME, nodeAt, pathString, resolvePath, type FsNode } from "./vfs";
+import { contentOf, HOME, nodeAt, pathString, resolvePath, type FsNode } from "./vfs";
 
 /**
  * CORE terminal engine — a data-driven shell, not an if/else ladder:
@@ -158,7 +158,7 @@ export const REGISTRY: Record<string, Cmd> = {
       if (hook) return hook(ctx);
       const node = parts && nodeAt(parts);
       return node && node.kind === "file"
-        ? node.content.split("\n").map(out)
+        ? contentOf(node).split("\n").map(out)
         : [out(`cat: ${a[0] ?? ""}: berkas tidak ada`)];
     },
   },
@@ -170,7 +170,7 @@ export const REGISTRY: Record<string, Cmd> = {
       const parts = pat && f ? resolvePath(ctx.cwd, f) : null;
       const node = parts && nodeAt(parts);
       if (!node || node.kind !== "file") return [out("grep: pemakaian: grep <pola> <file>")];
-      const hits = node.content
+      const hits = contentOf(node)
         .split("\n")
         .filter((l) => l.toLowerCase().includes(pat.toLowerCase()));
       return hits.length ? hits.map(accent) : [dim("(tidak ada yang cocok)")];

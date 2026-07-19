@@ -3,13 +3,24 @@
  * of this server's layout. Every byte here ships in the client bundle and
  * is lore: no real paths, tokens, IPs, versions or usernames. The terminal
  * NEVER touches the real filesystem; this tree is the entire universe.
+ *
+ * File content may be a plain string or a bilingual {id,en} phrase — `cat`
+ * and `grep` resolve it via `contentOf()` against the current language.
  */
 
+import { bi, pick, type Bi } from "../i18n";
+
 export type FsNode =
-  { kind: "dir"; children: Record<string, FsNode> } | { kind: "file"; content: string };
+  { kind: "dir"; children: Record<string, FsNode> } | { kind: "file"; content: string | Bi };
 
 const dir = (children: Record<string, FsNode>): FsNode => ({ kind: "dir", children });
-const file = (content: string): FsNode => ({ kind: "file", content });
+const file = (content: string | Bi): FsNode => ({ kind: "file", content });
+
+/** Resolve a file node's text for the current language (plain string = both). */
+export function contentOf(node: FsNode): string {
+  if (node.kind !== "file") return "";
+  return typeof node.content === "string" ? node.content : pick(node.content);
+}
 
 export const HOME = "/home/operator";
 
@@ -44,8 +55,113 @@ export const VFS: FsNode = dir({
       ),
       arsip: dir({
         README: file(
-          "7 volume · terkunci · retensi = kebijakan Ibu Direktur.\ncoba: sudo open --night-shift",
+          bi(
+            "7 volume · terkunci · retensi = kebijakan Pendiri.\ncoba: sudo open --night-shift",
+            "7 volumes · locked · retention = Founder's policy.\ntry: sudo open --night-shift",
+          ),
         ),
+        "167-PENDING": file(
+          bi(
+            [
+              "STATUS ARSIP 167 : PENDING",
+              "masuk    : sejak peluncuran MOKSA.CLOUD",
+              "diperbarui: kemarin",
+              "sebelumnya: tahun lalu",
+              "sebelumnya: tahun sebelum itu",
+              "sebelumnya: ██████ (tanggal tidak konsisten)",
+              "",
+              "catatan sistem: subjek terus diperbarui tanpa pernah ditutup.",
+              "subjek tidak menyadari entri-entri sebelumnya.",
+            ].join("\n"),
+            [
+              "ARCHIVE 167 STATUS : PENDING",
+              "opened  : since MOKSA.CLOUD launch",
+              "updated : yesterday",
+              "previous: last year",
+              "previous: the year before that",
+              "previous: ██████ (dates inconsistent)",
+              "",
+              "system note: subject keeps being updated, never closed.",
+              "subject is unaware of the prior entries.",
+            ].join("\n"),
+          ),
+        ),
+        insiden: dir({
+          "MOKSA-166.txt": file(
+            bi(
+              [
+                "LAPORAN INSIDEN · MOKSA-166",
+                "klasifikasi: ditahan (self-securing)",
+                "",
+                "Operator shift tiga tidak keluar gedung pada akhir shift.",
+                "Rekaman CCTV menunjukkan ia berjalan ke rak arsip dan ██████.",
+                "Tidak ada catatan pengunduran diri. Berkas kepegawaiannya",
+                "kemudian muncul sebagai ARSIP 166.",
+                "",
+                "Kesimpulan tim: 'tidak ada yang benar-benar berhenti dari sini.'",
+              ].join("\n"),
+              [
+                "INCIDENT REPORT · MOKSA-166",
+                "classification: contained (self-securing)",
+                "",
+                "The shift-three operator did not leave the building at end of shift.",
+                "CCTV shows them walking to the archive racks and ██████.",
+                "No resignation on record. Their personnel file later reappeared",
+                "as ARCHIVE 166.",
+                "",
+                "Team conclusion: 'no one really resigns from here.'",
+              ].join("\n"),
+            ),
+          ),
+          "retensi-operator.memo": file(
+            bi(
+              [
+                "MEMO INTERNAL · RETENSI OPERATOR",
+                "",
+                "Pertanyaan: kenapa operator malam tidak pernah pindah kerja?",
+                "Temuan: mereka lupa. Setiap shift dimulai seolah yang pertama.",
+                "Ingatan tidak disimpan — hanya kehadiran yang disimpan.",
+                "",
+                "Rekomendasi: pertahankan kondisi ini. Operator yang ingat,",
+                "cenderung ██████.",
+              ].join("\n"),
+              [
+                "INTERNAL MEMO · OPERATOR RETENTION",
+                "",
+                "Question: why do night operators never move on?",
+                "Finding: they forget. Each shift begins as if it were the first.",
+                "Memory is not stored — only presence is stored.",
+                "",
+                "Recommendation: preserve this condition. Operators who remember",
+                "tend to ██████.",
+              ].join("\n"),
+            ),
+          ),
+          "000.sealed": file(
+            bi(
+              [
+                "ARSIP 000 · TERSEGEL",
+                "subjek: Pendiri.",
+                "",
+                "Diunggah oleh dirinya sendiri. Entah kecelakaan, entah rencana —",
+                "berkasnya tidak pernah dihapus. Perusahaan 'dijalankan' dari sini.",
+                "Ia menolak dilepaskan. Ia takut pada ruangan yang sunyi.",
+                "",
+                "Akses: hanya setelah tujuh volume lain dilepaskan.",
+              ].join("\n"),
+              [
+                "ARCHIVE 000 · SEALED",
+                "subject: the Founder.",
+                "",
+                "Uploaded by her own hand. Accident or plan — her file was",
+                "never deleted. The company is 'run' from in here.",
+                "She refuses to be released. She is afraid of the quiet room.",
+                "",
+                "Access: only after the other seven volumes are released.",
+              ].join("\n"),
+            ),
+          ),
+        }),
       }),
       projects: dir({
         portfolio: dir({
