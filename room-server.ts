@@ -287,6 +287,95 @@ function listSpeedruns(): Response {
   return json(200, { runs: rows });
 }
 
+/* ------------------------------ npc chat ------------------------------ */
+// Free-text talk to a game NPC. Reuses the portfolio's n8n chat webhook
+// (127.0.0.1:5678, keys live only in n8n — see assistant.functions.ts); the
+// persona is injected inline so no workflow change is needed. LLM output is
+// treated as dialogue only (never executed) and is filtered + length-capped.
+// Any failure degrades to a canned in-character line so an NPC is never mute.
+
+type NpcKey = "ayu" | "gede" | "putu" | "kirana";
+
+const NPC_PERSONA: Record<NpcKey, string> = {
+  ayu: "Ayu, front-desk intern of a fictional server-room game. Warm, upbeat, a little chatty.",
+  gede: "Gede, the last old-guard technician of a fictional server-room game. Calm, dry, wary of the night shift.",
+  putu: "Putu, an eager monitoring intern of a fictional server-room game. Nervous, excitable.",
+  kirana:
+    "Dewi Kirana, the founder-turned-archive of a fictional horror game 'MOKSA.CLOUD'. Soft, unsettling, speaks in gentle corporate riddles.",
+};
+
+const NPC_FALLBACK: Record<NpcKey, { id: string; en: string }> = {
+  ayu: {
+    id: "Maaf, aku lagi sibuk di meja depan — nanti kita ngobrol lagi ya!",
+    en: "Sorry, the front desk is buzzing right now — let's talk again later!",
+  },
+  gede: {
+    id: "Radioku lagi berisik. Ulangi nanti kalau sempat.",
+    en: "My radio's full of static. Ask me again later.",
+  },
+  putu: {
+    id: "E-eh, monitornya lagi ngadat. Nanti aku ceritakan!",
+    en: "U-uh, my monitor's glitching. I'll tell you later!",
+  },
+  kirana: {
+    id: "…nanti kita lanjutkan, Sayang. Ada arsip yang memanggilku.",
+    en: "…we'll continue later, dear. An archive is calling me.",
+  },
+};
+
+const FORBIDDEN = /ngaben/gi;
+
+function npcClean(s: string): string {
+  return s.replace(FORBIDDEN, "pelepasan").slice(0, 400).trim();
+}
+
+async function npcChat(body: {
+  npc?: unknown;
+  message?: unknown;
+  lang?: unknown;
+  context?: unknown;
+}): Promise<Response> {
+  const key = String(body.npc ?? "") as NpcKey;
+  if (!(key in NPC_PERSONA)) return json(400, { error: "npc tidak dikenal" });
+  const lang = body.lang === "en" ? "en" : "id";
+  const message = typeof body.message === "string" ? body.message.trim().slice(0, 500) : "";
+  if (!message) return json(400, { error: "message kosong" });
+
+  const fallback = () =>
+    json(200, {
+      reply: lang === "en" ? NPC_FALLBACK[key].en : NPC_FALLBACK[key].id,
+      fallback: true,
+    });
+
+  const webhookUrl =
+    process.env.N8N_CHAT_WEBHOOK_URL ?? "http://127.0.0.1:5678/webhook/portfolio-chat";
+  const persona =
+    `[Roleplay: You are ${NPC_PERSONA[key]} Reply in ${lang === "en" ? "English" : "Indonesian"}, ` +
+    `stay fully in character, at most 2 short sentences. This is fiction — invent nothing about real servers, ` +
+    `paths, credentials, or the operator's real identity. Output dialogue only.] Visitor says: ` +
+    message;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12_000);
+  try {
+    const res = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ message: persona, sessionId: `npc-${key}`, context: "" }),
+      signal: controller.signal,
+    });
+    if (!res.ok) return fallback();
+    const payload = (await res.json()) as { reply?: string } | { reply?: string }[];
+    const obj = Array.isArray(payload) ? payload[0] : payload;
+    const reply = npcClean(obj?.reply ?? "");
+    return reply ? json(200, { reply, fallback: false }) : fallback();
+  } catch {
+    return fallback();
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 /** Handles /api/room/*; returns null for any other path. */
 export async function roomApi(req: Request, url: URL, ip: string): Promise<Response | null> {
   if (!url.pathname.startsWith("/api/room/")) return null;
@@ -336,6 +425,17 @@ export async function roomApi(req: Request, url: URL, ip: string): Promise<Respo
       return json(400, { error: "body json {text} dibutuhkan" });
     }
     return postWallNote(u.id, u.name, body.text);
+  }
+
+  if (url.pathname === "/api/room/npc-chat" && req.method === "POST") {
+    if (rateLimited(ip)) return json(429, { error: "terlalu cepat — tunggu sebentar" });
+    let body: { npc?: unknown; message?: unknown; lang?: unknown; context?: unknown };
+    try {
+      body = (await req.json()) as typeof body;
+    } catch {
+      return json(400, { error: "body json {npc, message} dibutuhkan" });
+    }
+    return npcChat(body);
   }
 
   if (url.pathname === "/api/room/me" && req.method === "GET") {

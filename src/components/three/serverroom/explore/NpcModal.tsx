@@ -1,5 +1,6 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PALETTE } from "../types";
+import { tr } from "./i18n";
 import { speak, stopSpeaking, type Speaker } from "./nightshift/voice";
 import { NPCS, QUESTS, startQuest, type NpcId } from "./rpg";
 import { getExploreState, setModal, useExplore } from "./store";
@@ -133,10 +134,40 @@ export function NpcModal({ npcId }: { npcId: NpcId }) {
   const progress = useExplore((s) => s.questProgress);
   const script = useMemo(() => scriptFor(npcId), [npcId, progress]);
   const muted = useExplore((s) => s.muted);
+  const lang = useExplore((s) => s.settings.lang);
+
+  // Free-text chat: browser → /api/room/npc-chat → n8n → in-character reply.
+  const [chatInput, setChatInput] = useState("");
+  const [reply, setReply] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const speaker = npcId.slice("npc:".length) as Speaker;
+
+  const sendChat = async () => {
+    const msg = chatInput.trim();
+    if (!msg || busy) return;
+    setBusy(true);
+    setReply(null);
+    try {
+      const res = await fetch("/api/room/npc-chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ npc: speaker, message: msg, lang }),
+      });
+      const data = (await res.json()) as { reply?: string };
+      const r = typeof data.reply === "string" ? data.reply : "";
+      setReply(r || tr("(diam saja)", "(no answer)"));
+      setChatInput("");
+      if (!muted && r) speak(r, speaker, lang);
+    } catch {
+      setReply(tr("(NPC tidak menjawab)", "(the NPC doesn't answer)"));
+    } finally {
+      setBusy(false);
+    }
+  };
 
   useEffect(() => {
     if (!muted && script.lines[0] && npc) {
-      speak(script.lines.join(" "), npcId.slice("npc:".length) as Speaker);
+      speak(script.lines.join(" "), speaker, lang);
     }
     return () => stopSpeaking();
     // Speak once per open, not on every progress tick.
@@ -174,6 +205,37 @@ export function NpcModal({ npcId }: { npcId: NpcId }) {
           {script.lines.map((l, i) => (
             <p key={i}>“{l}”</p>
           ))}
+        </div>
+
+        {/* Free-text chat: ask the NPC anything (LLM reply, spoken aloud). */}
+        <div className="mt-4 border-t pt-3" style={{ borderColor: "rgba(124,141,176,0.2)" }}>
+          {reply && (
+            <p className="mb-2 text-[13px] leading-relaxed" style={{ color: PALETTE.accentBright }}>
+              “{reply}”
+            </p>
+          )}
+          <div className="flex gap-2">
+            <input
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") void sendChat();
+              }}
+              maxLength={500}
+              placeholder={tr("tanya apa saja…", "ask anything…")}
+              className="flex-1 rounded-md border bg-transparent px-3 py-2 text-[12.5px] outline-none"
+              style={{ borderColor: "rgba(124,141,176,0.4)", color: "#e2e8f0" }}
+              aria-label={tr("Pesan untuk NPC", "Message to NPC")}
+            />
+            <button
+              onClick={() => void sendChat()}
+              disabled={busy}
+              className="rounded-md px-3 py-2 text-[11px] font-bold uppercase tracking-wider disabled:opacity-50"
+              style={{ background: PALETTE.accent, color: PALETTE.bg }}
+            >
+              {busy ? "…" : tr("kirim", "send")}
+            </button>
+          </div>
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
