@@ -709,8 +709,9 @@ export function pickupTool(id: ToolId, charges: number) {
   });
 }
 
-/** Use a tool: spend one charge and apply its effect (read by NightShift). */
-export function useTool(id: ToolId) {
+/** Use a tool: spend one charge and apply its effect (read by NightShift).
+    Named without a `use` prefix so it is not mistaken for a React hook. */
+export function activateTool(id: ToolId) {
   const left = state.toolCharges[id];
   if (!state.night || left === undefined) return;
   if (left <= 0) {

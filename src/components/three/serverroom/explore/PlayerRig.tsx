@@ -18,6 +18,7 @@ import {
   type ExploreMap,
 } from "./layout";
 import {
+  activateTool,
   getExploreState,
   input,
   markSawDark,
@@ -27,7 +28,6 @@ import {
   toggleView,
   triggerInteract,
   useExplore,
-  useTool,
 } from "./store";
 import { ARSIP_RACKS, lampIsOn, night } from "./nightshift/state";
 import { TOOL_META, TOOL_PICKUPS } from "./nightshift/tools";
@@ -104,8 +104,8 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
         if (!night.lamp) markSawDark(); // looking into the dark unlocks ending C
       }
       // SHIFT MALAM: 1/2 use the bell / extinguisher against Kirana.
-      if (e.code === "Digit1" && getExploreState().night) useTool("genta");
-      if (e.code === "Digit2" && getExploreState().night) useTool("apar");
+      if (e.code === "Digit1" && getExploreState().night) activateTool("genta");
+      if (e.code === "Digit2" && getExploreState().night) activateTool("apar");
       if (e.code === "KeyV" || e.code === "F5") {
         if (e.code === "F5") e.preventDefault(); // browser reload
         toggleView();
