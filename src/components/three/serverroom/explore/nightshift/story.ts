@@ -9,7 +9,7 @@ import { speak, stopSpeaking, type Speaker } from "./voice";
  *
  * Lore recap: MOKSA.CLOUD sells "digital ancestor preservation". While an
  * archive is stored its arwah cannot moksa — so the hero's job is deletion,
- * a digital ngaben, and the founder objects.
+ * a digital release rite, and the founder objects.
  */
 
 interface Line {

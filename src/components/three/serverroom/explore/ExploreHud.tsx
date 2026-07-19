@@ -492,7 +492,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
             className={`${mono} mb-1 text-center text-[10px] tracking-[0.25em]`}
             style={{ color: PALETTE.accentBright }}
           >
-            NGABEN DIGITAL…
+            PELEPASAN DIGITAL…
           </div>
           <div
             className="h-1.5 overflow-hidden rounded-full"

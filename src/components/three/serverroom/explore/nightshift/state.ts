@@ -6,7 +6,7 @@
  *
  * Lore: MOKSA.CLOUD "preserves" ancestors digitally; while an archive is
  * stored, its arwah cannot moksa. The night operator's job is to DELETE —
- * a digital ngaben, one rack at a time — while Bu Dewi Kirana objects.
+ * a digital release rite, one rack at a time — while Bu Dewi Kirana objects.
  */
 
 export interface ArsipDef {

@@ -69,7 +69,7 @@ export interface ExploreState {
   rootAt: number | null;
   /** MOKSA.CLOUD (SHIFT MALAM) — hidden horror mode. Session-only. */
   night: boolean;
-  /** Purged arsip ids (digital ngaben progress, max 7). */
+  /** Purged arsip ids (digital release progress, max 7). */
   purged: string[];
   /** Active hold-still ritual, for the HUD progress readout. */
   purging: { id: string; until: number } | null;
@@ -630,7 +630,7 @@ export function triggerInteract() {
     night.purgeAnchor.z = player.z;
     state = { ...state, purging: { id, until: Date.now() + RITUAL_MS } };
     emit();
-    addToast("Ritual ngaben digital — tahan posisi…");
+    addToast("Ritual pelepasan digital — tahan posisi…");
     return;
   }
   if (id.startsWith("node:")) {
