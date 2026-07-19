@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "serve.ts": {
-    "mtime": 1784214980.425475,
-    "ast_hash": "eb35d127425112c80896489b958fad31",
+    "mtime": 1784426188.8682845,
+    "ast_hash": "e58cfb1d6315a3febc2862e0ef285fe4",
     "semantic_hash": ""
   },
   "src/components/ui/motion/FadeIn.tsx": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "PROJECT_MASTER.md": {
-    "mtime": 1784401022.460083,
-    "ast_hash": "62d703b3c351ff5ece0a406e809bbc9c",
+    "mtime": 1784444530.8909066,
+    "ast_hash": "c32ce4350a962cb52899d70d826af15f",
     "semantic_hash": ""
   },
   "README.md": {
@@ -380,8 +380,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/Experience.tsx": {
-    "mtime": 1784389874.6392047,
-    "ast_hash": "61b906fa24a661860431cd3a62793001",
+    "mtime": 1784426165.9911487,
+    "ast_hash": "d932c8667057c26d3c4ec0cb71978adf",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/Hud.tsx": {
@@ -420,8 +420,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreHud.tsx": {
-    "mtime": 1784397222.9307241,
-    "ast_hash": "8618820378b4984c60141daa63df4fea",
+    "mtime": 1784444852.7591617,
+    "ast_hash": "61833b1808c65dfd99a0679c74c88f21",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ExploreWorld.tsx": {
@@ -435,8 +435,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/Minimap.tsx": {
-    "mtime": 1784218030.7876925,
-    "ast_hash": "8876b0ae2ff6cbe1fc7f2571da67d206",
+    "mtime": 1784440896.0232842,
+    "ast_hash": "b825da5ae5163258f279580869536b23",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/OnlinePlayers.tsx": {
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/NightShift.tsx": {
-    "mtime": 1784138566.3169794,
-    "ast_hash": "249d42869ad90c4b201904d28e6c294d",
+    "mtime": 1784426069.8585725,
+    "ast_hash": "a292f8da249c242e6d4de48a90305f92",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/gamelan.ts": {
@@ -505,13 +505,13 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/state.ts": {
-    "mtime": 1784138548.0501504,
-    "ast_hash": "3f9bf518fea322180ba71847d9f21f92",
+    "mtime": 1784444529.490884,
+    "ast_hash": "0d42446d37c7197e3b4a3f04c4ac1353",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/story.ts": {
-    "mtime": 1784134857.2190888,
-    "ast_hash": "b6d0001301cb9b380a9a36a0fc6e864e",
+    "mtime": 1784444527.0798454,
+    "ast_hash": "d39162c6f87bf7007ef51d3b652fa9b2",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/nightshift/voice.ts": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/store.ts": {
-    "mtime": 1784397224.8707843,
-    "ast_hash": "215e181011ead7e436ff94deb7bb6ab5",
+    "mtime": 1784444850.428136,
+    "ast_hash": "8ebc1715acc7ff09a02e5207edfdfa14",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/stations.ts": {
@@ -555,8 +555,8 @@
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/rpg.ts": {
-    "mtime": 1784138844.4686954,
-    "ast_hash": "68c2b2fc79731d54a260acf0af58154d",
+    "mtime": 1784440872.792656,
+    "ast_hash": "ff3cacc7a5dbdaa2fd5f503076c1413a",
     "semantic_hash": ""
   },
   "src/components/three/serverroom/explore/ServiceRacks.tsx": {
@@ -647,6 +647,21 @@
   "src/components/three/serverroom/explore/useNearby.ts": {
     "mtime": 1784232699.251185,
     "ast_hash": "a4a1ab03e184b5357d27914ff16fe362",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/InventoryModal.tsx": {
+    "mtime": 1784426099.0557487,
+    "ast_hash": "79532818961aef5798a342b558b7f6d0",
+    "semantic_hash": ""
+  },
+  "src/components/three/serverroom/explore/items.ts": {
+    "mtime": 1784426001.1011534,
+    "ast_hash": "b335c12d6eccfd5519dd3250a36fdd9b",
+    "semantic_hash": ""
+  },
+  "docs/prompt-night-shift-v2.md": {
+    "mtime": 1784444509.2705555,
+    "ast_hash": "de2472c484d3c57dccc72e3fe83c3d65",
     "semantic_hash": ""
   }
 }

@@ -1,1 +1,127 @@
-{"nodes": [{"id": "home_rensho_projects_portfolio_src_components_three_serverroom_contract_md", "label": "CONTRACT.md", "file_type": "document", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L1"}, {"id": "serverroom_contract_the_server_room_build_contract_v1", "label": "The Server Room \u2014 build contract (v1)", "file_type": "document", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L1"}, {"id": "serverroom_contract_aturan_keras_untuk_semua_modul", "label": "Aturan keras untuk SEMUA modul", "file_type": "document", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L8"}, {"id": "serverroom_contract_geometri_dunia", "label": "Geometri dunia", "file_type": "document", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L18"}, {"id": "serverroom_contract_pembagian_modul_1_file_per_agent", "label": "Pembagian modul (1 file per agent)", "file_type": "document", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L24"}, {"id": "serverroom_contract_security_wajib_statusrack_roomstatus", "label": "Security (WAJIB \u2014 StatusRack/roomStatus)", "file_type": "document", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L34"}, {"id": "serverroom_contract_perluasan_digital_twin_backlog_1_2026_07_16_serviceracks_room_server", "label": "Perluasan digital twin (backlog-1, 2026-07-16 \u2014 ServiceRacks/room-server)", "file_type": "document", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L42"}, {"id": "serverroom_contract_integrasi_dikerjakan_integrator_bukan_agent", "label": "Integrasi (dikerjakan integrator, bukan agent)", "file_type": "document", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L50"}], "edges": [{"source": "home_rensho_projects_portfolio_src_components_three_serverroom_contract_md", "target": "serverroom_contract_the_server_room_build_contract_v1", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L1", "weight": 1.0}, {"source": "serverroom_contract_the_server_room_build_contract_v1", "target": "serverroom_contract_aturan_keras_untuk_semua_modul", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L8", "weight": 1.0}, {"source": "serverroom_contract_the_server_room_build_contract_v1", "target": "serverroom_contract_geometri_dunia", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L18", "weight": 1.0}, {"source": "serverroom_contract_the_server_room_build_contract_v1", "target": "serverroom_contract_pembagian_modul_1_file_per_agent", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L24", "weight": 1.0}, {"source": "serverroom_contract_the_server_room_build_contract_v1", "target": "serverroom_contract_security_wajib_statusrack_roomstatus", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L34", "weight": 1.0}, {"source": "serverroom_contract_security_wajib_statusrack_roomstatus", "target": "serverroom_contract_perluasan_digital_twin_backlog_1_2026_07_16_serviceracks_room_server", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L42", "weight": 1.0}, {"source": "serverroom_contract_the_server_room_build_contract_v1", "target": "serverroom_contract_integrasi_dikerjakan_integrator_bukan_agent", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src/components/three/serverroom/CONTRACT.md", "source_location": "L50", "weight": 1.0}], "input_tokens": 0, "output_tokens": 0}
+{
+  "nodes": [
+    {
+      "id": "home_rensho_projects_portfolio_src_components_three_serverroom_contract_md",
+      "label": "CONTRACT.md",
+      "file_type": "document",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "serverroom_contract_the_server_room_build_contract_v1",
+      "label": "The Server Room \u2014 build contract (v1)",
+      "file_type": "document",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "serverroom_contract_aturan_keras_untuk_semua_modul",
+      "label": "Aturan keras untuk SEMUA modul",
+      "file_type": "document",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L8"
+    },
+    {
+      "id": "serverroom_contract_geometri_dunia",
+      "label": "Geometri dunia",
+      "file_type": "document",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L18"
+    },
+    {
+      "id": "serverroom_contract_pembagian_modul_1_file_per_agent",
+      "label": "Pembagian modul (1 file per agent)",
+      "file_type": "document",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L24"
+    },
+    {
+      "id": "serverroom_contract_security_wajib_statusrack_roomstatus",
+      "label": "Security (WAJIB \u2014 StatusRack/roomStatus)",
+      "file_type": "document",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L34"
+    },
+    {
+      "id": "serverroom_contract_perluasan_digital_twin_backlog_1_2026_07_16_serviceracks_room_server",
+      "label": "Perluasan digital twin (backlog-1, 2026-07-16 \u2014 ServiceRacks/room-server)",
+      "file_type": "document",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L42"
+    },
+    {
+      "id": "serverroom_contract_integrasi_dikerjakan_integrator_bukan_agent",
+      "label": "Integrasi (dikerjakan integrator, bukan agent)",
+      "file_type": "document",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L50"
+    }
+  ],
+  "edges": [
+    {
+      "source": "home_rensho_projects_portfolio_src_components_three_serverroom_contract_md",
+      "target": "serverroom_contract_the_server_room_build_contract_v1",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "serverroom_contract_the_server_room_build_contract_v1",
+      "target": "serverroom_contract_aturan_keras_untuk_semua_modul",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "serverroom_contract_the_server_room_build_contract_v1",
+      "target": "serverroom_contract_geometri_dunia",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "serverroom_contract_the_server_room_build_contract_v1",
+      "target": "serverroom_contract_pembagian_modul_1_file_per_agent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "serverroom_contract_the_server_room_build_contract_v1",
+      "target": "serverroom_contract_security_wajib_statusrack_roomstatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "serverroom_contract_security_wajib_statusrack_roomstatus",
+      "target": "serverroom_contract_perluasan_digital_twin_backlog_1_2026_07_16_serviceracks_room_server",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "serverroom_contract_the_server_room_build_contract_v1",
+      "target": "serverroom_contract_integrasi_dikerjakan_integrator_bukan_agent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/three/serverroom/CONTRACT.md",
+      "source_location": "L50",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
