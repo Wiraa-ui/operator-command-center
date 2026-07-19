@@ -1,21 +1,36 @@
+import { tr } from "./i18n";
+import { setLang, setModal, updateSettings, useExplore, type GameSettings } from "./store";
 import { PALETTE } from "../types";
-import { setModal, updateSettings, useExplore, type GameSettings } from "./store";
 
 /**
- * SettingsModal — story-game style options: graphics preset (bloom/dust),
- * brightness (tone-mapping exposure) and master volume. Everything applies
- * live and persists; RoomCanvas & BrightnessApplier react through the store.
+ * SettingsModal — story-game style options: language (ID/EN), graphics preset
+ * (bloom/dust), brightness (tone-mapping exposure) and master volume. Everything
+ * applies live and persists; RoomCanvas & BrightnessApplier react through the store.
  */
 
 const mono = "var(--font-op-mono, monospace)";
 
-const PRESETS: { id: GameSettings["graphics"]; label: string; hint: string }[] = [
-  { id: "auto", label: "AUTO", hint: "deteksi perangkat (default)" },
-  { id: "ultra", label: "ULTRA", hint: "bloom + debu selalu nyala" },
-  { id: "lite", label: "LITE", hint: "tanpa efek — paling ringan" },
+const PRESETS: { id: GameSettings["graphics"]; label: string; hint: () => string }[] = [
+  {
+    id: "auto",
+    label: "AUTO",
+    hint: () => tr("deteksi perangkat (default)", "device auto (default)"),
+  },
+  {
+    id: "ultra",
+    label: "ULTRA",
+    hint: () => tr("bloom + debu selalu nyala", "bloom + dust always on"),
+  },
+  {
+    id: "lite",
+    label: "LITE",
+    hint: () => tr("tanpa efek — paling ringan", "no effects — lightest"),
+  },
 ];
 
 export function SettingsModal() {
+  // Selecting the whole settings object re-renders on any change, including the
+  // language toggle — so tr() below always reflects the current language.
   const settings = useExplore((s) => s.settings);
 
   return (
@@ -23,7 +38,7 @@ export function SettingsModal() {
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Pengaturan"
+        aria-label={tr("Pengaturan", "Settings")}
         className="w-full max-w-sm rounded-xl border p-6"
         style={{
           borderColor: "rgba(245,158,11,0.4)",
@@ -36,22 +51,46 @@ export function SettingsModal() {
             className="text-[11px] font-bold uppercase tracking-[0.3em]"
             style={{ color: PALETTE.accentBright }}
           >
-            ⚙ Pengaturan
+            ⚙ {tr("Pengaturan", "Settings")}
           </div>
           <button
             onClick={() => setModal(null)}
             className="text-[12px] hover:opacity-70"
             style={{ color: "#9fb0cc" }}
-            aria-label="Tutup pengaturan"
+            aria-label={tr("Tutup pengaturan", "Close settings")}
           >
             ✕
           </button>
         </div>
 
+        {/* Language */}
+        <div className="mt-5">
+          <div className="text-[10px] uppercase tracking-[0.24em]" style={{ color: "#7c8db0" }}>
+            {tr("Bahasa", "Language")}
+          </div>
+          <div className="mt-2 flex gap-2">
+            {(["id", "en"] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className="flex-1 rounded-md border px-2 py-2 text-[11px] font-bold tracking-[0.14em]"
+                style={{
+                  borderColor:
+                    settings.lang === l ? PALETTE.accentBright : "rgba(124,141,176,0.35)",
+                  background: settings.lang === l ? "rgba(245,158,11,0.16)" : "transparent",
+                  color: settings.lang === l ? PALETTE.accentBright : "#9fb0cc",
+                }}
+              >
+                {l === "id" ? "INDONESIA" : "ENGLISH"}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Graphics preset */}
         <div className="mt-5">
           <div className="text-[10px] uppercase tracking-[0.24em]" style={{ color: "#7c8db0" }}>
-            Grafis
+            {tr("Grafis", "Graphics")}
           </div>
           <div className="mt-2 flex gap-2">
             {PRESETS.map((p) => (
@@ -71,7 +110,7 @@ export function SettingsModal() {
             ))}
           </div>
           <div className="mt-1.5 text-[9.5px]" style={{ color: "#7c8db0" }}>
-            {PRESETS.find((p) => p.id === settings.graphics)?.hint}
+            {PRESETS.find((p) => p.id === settings.graphics)?.hint()}
           </div>
         </div>
 
@@ -81,7 +120,7 @@ export function SettingsModal() {
             className="flex justify-between text-[10px] uppercase tracking-[0.24em]"
             style={{ color: "#7c8db0" }}
           >
-            <span>Kecerahan</span>
+            <span>{tr("Kecerahan", "Brightness")}</span>
             <span style={{ color: PALETTE.accentBright }}>
               {Math.round(settings.brightness * 100)}%
             </span>
@@ -94,7 +133,7 @@ export function SettingsModal() {
             value={settings.brightness}
             onChange={(e) => updateSettings({ brightness: Number(e.target.value) })}
             className="mt-2 w-full accent-amber-500"
-            aria-label="Kecerahan"
+            aria-label={tr("Kecerahan", "Brightness")}
           />
         </div>
 
@@ -122,7 +161,10 @@ export function SettingsModal() {
         </div>
 
         <div className="mt-6 text-[9.5px]" style={{ color: "#7c8db0" }}>
-          semua perubahan langsung aktif & tersimpan di peramban ini.
+          {tr(
+            "semua perubahan langsung aktif & tersimpan di peramban ini.",
+            "all changes apply live & are saved in this browser.",
+          )}
         </div>
       </div>
     </div>
