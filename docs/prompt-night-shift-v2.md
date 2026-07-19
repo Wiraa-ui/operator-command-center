@@ -94,6 +94,17 @@ Kirana menghalangi. Naskah lama sudah menanam dua benih — pakai keduanya sebag
   (psikologis-personal, bukan korporat datar; sebagian referensi loop), variasi `storyOnCaught`
   (minimal 3, jangan satu kalimat diulang), dua ending penuh. Bahasa Indonesia dengan diksi
   Bali yang sudah dipakai (suksma, om santih, dik). Semua tetap lewat mesin queue+speak yang ada.
+- **Tiga pendalaman naskah (wajib — ini yang membedakan B+ dan AAA):**
+  1. **Jejak dokumen Kirana** — tersebar di VFS/datapad: bagaimana founder mati, kenapa dia
+     meng-upload dirinya, dan satu dokumen yang membuat pemain BERSIMPATI sebelum twist
+     ARSIP 000 terbuka. Aturan foreshadowing: tiap twist minimal 3 petunjuk yang baru
+     "kebaca" saat ditengok ulang.
+  2. **Taruhan personal operator** — beri operator identitas yang ditemukan pemain sendiri
+     (nama di log absensi, surat tak terkirim untuk keluarga, alasan dia ambil shift malam).
+     Twist "kamu ARSIP 167" harus MENYAKITKAN, bukan sekadar pintar.
+  3. **Reversal babak II — nasib Bli Gede.** Voicemail-nya dari mana sebenarnya? Jawaban
+     ditemukan di tengah cerita (arsip 4–5) dan mengubah cara pemain membaca semua
+     instruksinya sejak awal. Jangan biarkan babak II cuma anomali + taunt.
 - **Naskah lingkungan SCP-style di VFS** (`shell/vfs.ts`): 3–5 dokumen "LAPORAN INSIDEN
   MOKSA-███" dengan redaksi ██, memo internal HR soal "retensi operator", dan
   `arsip/167-PENDING`. Ikuti pola FILE_HOOKS/REGISTRY yang ada; konten whitelist, nol info
@@ -102,7 +113,37 @@ Kirana menghalangi. Naskah lama sudah menanam dua benih — pakai keduanya sebag
   ARSIP 000 spawn pasca-7-purge (pakai pola `ArsipDef` + Entities yang ada), persist di
   `room-access-v1`, badge via sistem achievement yang ada.
 
-### SHOULD (mekanik horor, implementasi murah)
+### MUST (audio — mandat user "perbanyak sound", semua prosedural WebAudio nol aset)
+Mesin sudah ada (`explore/audio.ts` ambience morphing + `nightshift/gamelan.ts`) — perluas,
+jangan bangun ulang:
+- **Mixing 4 layer state**: ambience / stalked / chase / hiding — crossfade mengikuti jarak
+  & line-of-sight Kirana (rencana lama PROJECT_MASTER §cerita, belum dieksekusi penuh).
+- **Audio cue kedekatan**: langkah heels Kirana spasial (PannerNode, makin dekat makin
+  kering/keras) + genta samar sebagai early-warning — pemain harus bisa "mendengar posisi"
+  tanpa lihat minimap, ala RE7/P.T.
+- **Bisikan arwah spasial per rak arsip** (panner per posisi rak, volume ∝ jarak, hilang
+  setelah purge — sunyi pasca-purge adalah reward emosional).
+- **Stinger transisi babak & reveal** (bukan screamer murahan: build-up → satu aksen →
+  silence; silence adalah senjata utama horor).
+- **Detail dunia**: PA terdistorsi babak II–III, detak jam WITA terdengar saat jam hantu,
+  breaker/pintu/statis VHS, drone ruangan berubah saat lampu mati.
+- ⚠️ chrome-headless + WebAudio = hang acak — verifikasi audio pakai run pendek + `__ra.audio()`.
+
+### MUST (alat bertahan — mandat user "bisa ngambil senjata", gaya RE7 disesuaikan lore)
+Pemain bisa MEMUNGUT alat di dunia (glint + `[E] AMBIL` + popup `showItemGet` yang sudah ada)
+dan memakainya lewat sistem inventory yang sudah ada (`items.ts` + `InventoryModal` + HP bar).
+BUKAN pistol/darah — hantu bukan musuh dan Kirana tidak bisa dibunuh (konsisten lore);
+senjata = mengusir/memperlambat/mengungkap, dengan sumber daya terbatas ala survival horror:
+- **Genta Bli Gede** (ditemukan di loker BENGKEL): dibunyikan → Kirana terhempas mundur +
+  stun beberapa detik; charge terbatas, isi ulang di pelinggih/titik tertentu. Senjata utama.
+- **APAR ruang server**: semprotan membutakan Kirana sesaat (kabut menutupi layar dia) —
+  "amunisi" habis, ada unit cadangan tersebar.
+- **Sakelar breaker per zona**: sabotase — matikan listrik zona → Kirana melambat di sana,
+  tapi zona gelap total (trade-off: ghost VHS aktif di gelap? kamu yang atur balance-nya).
+- **Senter UV**: mengungkap lapisan niskala (tulisan/jejak/petunjuk anomali) + membekukan
+  ghost VHS selama disorot — tapi cahaya menarik perhatian (mekanik `lampIsOn` sudah ada).
+- Keybind pakai/switch cepat (angka atau Q), slot aktif tampil di HUD; drop rate & charge
+  dibalance supaya tetap horor (sumber daya langka), bukan power fantasy.
 - **Anomali "Exit 8" di DATA HALL saat night**: saat pemain masuk, 0–1 anomali dari pool
   kecil (rak ekstra yang tak ada di layout, poster berubah, lampu baris mati satu, siluet
   di ujung lorong). Interaksi `[E] LAPOR` pada anomali = benar → pintu keluar terbuka;
@@ -153,5 +194,8 @@ Kirana menghalangi. Naskah lama sudah menanam dua benih — pakai keduanya sebag
 3. Laporan akhir: apa yang berubah per babak, hasil E2E kedua ending, dan sisa COULD yang
    tidak dikerjakan (masukkan ke backlog PROJECT_MASTER).
 
-Prioritas kalau waktu terbatas: MUST → SHOULD anomali DATA HALL → sisanya backlog.
+Prioritas kalau waktu terbatas: MUST naskah (termasuk 3 pendalaman) → MUST audio →
+MUST alat bertahan → SHOULD anomali DATA HALL → sisanya backlog.
 Naskah adalah bintang utamanya — tulis seperti penulis game AAA, bukan placeholder.
+Uji ulang balance setelah alat bertahan masuk: Kirana harus tetap menakutkan
+walau pemain pegang genta (stun pendek, charge langka, dia belajar/berpindah rute).
