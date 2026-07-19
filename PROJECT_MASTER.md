@@ -125,7 +125,7 @@ Tautan: `op-link-underline`. Semua hormati `prefers-reduced-motion`.
 - Maintain portfolio source of truth.
 - Keep content aligned with professional positioning.
 - Audit runtime and content gaps before deeper polish.
-- Decide whether to restore a real CV PDF or replace the broken CTA path.
+- ~~Decide whether to restore a real CV PDF or replace the broken CTA path~~ — **BERES: CV CTA sehat** (audit 2026-07-19: `public/cv.pdf` ada, `/cv.pdf?v=2` 200 `application/pdf` 35 KB lokal & publik).
 - Keep the local preview server running while reviewing in browser.
 
 ## Pending Tasks
@@ -142,11 +142,11 @@ Urut prioritas saran; semua harus patuh pagar: nol service baru, RAM server suci
 1. ~~**Rak proses hidup**~~ — **SELESAI 2026-07-16 sebagai "digital twin"** (lihat changelog): 5 rak service nyata di CORE (north wall, timur DOOR-2) dengan LED live via `GET /api/room/services` (room-server.ts, TCP probe loopback + whitelist id+boolean), animasi POST saat service bangkit, beacon alarm RAM < 800 MB.
 2. **Isi 3 slot "??? COMING SOON" di LAB** — konten arsip bot (kumon-carousel, market-analysis, cuti-siswa) saat user siap mempublikasikan; kartu teaser tinggal diganti di `explore/ExploreWorld.tsx` (posisi sudah ada di `layout.ts:LAB_PANELS`).
 3. ~~**Suara spasial**~~ — **SELESAI 2026-07-19** (footstep+heartbeat sudah dari 17d; kini + hum rak proximity ber-panner stereo, lihat changelog).
-4. **Hantu pengunjung online** — orb posisi pengunjung lain (polling server fn + state kecil; pertimbangkan schema kecil di DB `crypto`, konsultasikan dulu risiko beban).
+4. ~~**Hantu pengunjung online**~~ — **SELESAI (superseded oleh P5 online presence 2026-07-16)**: bukan orb tapi humanoid translusen sky + name tag via WS relay in-process (`OnlinePlayers.tsx` + `explore/online.ts`), tanpa DB crypto.
 5. ~~**Insiden acak "operator drill"**~~ — **SELESAI 2026-07-19** (lihat changelog): rak twin CORE acak strobe amber 75–150 dtk masuk explore, `E` = restart kosmetik + achievement FIRST RESPONDER.
 6. ~~**Konami code**~~ — **SELESAI 2026-07-19**: ↑↑↓↓←→←→BA di mode room → LED korridor rave 2,6 dtk (amber/sky/putih) + achievement OLD SCHOOL.
 7. ~~**Foto mode**~~ — **SELESAI 2026-07-19**: tombol 📷 di HUD explore → render ulang + toBlob → unduh PNG (tanpa preserveDrawingBuffer) + achievement FOTOGRAFER.
-8. **Speedrun leaderboard** — butuh storage server; tunda kecuali user setuju pakai DB crypto.
+8. ~~**Speedrun leaderboard**~~ — **SELESAI 2026-07-17 (h)**: Hall of Operators di `room.db` (bukan DB crypto), papan 3D `RecordBoard.tsx` + perintah `leaderboard` (lihat changelog).
 9. **Gyro look di HP** (DeviceOrientation, opt-in permission iOS) sebagai alternatif drag.
 10. **Endgame narasi** — setelah root, lampu korridor berubah nuansa + pesan personal operator di layar entrance.
 
