@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { slideMove } from "../collide";
+import { tr } from "../i18n";
 import { LAB, SPAWN, type ExploreMap } from "../layout";
 import {
   addToast,
@@ -139,7 +140,7 @@ export function NightShift({ map }: { map: ExploreMap }) {
       if (!stunned && !blinded && dPlayer < KIRANA_CATCH_DIST) {
         // Caught: −35 HP and she drags you to the entrance. Purge progress
         // survives; the third catch (HP 0) ends the whole shift (store).
-        damageHp(35, "⚠ tertangkap Bu Kirana — HP −35");
+        damageHp(35, tr("⚠ tertangkap Bu Kirana — HP −35", "⚠ caught by Kirana — HP −35"));
         player.x = SPAWN.x;
         player.z = SPAWN.z;
         player.yaw = SPAWN.yaw;
@@ -187,7 +188,12 @@ export function NightShift({ map }: { map: ExploreMap }) {
       }
       if (d < GHOST_CONTACT_DIST && g.fade > 0.5) {
         night.lampLockUntil = now + GHOST_LAMP_LOCK_MS;
-        addToast("▓▒░ STATIS — lampumu direbut sinyal 1998");
+        addToast(
+          tr(
+            "▓▒░ STATIS — lampumu direbut sinyal lama",
+            "▓▒░ STATIC — old signal steals your light",
+          ),
+        );
         // It got what it wanted; it drifts off to re-approach later.
         g.x -= (dx / Math.max(d, 0.1)) * 5;
         g.z -= (dz / Math.max(d, 0.1)) * 5;
@@ -200,7 +206,7 @@ export function NightShift({ map }: { map: ExploreMap }) {
     if (s.purging) {
       const drift = Math.hypot(player.x - night.purgeAnchor.x, player.z - night.purgeAnchor.z);
       if (drift > RITUAL_MOVE_TOL) {
-        cancelPurge("Ritual batal — kamu bergerak.");
+        cancelPurge(tr("Ritual batal — kamu bergerak.", "Ritual broken — you moved."));
       } else if (now >= s.purging.until) {
         completePurge();
       }

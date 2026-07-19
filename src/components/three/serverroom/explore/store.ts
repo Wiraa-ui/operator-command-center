@@ -412,8 +412,22 @@ export function damageHp(amount: number, reason?: string) {
   if (hp <= 0 && state.night) {
     state = { ...state, hp: 100, night: false, purging: null, moksa: false, dialogue: null };
     emit();
-    addToast("💀 HP habis — Bu Kirana menggiringmu keluar gedung.");
-    addToast("Kamu pulih di shift pagi. Ritual bisa diulang dari terminal.");
+    addToast(
+      pickText(
+        bi(
+          "💀 HP habis — Bu Kirana menggiringmu keluar gedung.",
+          "💀 HP gone — Kirana walks you out of the building.",
+        ),
+      ),
+    );
+    addToast(
+      pickText(
+        bi(
+          "Kamu pulih di shift pagi. Ritual bisa diulang dari terminal.",
+          "You recover on the day shift. Restart the ritual from the terminal.",
+        ),
+      ),
+    );
     return;
   }
   state = { ...state, hp };
@@ -666,8 +680,22 @@ export function beginNightShift() {
   resetToolFx();
   persist();
   emit();
-  addToast("// SHIFT MALAM — hapus 7 arsip. Ia tahu kamu di sini.");
-  addToast("L = lampu · akses maintenance dibuka untuk shift malam");
+  addToast(
+    pickText(
+      bi(
+        "// SHIFT MALAM — hapus 7 arsip. Ia tahu kamu di sini.",
+        "// NIGHT SHIFT — delete 7 archives. It knows you're here.",
+      ),
+    ),
+  );
+  addToast(
+    pickText(
+      bi(
+        "L = lampu · 1/2 = alat · akses maintenance dibuka",
+        "L = lamp · 1/2 = tools · maintenance access opened",
+      ),
+    ),
+  );
 }
 
 export function endNightShift() {
@@ -690,6 +718,11 @@ export function endNightShift() {
     there is no runtime import cycle with i18n). */
 function pickText(b: { id: string; en: string }): string {
   return state.settings.lang === "en" ? b.en : b.id;
+}
+
+/** Local bilingual-phrase builder (store stays free of runtime i18n imports). */
+function bi(id: string, en: string): { id: string; en: string } {
+  return { id, en };
 }
 
 /** Pick up a survival tool: store its charges and auto-select it. */
@@ -778,8 +811,20 @@ export function completePurge() {
   const moksa = purged.length >= ARSIP_RACKS.length;
   state = { ...state, purged, purging: null, moksa };
   emit();
-  addToast(`ARSIP TERHAPUS — satu arwah moksa (${purged.length}/${ARSIP_RACKS.length})`);
-  healHp(25, "✚ arwah yang pulang memulihkanmu (+25 HP)");
+  addToast(
+    pickText(
+      bi(
+        `ARSIP DILEPASKAN — satu arwah pulang (${purged.length}/${ARSIP_RACKS.length})`,
+        `ARCHIVE RELEASED — one soul goes home (${purged.length}/${ARSIP_RACKS.length})`,
+      ),
+    ),
+  );
+  healHp(
+    25,
+    pickText(
+      bi("✚ arwah yang pulang memulihkanmu (+25 HP)", "✚ the freed soul heals you (+25 HP)"),
+    ),
+  );
   if (moksa) {
     addAchievement("MOKSA — semua arwah pulang");
     // The ending overlay needs a clickable cursor.
@@ -801,7 +846,9 @@ export function triggerInteract() {
     night.purgeAnchor.z = player.z;
     state = { ...state, purging: { id, until: Date.now() + RITUAL_MS } };
     emit();
-    addToast("Ritual pelepasan digital — tahan posisi…");
+    addToast(
+      pickText(bi("Ritual pelepasan — tahan posisi…", "Release ritual — hold your position…")),
+    );
     return;
   }
   if (id.startsWith("node:")) {
