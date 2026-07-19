@@ -186,19 +186,10 @@ export function VhsGhost() {
 /**
  * ArsipRack — ancestor-archive cabinet. The memory core pulses amber while
  * the archive is intact; purging kills the core and releases a thin warm
- * light column (the arwah ascending). `label` is metadata for the parent
- * HUD — no in-scene text per contract, so it is intentionally not rendered.
+ * light column (the arwah ascending). The rack designation is shown by the
+ * parent HUD's interact prompt (PlayerRig) — no in-scene text per contract.
  */
-export function ArsipRack({
-  x,
-  z,
-  purged,
-}: {
-  x: number;
-  z: number;
-  purged: boolean;
-  label: string;
-}) {
+export function ArsipRack({ x, z, purged }: { x: number; z: number; purged: boolean }) {
   const a = useMemo(() => {
     const box = new THREE.BoxGeometry(1, 1, 1);
     const cabinet = new THREE.MeshStandardMaterial({

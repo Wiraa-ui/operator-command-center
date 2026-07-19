@@ -9,9 +9,12 @@
  * a digital release rite, one rack at a time — while Bu Dewi Kirana objects.
  */
 
+import type { Bi } from "../i18n";
+
 export interface ArsipDef {
   id: `arsip:${string}`;
-  label: string;
+  /** Bilingual rack designation, shown in the "delete" interact prompt. */
+  label: Bi;
   x: number;
   z: number;
 }
@@ -21,14 +24,19 @@ export interface ArsipDef {
     the night shift also visits the new rooms — doors must be unlocked by
     day, which is exactly the RPG quest route.) */
 export const ARSIP_RACKS: ArsipDef[] = [
-  { id: "arsip:penari", label: "ARSIP 001 — PENARI, 1963", x: -1.5, z: -3 },
-  { id: "arsip:pemangku", label: "ARSIP 014 — PEMANGKU, 1977", x: 1.4, z: -20 },
-  { id: "arsip:pantai", label: "ARSIP 098 — ANAK PANTAI, 1998", x: -1.5, z: -33 },
-  { id: "arsip:ibu", label: "ARSIP 121 — IBU, 2004", x: 5, z: -12.4 },
-  { id: "arsip:penenun", label: "ARSIP 133 — PENENUN, 2009", x: -8.5, z: -17.6 },
-  { id: "arsip:nelayan", label: "ARSIP 152 — NELAYAN, 2015", x: 12.8, z: -3.4 },
-  { id: "arsip:operator", label: "ARSIP 166 — OPERATOR SHIFT TIGA", x: 21, z: -14.5 },
+  { id: "arsip:penari", label: bi("ARSIP 001 — SANG PENARI, 1963", "ARCHIVE 001 — THE DANCER, 1963"), x: -1.5, z: -3 }, // prettier-ignore
+  { id: "arsip:pemangku", label: bi("ARSIP 014 — SANG PENJAGA, 1977", "ARCHIVE 014 — THE KEEPER, 1977"), x: 1.4, z: -20 }, // prettier-ignore
+  { id: "arsip:pantai", label: bi("ARSIP 098 — SANG ANAK, 1998", "ARCHIVE 098 — THE CHILD, 1998"), x: -1.5, z: -33 }, // prettier-ignore
+  { id: "arsip:ibu", label: bi("ARSIP 121 — SANG IBU, 2004", "ARCHIVE 121 — THE MOTHER, 2004"), x: 5, z: -12.4 }, // prettier-ignore
+  { id: "arsip:penenun", label: bi("ARSIP 133 — SANG PENENUN, 2009", "ARCHIVE 133 — THE WEAVER, 2009"), x: -8.5, z: -17.6 }, // prettier-ignore
+  { id: "arsip:nelayan", label: bi("ARSIP 152 — SANG PELAUT, 2015", "ARCHIVE 152 — THE SAILOR, 2015"), x: 12.8, z: -3.4 }, // prettier-ignore
+  { id: "arsip:operator", label: bi("ARSIP 166 — SANG OPERATOR, SHIFT TIGA", "ARCHIVE 166 — THE OPERATOR, SHIFT THREE"), x: 21, z: -14.5 }, // prettier-ignore
 ];
+
+/** Local bilingual-phrase builder (state.ts stays free of runtime i18n deps). */
+function bi(id: string, en: string): Bi {
+  return { id, en };
+}
 
 export const RITUAL_MS = 3000; // hold-still duration per purge
 export const RITUAL_MOVE_TOL = 0.35; // drift past this cancels the ritual

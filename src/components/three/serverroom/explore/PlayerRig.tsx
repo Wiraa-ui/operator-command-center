@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { roomAudio, type AudioZone } from "./audio";
 import { FirstPersonArms, ThirdPersonBody } from "./Avatar";
 import { slideMove } from "./collide";
+import { pick, tr } from "./i18n";
 import {
   EYE_Y,
   HEART_POS,
@@ -311,7 +312,8 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
         const dist = Math.hypot(r.x - player.x, r.z - player.z);
         if (dist < bestD) {
           bestD = dist;
-          nearest = { id: r.id, label: `HAPUS ${r.label}` };
+          const name = pick(r.label);
+          nearest = { id: r.id, label: tr(`HAPUS ${name}`, `DELETE ${name}`) };
         }
       }
     }

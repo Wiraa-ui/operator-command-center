@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { roomAudio } from "./audio";
+import type { Lang } from "./i18n";
 import { KEY_ITEMS, LOG_ITEMS, MASTER_TAPE, type ItemDef } from "./items";
 import { SPAWN } from "./layout";
 import { ARSIP_RACKS, night, resetNight, RITUAL_MS } from "./nightshift/state";
@@ -108,9 +109,16 @@ export interface GameSettings {
   brightness: number;
   /** Master volume 0–1 (multiplies the ambience master gain). */
   volume: number;
+  /** UI/dialogue language (player-facing ID⇄EN toggle). */
+  lang: Lang;
 }
 
-export const DEFAULT_SETTINGS: GameSettings = { graphics: "auto", brightness: 1, volume: 1 };
+export const DEFAULT_SETTINGS: GameSettings = {
+  graphics: "auto",
+  brightness: 1,
+  volume: 1,
+  lang: "id",
+};
 
 /* ------------------------- mutable fast lane -------------------------- */
 
@@ -214,6 +222,7 @@ function loadPersisted(): Persisted {
           : "auto",
         brightness: clampNum((p.settings as GameSettings)?.brightness, 0.6, 1.6, 1),
         volume: clampNum((p.settings as GameSettings)?.volume, 0, 1, 1),
+        lang: (p.settings as GameSettings)?.lang === "en" ? "en" : "id",
       },
       collectedLogs: Array.isArray(p.collectedLogs) ? p.collectedLogs : [],
       endingSeen: Boolean(p.endingSeen),
@@ -401,6 +410,11 @@ export function updateSettings(patch: Partial<GameSettings>) {
   persist();
   emit();
   if (patch.volume !== undefined) roomAudio.setVolume(patch.volume);
+}
+
+/** Player-facing language toggle (persisted with the rest of settings). */
+export function setLang(lang: Lang) {
+  updateSettings({ lang });
 }
 
 /** Total story logs; keep in sync with STORY_LOGS (story-logs.ts). */

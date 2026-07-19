@@ -22,22 +22,25 @@ const PERSONA: Record<Speaker, { rate: number; pitch: number; volume: number }> 
   putu: { rate: 1.1, pitch: 1.05, volume: 0.85 },
 };
 
-let cachedVoice: SpeechSynthesisVoice | null | undefined;
+/** Voice cache keyed by language prefix ("id" / "en"). */
+const cachedVoice: Partial<Record<"id" | "en", SpeechSynthesisVoice | null>> = {};
 
-function pickVoice(): SpeechSynthesisVoice | null {
-  if (cachedVoice !== undefined) return cachedVoice;
+function pickVoice(lang: "id" | "en"): SpeechSynthesisVoice | null {
+  if (cachedVoice[lang] !== undefined) return cachedVoice[lang]!;
   const list = window.speechSynthesis.getVoices();
   if (list.length === 0) return null; // not loaded yet — retry next call
-  cachedVoice =
-    list.find((v) => v.lang.toLowerCase().startsWith("id")) ??
-    list.find((v) => v.default) ??
+  const v =
+    list.find((x) => x.lang.toLowerCase().startsWith(lang)) ??
+    list.find((x) => x.default) ??
     list[0] ??
     null;
-  return cachedVoice;
+  cachedVoice[lang] = v;
+  return v;
 }
 
-/** Speak one line (cancels anything still playing). No-op without support. */
-export function speak(text: string, speaker: Speaker) {
+/** Speak one line (cancels anything still playing). No-op without support.
+    `lang` picks an appropriate voice + BCP-47 tag; defaults to Indonesian. */
+export function speak(text: string, speaker: Speaker, lang: "id" | "en" = "id") {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   try {
     const synth = window.speechSynthesis;
@@ -47,12 +50,12 @@ export function speak(text: string, speaker: Speaker) {
     u.rate = p.rate;
     u.pitch = p.pitch;
     u.volume = p.volume;
-    const v = pickVoice();
+    const v = pickVoice(lang);
     if (v) {
       u.voice = v;
       u.lang = v.lang;
     } else {
-      u.lang = "id-ID";
+      u.lang = lang === "en" ? "en-US" : "id-ID";
     }
     synth.speak(u);
   } catch {

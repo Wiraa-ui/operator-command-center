@@ -208,7 +208,7 @@ export function NightShift({ map }: { map: ExploreMap }) {
       <KiranaBody />
       <VhsGhost />
       {ARSIP_RACKS.map((r) => (
-        <ArsipRack key={r.id} x={r.x} z={r.z} purged={purged.includes(r.id)} label={r.label} />
+        <ArsipRack key={r.id} x={r.x} z={r.z} purged={purged.includes(r.id)} />
       ))}
     </group>
   );
