@@ -27,8 +27,10 @@ import {
   toggleView,
   triggerInteract,
   useExplore,
+  useTool,
 } from "./store";
 import { ARSIP_RACKS, lampIsOn, night } from "./nightshift/state";
+import { TOOL_META, TOOL_PICKUPS } from "./nightshift/tools";
 import { NPCS, QUEST_NODES } from "./rpg";
 import { STORY_LOGS } from "./story-logs";
 
@@ -101,6 +103,9 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
         night.lamp = !night.lamp;
         if (!night.lamp) markSawDark(); // looking into the dark unlocks ending C
       }
+      // SHIFT MALAM: 1/2 use the bell / extinguisher against Kirana.
+      if (e.code === "Digit1" && getExploreState().night) useTool("genta");
+      if (e.code === "Digit2" && getExploreState().night) useTool("apar");
       if (e.code === "KeyV" || e.code === "F5") {
         if (e.code === "F5") e.preventDefault(); // browser reload
         toggleView();
@@ -318,6 +323,16 @@ export function PlayerRig({ map, reduced }: { map: ExploreMap; reduced: boolean 
           bestD = dist;
           const name = pick(r.label);
           nearest = { id: r.id, label: tr(`HAPUS ${name}`, `DELETE ${name}`) };
+        }
+      }
+      // Survival-tool pickups (only until owned).
+      for (const t of TOOL_PICKUPS) {
+        if (s.toolCharges[t.id] !== undefined) continue;
+        const dist = Math.hypot(t.x - player.x, t.z - player.z);
+        if (dist < bestD) {
+          bestD = dist;
+          const name = pick(TOOL_META[t.id].name);
+          nearest = { id: `tool:${t.id}`, label: tr(`AMBIL ${name}`, `PICK UP ${name}`) };
         }
       }
     }

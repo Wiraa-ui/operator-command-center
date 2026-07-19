@@ -12,9 +12,10 @@ import {
   player,
   useExplore,
 } from "../store";
-import { ArsipRack, KiranaBody, VhsGhost } from "./Entities";
+import { ArsipRack, KiranaBody, ToolPickups, VhsGhost } from "./Entities";
 import { nightAudio } from "./gamelan";
 import { ARSIP_RACKS, lampIsOn, night, RITUAL_MOVE_TOL } from "./state";
+import { toolFx } from "./tools";
 import {
   storyIntro,
   storyMoksa,
@@ -114,13 +115,18 @@ export function NightShift({ map }: { map: ExploreMap }) {
 
     /* --------------------------- Kirana ------------------------------ */
     const k = night.kirana;
+    // Survival tools buy time: the bell freezes her, the extinguisher blinds
+    // her (she keeps drifting slowly but can't catch).
+    const stunned = now < toolFx.stunUntil;
+    const blinded = now < toolFx.blindUntil;
     if (!s.moksa) {
       const tgt = pursuitTarget(k.x, k.z);
       const dx = tgt.x - k.x;
       const dz = tgt.z - k.z;
       const d = Math.hypot(dx, dz);
-      if (d > WAYPOINT_DIST || (tgt.x === player.x && tgt.z === player.z)) {
-        const speed = KIRANA_BASE_SPEED + s.purged.length * KIRANA_SPEED_PER_PURGE;
+      if (!stunned && (d > WAYPOINT_DIST || (tgt.x === player.x && tgt.z === player.z))) {
+        const speed =
+          (KIRANA_BASE_SPEED + s.purged.length * KIRANA_SPEED_PER_PURGE) * (blinded ? 0.5 : 1);
         const move = Math.min(speed * step, d);
         const next = slideMove(k.x, k.z, (dx / d) * move, (dz / d) * move, map.walls);
         k.x = next.x;
@@ -130,7 +136,7 @@ export function NightShift({ map }: { map: ExploreMap }) {
         k.yaw = Math.atan2(-dx, -dz);
       }
       const dPlayer = Math.hypot(k.x - player.x, k.z - player.z);
-      if (dPlayer < KIRANA_CATCH_DIST) {
+      if (!stunned && !blinded && dPlayer < KIRANA_CATCH_DIST) {
         // Caught: −35 HP and she drags you to the entrance. Purge progress
         // survives; the third catch (HP 0) ends the whole shift (store).
         damageHp(35, "⚠ tertangkap Bu Kirana — HP −35");
@@ -207,6 +213,7 @@ export function NightShift({ map }: { map: ExploreMap }) {
       <pointLight ref={kiranaLight} color="#f59e0b" distance={7} decay={1.8} intensity={1.4} />
       <KiranaBody />
       <VhsGhost />
+      <ToolPickups />
       {ARSIP_RACKS.map((r) => (
         <ArsipRack key={r.id} x={r.x} z={r.z} purged={purged.includes(r.id)} />
       ))}

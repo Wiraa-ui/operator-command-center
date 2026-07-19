@@ -4,6 +4,15 @@ import type { Lang } from "./i18n";
 import { KEY_ITEMS, LOG_ITEMS, MASTER_TAPE, type ItemDef } from "./items";
 import { SPAWN } from "./layout";
 import { ARSIP_RACKS, night, resetNight, RITUAL_MS } from "./nightshift/state";
+import {
+  BLIND_MS,
+  resetToolFx,
+  STUN_MS,
+  TOOL_META,
+  TOOL_PICKUPS,
+  toolFx,
+  type ToolId,
+} from "./nightshift/tools";
 import type { Speaker } from "./nightshift/voice";
 
 /**
@@ -108,6 +117,10 @@ export interface ExploreState {
   modeChosen: boolean;
   /** Boot menu currently visible (session; opens on first visit + on request). */
   showModeSelect: boolean;
+  /** Owned survival tools → remaining charges (session; night shift only). */
+  toolCharges: Partial<Record<ToolId, number>>;
+  /** Selected tool for the HUD/use key (session). */
+  activeTool: ToolId | null;
   /** Chosen ending at the ARSIP 000 confrontation (session; null = deciding). */
   ending: EndingKind | null;
   /** Headlamp was switched off during the shift — unlocks the hidden ending C. */
@@ -290,6 +303,8 @@ function initialState(): ExploreState {
     itemGet: null,
     modeChosen: p.modeChosen,
     showModeSelect: !p.modeChosen,
+    toolCharges: {},
+    activeTool: null,
     ending: null,
     sawDark: false,
     endingsSeen: p.endingsSeen,
@@ -642,10 +657,13 @@ export function beginNightShift() {
     moksa: false,
     ending: null,
     sawDark: false,
+    toolCharges: {},
+    activeTool: null,
     modal: null,
     drill: null, // the night crew has bigger problems than a drill
     hp: 100,
   };
+  resetToolFx();
   persist();
   emit();
   addToast("// SHIFT MALAM — hapus 7 arsip. Ia tahu kamu di sini.");
@@ -653,6 +671,7 @@ export function beginNightShift() {
 }
 
 export function endNightShift() {
+  resetToolFx();
   state = {
     ...state,
     night: false,
@@ -660,9 +679,61 @@ export function endNightShift() {
     moksa: false,
     ending: null,
     sawDark: false,
+    toolCharges: {},
+    activeTool: null,
     dialogue: null,
   };
   emit();
+}
+
+/** Resolve a bilingual phrase against the active language (store-local, so
+    there is no runtime import cycle with i18n). */
+function pickText(b: { id: string; en: string }): string {
+  return state.settings.lang === "en" ? b.en : b.id;
+}
+
+/** Pick up a survival tool: store its charges and auto-select it. */
+export function pickupTool(id: ToolId, charges: number) {
+  if (state.toolCharges[id] !== undefined) return;
+  state = {
+    ...state,
+    toolCharges: { ...state.toolCharges, [id]: charges },
+    activeTool: id,
+  };
+  emit();
+  showItemGet({
+    id: `tool:${id}`,
+    icon: TOOL_META[id].icon,
+    name: pickText(TOOL_META[id].name),
+    desc: pickText(TOOL_META[id].use),
+  });
+}
+
+/** Use a tool: spend one charge and apply its effect (read by NightShift). */
+export function useTool(id: ToolId) {
+  const left = state.toolCharges[id];
+  if (!state.night || left === undefined) return;
+  if (left <= 0) {
+    addToast(
+      pickText({ id: `${TOOL_META[id].name.id} habis.`, en: `${TOOL_META[id].name.en} empty.` }),
+    );
+    return;
+  }
+  const now = Date.now();
+  if (id === "genta") {
+    toolFx.stunUntil = now + STUN_MS;
+    // Knock her back along the player→Kirana axis so the bell buys space.
+    const dx = night.kirana.x - player.x;
+    const dz = night.kirana.z - player.z;
+    const d = Math.hypot(dx, dz) || 1;
+    night.kirana.x += (dx / d) * 4;
+    night.kirana.z += (dz / d) * 4;
+  } else {
+    toolFx.blindUntil = now + BLIND_MS;
+  }
+  state = { ...state, toolCharges: { ...state.toolCharges, [id]: left - 1 } };
+  emit();
+  addToast(`${TOOL_META[id].icon} ${pickText(TOOL_META[id].use)}`);
 }
 
 /** Headlamp went dark during the shift — the player "looked into the dark",
@@ -735,6 +806,13 @@ export function triggerInteract() {
   if (id.startsWith("node:")) {
     // Quest patch panel: instant check, stay in pointer lock.
     emitQuestEvent(id);
+    return;
+  }
+  if (id.startsWith("tool:")) {
+    // Pick up a survival tool; stay in pointer lock (no modal).
+    const toolId = id.slice("tool:".length) as ToolId;
+    const spot = TOOL_PICKUPS.find((t) => t.id === toolId);
+    if (spot) pickupTool(toolId, spot.charges);
     return;
   }
   if (id.startsWith("drill:")) {

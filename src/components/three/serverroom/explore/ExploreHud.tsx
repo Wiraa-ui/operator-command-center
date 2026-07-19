@@ -36,9 +36,10 @@ import {
   type EndingKind,
   type QuestProgress,
 } from "./store";
-import { tr } from "./i18n";
+import { pick, tr } from "./i18n";
 import { ARSIP_RACKS } from "./nightshift/state";
 import { storyEnding } from "./nightshift/story";
+import { TOOL_CHARGE_MAX, TOOL_IDS, TOOL_META } from "./nightshift/tools";
 import { stopSpeaking } from "./nightshift/voice";
 
 /**
@@ -515,6 +516,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
           </div>
         </div>
       )}
+      {nightOn && !moksa && <NightToolHud />}
       {moksa && (
         <div
           className="fixed inset-0 z-40 flex items-center justify-center p-5"
@@ -1201,6 +1203,47 @@ function NightEndFinale({ ending }: { ending: EndingKind }) {
       >
         {tr("KEMBALI KE SHIFT PAGI", "RETURN TO DAY SHIFT")}
       </button>
+    </div>
+  );
+}
+
+/* ------------------------- night survival tools ------------------------ */
+
+/** NightToolHud — owned tools with remaining charges + their use key. */
+function NightToolHud() {
+  useExplore((s) => s.settings.lang);
+  const toolCharges = useExplore((s) => s.toolCharges);
+  const owned = TOOL_IDS.filter((id) => toolCharges[id] !== undefined);
+  if (owned.length === 0) return null;
+  return (
+    <div className="pointer-events-none fixed bottom-24 left-4 z-30 flex flex-col gap-1.5">
+      {owned.map((id) => {
+        const left = toolCharges[id] ?? 0;
+        const meta = TOOL_META[id];
+        return (
+          <div
+            key={id}
+            className={`${mono} flex items-center gap-2 rounded-md border px-2.5 py-1.5`}
+            style={{
+              borderColor: left > 0 ? "rgba(245,158,11,0.5)" : "rgba(124,141,176,0.3)",
+              background: "rgba(11,17,32,0.82)",
+              opacity: left > 0 ? 1 : 0.5,
+            }}
+          >
+            <span className="text-[15px]">{meta.icon}</span>
+            <span className="text-[10px] font-bold tracking-[0.14em]" style={{ color: "#e2e8f0" }}>
+              {pick(meta.name)}
+            </span>
+            <span className="text-[10px]" style={{ color: PALETTE.accentBright }}>
+              {"●".repeat(left)}
+              {"○".repeat(Math.max(0, (TOOL_CHARGE_MAX[id] ?? left) - left))}
+            </span>
+            <span className="text-[9px] tracking-[0.16em]" style={{ color: "#7c8db0" }}>
+              [{id === "genta" ? "1" : "2"}]
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }

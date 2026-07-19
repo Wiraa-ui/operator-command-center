@@ -3,9 +3,11 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { PALETTE } from "../../types";
 import { HumanoidFigure } from "../humanoid";
+import { useExplore } from "../store";
 // Written in parallel by the integrator — mutable singleton, read per frame:
 // { active, lamp, kirana: { x, z, yaw }, ghost: { x, z, fade } }
 import { night } from "./state";
+import { TOOL_PICKUPS } from "./tools";
 
 /**
  * Entities — MOKSA.CLOUD night-shift horror cast, all procedural (contract:
@@ -267,5 +269,57 @@ export function ArsipRack({ x, z, purged }: { x: number; z: number; purged: bool
         </>
       )}
     </group>
+  );
+}
+
+/* ----------------------------- ToolPickups ----------------------------- */
+
+/**
+ * ToolPickups — the survival gear waiting in the world (bell, extinguisher).
+ * A small amber cube bobbing over a soft light marks each un-collected tool;
+ * PlayerRig turns proximity into the "PICK UP" prompt. Owned tools vanish.
+ */
+export function ToolPickups() {
+  const toolCharges = useExplore((s) => s.toolCharges);
+  const a = useMemo(() => {
+    const box = new THREE.BoxGeometry(1, 1, 1);
+    const mat = new THREE.MeshStandardMaterial({
+      color: PALETTE.accent,
+      emissive: PALETTE.accentBright,
+      emissiveIntensity: 1.4,
+      roughness: 0.4,
+    });
+    return { box, mat };
+  }, []);
+  const refs = useRef<(THREE.Group | null)[]>([]);
+
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime;
+    for (let i = 0; i < refs.current.length; i++) {
+      const g = refs.current[i];
+      if (g) {
+        g.position.y = 0.9 + Math.sin(t * 1.8 + i) * 0.12;
+        g.rotation.y = t * 0.9;
+      }
+    }
+  });
+
+  return (
+    <>
+      {TOOL_PICKUPS.map((tp, i) =>
+        toolCharges[tp.id] !== undefined ? null : (
+          <group
+            key={tp.id}
+            ref={(g) => {
+              refs.current[i] = g;
+            }}
+            position={[tp.x, 0.9, tp.z]}
+          >
+            <mesh geometry={a.box} material={a.mat} scale={[0.22, 0.22, 0.22]} />
+            <pointLight color={PALETTE.accentBright} distance={3} decay={1.6} intensity={1.1} />
+          </group>
+        ),
+      )}
+    </>
   );
 }
