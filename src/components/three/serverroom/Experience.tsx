@@ -1,9 +1,18 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { getStations } from "./stations";
 import { RoomHUD } from "./Hud";
 import { roomAudio } from "./explore/audio";
 import { buildExploreMap } from "./explore/layout";
-import { addAchievement, beginSession, fxBus, resetPlayer, useExplore } from "./explore/store";
+import { ModeSelect } from "./explore/ModeSelect";
+import {
+  addAchievement,
+  beginNightShift,
+  beginSession,
+  dismissModeSelect,
+  fxBus,
+  resetPlayer,
+  useExplore,
+} from "./explore/store";
 
 /**
  * ServerRoomExperience — the homepage in room mode: a fixed full-screen
@@ -51,6 +60,10 @@ export function ServerRoomExperience({
   const stations = useMemo(() => getStations(), []);
   const map = useMemo(() => buildExploreMap(stations), [stations]);
   const [mode, setMode] = useState<"walk" | "explore">("walk");
+  const showModeSelect = useExplore((s) => s.showModeSelect);
+  // MODE STORY intent: set when the boot menu picks Story, consumed by the
+  // explore lifecycle effect once beginSession() has reset the session.
+  const wantNight = useRef(false);
   const isTouch = useMemo(
     () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
     [],
@@ -81,6 +94,11 @@ export function ServerRoomExperience({
     if (mode !== "explore") return;
     resetPlayer();
     beginSession();
+    // Boot menu chose MODE STORY → drop straight into the night shift.
+    if (wantNight.current) {
+      wantNight.current = false;
+      beginNightShift();
+    }
     const prevOverflow = document.documentElement.style.overflow;
     const prevScroll = window.scrollY;
     document.documentElement.style.overflow = "hidden";
@@ -108,6 +126,17 @@ export function ServerRoomExperience({
           />
         </Suspense>
       </div>
+
+      {showModeSelect && mode === "walk" && (
+        <ModeSelect
+          onSantai={dismissModeSelect}
+          onStory={() => {
+            dismissModeSelect();
+            wantNight.current = true;
+            setMode("explore");
+          }}
+        />
+      )}
 
       {mode === "walk" ? (
         <>

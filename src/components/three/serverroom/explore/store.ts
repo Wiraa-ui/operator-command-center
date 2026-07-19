@@ -100,6 +100,10 @@ export interface ExploreState {
   hp: number;
   /** "ITEM DIPEROLEH" pickup box (self-clears after a few seconds). */
   itemGet: ItemDef | null;
+  /** First-visit mode/language boot menu has been dismissed (persisted). */
+  modeChosen: boolean;
+  /** Boot menu currently visible (session; opens on first visit + on request). */
+  showModeSelect: boolean;
 }
 
 export interface GameSettings {
@@ -187,6 +191,7 @@ interface Persisted {
   settings: GameSettings;
   collectedLogs: string[];
   endingSeen: boolean;
+  modeChosen: boolean;
 }
 
 const EMPTY_PERSIST: Persisted = {
@@ -198,6 +203,7 @@ const EMPTY_PERSIST: Persisted = {
   settings: DEFAULT_SETTINGS,
   collectedLogs: [],
   endingSeen: false,
+  modeChosen: false,
 };
 
 function loadPersisted(): Persisted {
@@ -226,6 +232,7 @@ function loadPersisted(): Persisted {
       },
       collectedLogs: Array.isArray(p.collectedLogs) ? p.collectedLogs : [],
       endingSeen: Boolean(p.endingSeen),
+      modeChosen: Boolean(p.modeChosen),
     };
   } catch {
     return EMPTY_PERSIST;
@@ -259,6 +266,8 @@ function initialState(): ExploreState {
     drill: null,
     hp: 100,
     itemGet: null,
+    modeChosen: p.modeChosen,
+    showModeSelect: !p.modeChosen,
     modal: null,
     interact: null,
     toasts: [],
@@ -296,6 +305,7 @@ function persist() {
         settings: state.settings,
         collectedLogs: state.collectedLogs,
         endingSeen: state.endingSeen,
+        modeChosen: state.modeChosen,
       } satisfies Persisted),
     );
   } catch {
@@ -415,6 +425,19 @@ export function updateSettings(patch: Partial<GameSettings>) {
 /** Player-facing language toggle (persisted with the rest of settings). */
 export function setLang(lang: Lang) {
   updateSettings({ lang });
+}
+
+/** Boot menu (first visit or re-opened): show without persisting a choice. */
+export function openModeSelect() {
+  state = { ...state, showModeSelect: true };
+  emit();
+}
+
+/** A mode was picked (or the menu dismissed): hide + remember for next visit. */
+export function dismissModeSelect() {
+  state = { ...state, showModeSelect: false, modeChosen: true };
+  persist();
+  emit();
 }
 
 /** Total story logs; keep in sync with STORY_LOGS (story-logs.ts). */
