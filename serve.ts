@@ -12,14 +12,40 @@
 //
 // Jalankan: bun run serve.ts   (port default 4174, override via env PORT/HOST)
 import handler from "./.output/server/index.mjs";
-import { join, normalize } from "node:path";
-import { existsSync, statSync } from "node:fs";
+import { join, normalize, extname } from "node:path";
+import { existsSync, statSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { asciiRoom } from "./ascii-room";
 import { roomApi, roomUpgrade, roomWebsocket, type WsData } from "./room-server";
 
 const CLIENT = join(import.meta.dir, ".output", "public");
 const port = Number(process.env.PORT ?? 4174);
 const hostname = process.env.HOST ?? "127.0.0.1";
+
+// Precompress aset teks sekali saat start (user feedback 2026-07-19: "web nya
+// ga di optimize"): bundle JS ±1,5 MB tadinya terkirim mentah. .gz ditulis di
+// sebelah file asli (hilang saat rebuild → dibuat ulang di start berikutnya),
+// jadi nol RAM dan nol kerja per-request.
+const GZ_EXT = new Set([".js", ".mjs", ".css", ".html", ".svg", ".json", ".txt", ".xml", ".map"]);
+function precompress(dir: string) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      precompress(p);
+      continue;
+    }
+    if (!GZ_EXT.has(extname(entry.name)) || entry.name.endsWith(".gz")) continue;
+    const st = statSync(p);
+    if (st.size < 1024) continue; // gzip overhead not worth it
+    const gz = p + ".gz";
+    if (existsSync(gz) && statSync(gz).mtimeMs >= st.mtimeMs) continue;
+    writeFileSync(gz, Bun.gzipSync(readFileSync(p), { level: 9 }));
+  }
+}
+try {
+  precompress(CLIENT);
+} catch (e) {
+  console.error("precompress skipped:", e);
+}
 
 Bun.serve<WsData>({
   port,
@@ -48,9 +74,17 @@ Bun.serve<WsData>({
     // Aset statis dari .output/public (cegah path traversal di luar CLIENT).
     const p = normalize(join(CLIENT, decodeURIComponent(url.pathname)));
     if (p.startsWith(CLIENT) && existsSync(p) && statSync(p).isFile()) {
-      return new Response(Bun.file(p), {
-        headers: { "cache-control": "public, max-age=31536000, immutable" },
-      });
+      const headers: Record<string, string> = {
+        "cache-control": "public, max-age=31536000, immutable",
+        vary: "accept-encoding",
+      };
+      const gz = p + ".gz";
+      if (/\bgzip\b/.test(req.headers.get("accept-encoding") ?? "") && existsSync(gz)) {
+        headers["content-encoding"] = "gzip";
+        headers["content-type"] = Bun.file(p).type; // bukan application/gzip
+        return new Response(Bun.file(gz), { headers });
+      }
+      return new Response(Bun.file(p), { headers });
     }
     // Selain itu: serahkan ke SSR handler (worker fetch). Runtime nitro
     // memanggil ctx.waitUntil, jadi beri execution context minimal.

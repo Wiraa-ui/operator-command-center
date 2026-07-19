@@ -7,6 +7,7 @@ import {
   addToast,
   cancelPurge,
   completePurge,
+  damageHp,
   getExploreState,
   player,
   useExplore,
@@ -130,7 +131,9 @@ export function NightShift({ map }: { map: ExploreMap }) {
       }
       const dPlayer = Math.hypot(k.x - player.x, k.z - player.z);
       if (dPlayer < KIRANA_CATCH_DIST) {
-        // Caught: no death — she walks you out. Purge progress survives.
+        // Caught: −35 HP and she drags you to the entrance. Purge progress
+        // survives; the third catch (HP 0) ends the whole shift (store).
+        damageHp(35, "⚠ tertangkap Bu Kirana — HP −35");
         player.x = SPAWN.x;
         player.z = SPAWN.z;
         player.yaw = SPAWN.yaw;

@@ -62,6 +62,9 @@ const EndingOverlay = lazy(() =>
   import("./EndingOverlay").then((m) => ({ default: m.EndingOverlay })),
 );
 const StudyModal = lazy(() => import("./StudyModal").then((m) => ({ default: m.StudyModal })));
+const InventoryModal = lazy(() =>
+  import("./InventoryModal").then((m) => ({ default: m.InventoryModal })),
+);
 
 export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => void }) {
   const modal = useExplore((s) => s.modal);
@@ -82,6 +85,8 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
   const startedAt = useExplore((s) => s.startedAt);
   const rootAt = useExplore((s) => s.rootAt);
   const endingActive = useExplore((s) => s.endingActive);
+  const hp = useExplore((s) => s.hp);
+  const itemGet = useExplore((s) => s.itemGet);
 
   // Persisted master volume applies as soon as the HUD exists.
   const volume = useExplore((s) => s.settings.volume);
@@ -204,6 +209,22 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [modal]);
+
+  // I toggles the inventory (only from gameplay or the inventory itself —
+  // never while another modal might have a text field focused).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "i" && e.key !== "I") return;
+      const s = getExploreState();
+      if (s.modal?.type === "inventory") setModal(null);
+      else if (!s.modal) {
+        setModal({ type: "inventory" });
+        if (document.pointerLockElement) document.exitPointerLock();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const engage = () => {
     roomAudio.start(muted);
@@ -582,6 +603,76 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
           </div>
         ))}
 
+      {/* HP bar — above the joystick on touch, bottom-left corner on desktop */}
+      <div
+        className={`pointer-events-none fixed z-30 w-44 ${isTouch ? "bottom-[11.75rem] left-6" : "bottom-8 left-4"}`}
+        aria-label={`HP ${hp} dari 100`}
+        role="meter"
+        aria-valuenow={hp}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div className={`${mono} mb-1 flex justify-between text-[10px] tracking-[0.22em]`}>
+          <span style={{ color: hp <= 35 ? "#f87171" : PALETTE.accentBright }}>♥ HP</span>
+          <span style={{ color: "#9fb0cc" }}>{hp}/100</span>
+        </div>
+        <div
+          className="h-2 overflow-hidden rounded-full border"
+          style={{ borderColor: "rgba(245,158,11,0.35)", background: "rgba(15,23,42,0.75)" }}
+        >
+          <div
+            className="h-full rounded-full"
+            style={{
+              width: `${hp}%`,
+              background: hp <= 35 ? "#f87171" : PALETTE.accentBright,
+              boxShadow: hp <= 35 ? "0 0 10px rgba(248,113,113,0.8)" : "none",
+              transition: "width 400ms ease, background 400ms ease",
+            }}
+          />
+        </div>
+      </div>
+
+      {/* "ITEM DIPEROLEH" pickup box — a bigger moment than a toast */}
+      {itemGet && (
+        <div
+          key={itemGet.id}
+          className="pointer-events-none fixed left-1/2 top-[30%] z-40 -translate-x-1/2"
+        >
+          {/* Slide/scale only — opacity keyframes can stall on slow devices. */}
+          <style>{`@keyframes ra-itemget { from { transform: translateY(14px) scale(0.92); } to { transform: none; } }`}</style>
+          <div
+            className="flex items-center gap-3 rounded-xl border px-5 py-3"
+            style={{
+              animation: "ra-itemget 340ms cubic-bezier(0.2, 0.8, 0.2, 1) both",
+              borderColor: PALETTE.accentBright,
+              background: "rgba(11,17,32,0.92)",
+              boxShadow: "0 0 28px rgba(245,158,11,0.35)",
+            }}
+          >
+            <div className="text-3xl" aria-hidden="true">
+              {itemGet.icon}
+            </div>
+            <div className="text-left">
+              <div
+                className={`${mono} text-[9px] font-bold tracking-[0.3em]`}
+                style={{ color: "#9fb0cc" }}
+              >
+                ITEM DIPEROLEH
+              </div>
+              <div
+                className={`${mono} mt-0.5 text-[13px] font-bold tracking-[0.14em]`}
+                style={{ color: PALETTE.accentBright }}
+              >
+                {itemGet.name}
+              </div>
+              <div className="mt-0.5 text-[11px]" style={{ color: "#cbd5e1" }}>
+                {itemGet.desc} · cek 🎒 [I]
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Toasts */}
       <div className="pointer-events-none fixed left-1/2 top-20 z-40 flex -translate-x-1/2 flex-col items-center gap-2">
         {toasts.map((t) => (
@@ -615,6 +706,21 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
             🏆 sertifikat
           </button>
         )}
+        <button
+          onClick={() => {
+            setModal({ type: "inventory" });
+            if (document.pointerLockElement) document.exitPointerLock();
+          }}
+          className={`rounded-full border px-3 py-2 ${mono} text-[13px]`}
+          style={{
+            borderColor: "rgba(245,158,11,0.5)",
+            background: "rgba(15,23,42,0.7)",
+            color: PALETTE.accentBright,
+          }}
+          aria-label="Buka inventaris item (pintasan I)"
+        >
+          🎒
+        </button>
         <button
           onClick={() => {
             if (!photoBus.capture) {
@@ -680,6 +786,7 @@ export function ExploreHud({ map, onExit }: { map: ExploreMap; onExit: () => voi
         {modal?.type === "study" && <StudyModal slug={modal.slug} />}
         {modal?.type === "settings" && <SettingsModal />}
         {modal?.type === "storylog" && <StoryLogModal logId={modal.logId} />}
+        {modal?.type === "inventory" && <InventoryModal />}
         {endingActive && <EndingOverlay />}
       </Suspense>
       {modal?.type === "login" && <LoginModal />}

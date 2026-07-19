@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { roomAudio } from "./audio";
+import { KEY_ITEMS, LOG_ITEMS, MASTER_TAPE, type ItemDef } from "./items";
 import { SPAWN } from "./layout";
 import { ARSIP_RACKS, night, resetNight, RITUAL_MS } from "./nightshift/state";
 import type { Speaker } from "./nightshift/voice";
@@ -33,6 +34,7 @@ export type ExploreModal =
   | { type: "npc"; npcId: string }
   | { type: "settings" }
   | { type: "storylog"; logId: string }
+  | { type: "inventory" }
   | null;
 
 export interface Toast {
@@ -93,6 +95,10 @@ export interface ExploreState {
   endingSeen: boolean;
   /** Active "operator drill" incident on a CORE twin rack (session-only). */
   drill: { rackId: string; label: string } | null;
+  /** Player health 0–100 (session-only; only the night shift deals damage). */
+  hp: number;
+  /** "ITEM DIPEROLEH" pickup box (self-clears after a few seconds). */
+  itemGet: ItemDef | null;
 }
 
 export interface GameSettings {
@@ -141,6 +147,8 @@ if (typeof window !== "undefined") {
     startDrill: (id: string, label: string) => startDrill(id, label),
     photoReady: () => photoBus.capture !== null,
     audio: () => roomAudio.debugState(),
+    collectLog: (id: string) => collectLog(id),
+    damageHp: (n: number) => damageHp(n),
   };
 }
 
@@ -240,6 +248,8 @@ function initialState(): ExploreState {
     endingSeen: p.endingSeen,
     endingActive: false,
     drill: null,
+    hp: 100,
+    itemGet: null,
     modal: null,
     interact: null,
     toasts: [],
@@ -323,6 +333,41 @@ export function addAchievement(text: string) {
   roomAudio.sfx("achievement");
 }
 
+/** "ITEM DIPEROLEH" box — bigger moment than a toast, one at a time. */
+let itemGetTimer: ReturnType<typeof setTimeout> | undefined;
+export function showItemGet(item: ItemDef) {
+  clearTimeout(itemGetTimer);
+  state = { ...state, itemGet: item };
+  emit();
+  roomAudio.sfx("unlock");
+  itemGetTimer = setTimeout(() => {
+    state = { ...state, itemGet: null };
+    emit();
+  }, 4200);
+}
+
+/** Night-shift damage. At 0 HP Kirana walks you out: shift ends, HP refills. */
+export function damageHp(amount: number, reason?: string) {
+  const hp = Math.max(0, state.hp - amount);
+  if (hp <= 0 && state.night) {
+    state = { ...state, hp: 100, night: false, purging: null, moksa: false, dialogue: null };
+    emit();
+    addToast("💀 HP habis — Bu Kirana menggiringmu keluar gedung.");
+    addToast("Kamu pulih di shift pagi. Ritual bisa diulang dari terminal.");
+    return;
+  }
+  state = { ...state, hp };
+  emit();
+  if (reason) addToast(reason);
+}
+
+export function healHp(amount: number, reason?: string) {
+  if (state.hp >= 100) return;
+  state = { ...state, hp: Math.min(100, state.hp + amount) };
+  emit();
+  if (reason) addToast(reason);
+}
+
 export function setInteract(interact: ExploreState["interact"]) {
   if (state.interact?.id === interact?.id) return;
   state = { ...state, interact };
@@ -365,6 +410,8 @@ export function collectLog(logId: string) {
   if (!state.collectedLogs.includes(logId)) {
     state = { ...state, collectedLogs: [...state.collectedLogs, logId] };
     persist();
+    const item = LOG_ITEMS.find((i) => i.id === logId);
+    if (item) showItemGet(item);
     if (state.collectedLogs.length === LOG_COUNT) {
       addAchievement("SEJARAWAN — seluruh LOG OPERATOR terkumpul");
     }
@@ -456,6 +503,8 @@ export function beginSession() {
     purging: null,
     moksa: false,
     drill: null,
+    hp: 100,
+    itemGet: null,
   };
   emit();
 }
@@ -494,6 +543,8 @@ export function unlockDoor(id: DoorId) {
   };
   persist();
   emit();
+  const keycard = KEY_ITEMS[id];
+  if (keycard) showItemGet(keycard);
   if (id === "door-lab") addAchievement("PRIVILEGE ESCALATED → OPERATOR");
   if (id === "door-core") {
     addAchievement("PRIVILEGE ESCALATED → ROOT");
@@ -528,6 +579,7 @@ export function beginNightShift() {
     moksa: false,
     modal: null,
     drill: null, // the night crew has bigger problems than a drill
+    hp: 100,
   };
   persist();
   emit();
@@ -556,6 +608,7 @@ export function completePurge() {
   state = { ...state, purged, purging: null, moksa };
   emit();
   addToast(`ARSIP TERHAPUS — satu arwah moksa (${purged.length}/${ARSIP_RACKS.length})`);
+  healHp(25, "✚ arwah yang pulang memulihkanmu (+25 HP)");
   if (moksa) {
     addAchievement("MOKSA — semua arwah pulang");
     // The ending overlay needs a clickable cursor.
@@ -598,7 +651,7 @@ export function triggerInteract() {
   if (id === "vault:master") {
     // Collectible, not a modal: inspecting the golden master tape.
     addAchievement("PENJAGA ARSIP — master tape ditemukan");
-    addToast("MASTER BACKUP · harian 02:00 WITA · uji-restore: LULUS");
+    showItemGet(MASTER_TAPE);
     return;
   }
   if (id.startsWith("log:")) {

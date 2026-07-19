@@ -3,7 +3,7 @@ import { getStations } from "./stations";
 import { RoomHUD } from "./Hud";
 import { roomAudio } from "./explore/audio";
 import { buildExploreMap } from "./explore/layout";
-import { addAchievement, beginSession, fxBus, resetPlayer } from "./explore/store";
+import { addAchievement, beginSession, fxBus, resetPlayer, useExplore } from "./explore/store";
 
 /**
  * ServerRoomExperience — the homepage in room mode: a fixed full-screen
@@ -56,6 +56,10 @@ export function ServerRoomExperience({
     [],
   );
 
+  // LITE preset renders at DPR 1 — on weak phones the GPU cost scales with
+  // physical pixels, and this is the single biggest lag lever we have.
+  const graphics = useExplore((s) => s.settings.graphics);
+
   // Konami easter egg — listens in both walk and explore modes; the LED
   // strobe itself is drawn by World.tsx reading fxBus per frame.
   useEffect(() => {
@@ -100,7 +104,7 @@ export function ServerRoomExperience({
             reduced={reduced}
             mode={mode}
             map={mode === "explore" ? map : null}
-            capDpr={mode === "explore" && isTouch ? 1.5 : 2}
+            capDpr={graphics === "lite" ? 1 : mode === "explore" && isTouch ? 1.5 : 2}
           />
         </Suspense>
       </div>
